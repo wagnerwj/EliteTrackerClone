@@ -1,0 +1,22 @@
+const zlib = require('zlib');
+const zmq = require('zeromq');
+const discord = require('./discord');
+
+const sock = new zmq.Subscriber();
+sock.subscribe('');
+
+setTimeout(async () => {
+	for await (const [topic] of sock) {
+		const message = JSON.parse(zlib.inflateSync(topic));
+		if (message['$schemaRef'] === 'https://eddn.edcd.io/schemas/commodity/3') {
+			discord.checkHighSell(message.message);
+		}
+	}
+});
+
+module.exports = {
+	connect() {
+		sock.connect('tcp://eddn.edcd.io:9500');
+		console.log('EDDN Worker connected');
+	},
+};

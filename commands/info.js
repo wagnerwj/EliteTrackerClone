@@ -1,4 +1,5 @@
 const Guild = require('../database/guild');
+const HighSellThreshold = require('../database/highsell-threshold');
 
 module.exports = {
 	name: 'info',
@@ -10,11 +11,18 @@ module.exports = {
 			return message.channel.send('error in bot configuration, remove and add the bot again for proper setup');
 		}
 
-		console.log(guild.highsell_channel);
-
-		message.channel.send(`**Configuration**:
+		let text = `**Configuration**:
 Highsell:
 - Enabled: ${guild.highsell_enabled ? 'yes' : 'no'}
-- Channel: ${!guild.highsell_channel ? 'n/a' : `<#${guild.highsell_channel}>`}`);
+- Channel: ${!guild.highsell_channel ? 'n/a' : `<#${guild.highsell_channel}>`}`;
+
+		const thresholds = await HighSellThreshold.findAll({ where: { guild_id: message.guild.id } });
+		if (thresholds.length > 0) {
+			text += '\n- Thresholds:';
+		}
+		for (const threshold of thresholds) {
+			text += `\n-- ${threshold.material} >=${threshold.minimum_price}`;
+		}
+		message.channel.send(text);
 	},
 };
