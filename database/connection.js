@@ -1,11 +1,6 @@
 const Sequelize = require('sequelize');
+const { db } = require('../config.json');
 
-const sequelize = new Sequelize('database', 'user', 'password', {
-	host: 'localhost',
-	dialect: 'sqlite',
-	logging: false,
-	// SQLite only
-	storage: 'database.sqlite',
-});
+const sequelize = new Sequelize(db.database, db.username, db.password, db.options);
 
 module.exports = sequelize;

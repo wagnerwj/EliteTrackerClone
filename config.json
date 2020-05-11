@@ -1,4 +1,14 @@
 {
-  "prefix": "!elitetracker ",
-  "token": "NzA3OTc4NDk4NzY0OTY0NTk0.XrQtuw.tF9WThQusMnqWODUbY7Sd8y_Mog"
+	"prefix": "!elitetracker ",
+	"token": "NzA3OTc4NDk4NzY0OTY0NTk0.XrQtuw.tF9WThQusMnqWODUbY7Sd8y_Mog",
+	"db": {
+		"database": "database",
+		"username": "username",
+		"password": "password",
+		"options": {
+			"dialect": "sqlite",
+			"logging": false
+		}
+	},
+	"eddn": "tcp://eddn.edcd.io:9500"
 }

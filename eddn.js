@@ -1,6 +1,7 @@
 const zlib = require('zlib');
 const zmq = require('zeromq');
 const discord = require('./discord');
+const { eddn } = require('./config.json');
 
 const sock = new zmq.Subscriber();
 sock.subscribe('');
@@ -16,7 +17,7 @@ setTimeout(async () => {
 
 module.exports = {
 	connect() {
-		sock.connect('tcp://eddn.edcd.io:9500');
+		sock.connect(eddn);
 		console.log('EDDN Worker connected');
 	},
 };

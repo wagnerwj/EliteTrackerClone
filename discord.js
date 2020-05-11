@@ -9,6 +9,43 @@ const client = new Discord.Client();
 client.commands = new Discord.Collection();
 const cooldowns = new Discord.Collection();
 
+module.exports = {
+	connect() {
+		client.login(token);
+	},
+	async disconnect() {
+		await client.user.setStatus("dnd");
+		await client.destroy();
+	},
+	async checkHighSell(message) {
+		const thresholds = await HighSellThreshold.findAll();
+		if (thresholds.length < 1) {
+			return;
+		}
+
+		for (const commodity of message.commodities) {
+			for (const threshold of thresholds) {
+				if (commodity.name === threshold.material && commodity.sellPrice >= threshold.minimum_price) {
+					const guild = await Guild.findOne({ where: { guild_id: threshold.guild_id } });
+					if (!guild || !guild.highsell_enabled || !guild.highsell_channel) {
+						continue;
+					}
+
+					client.channels.fetch(guild.highsell_channel).then((channel) => {
+						channel.send(EmbedHighSell.execute({
+							commodity: commodity.name,
+							system: message.systemName,
+							station: message.stationName,
+							demand: commodity.demand,
+							sellPrice: commodity.sellPrice,
+						}));
+					});
+				}
+			}
+		}
+	},
+};
+
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
@@ -109,36 +146,3 @@ client.on('message', async message => {
 		message.reply('there was an error trying to execute that command!');
 	}
 });
-
-module.exports = {
-	connect() {
-		client.login(token);
-	},
-	async checkHighSell(message) {
-		const thresholds = await HighSellThreshold.findAll();
-		if (thresholds.length < 1) {
-			return;
-		}
-
-		for (const commodity of message.commodities) {
-			for (const threshold of thresholds) {
-				if (commodity.name === threshold.material && commodity.sellPrice >= threshold.minimum_price) {
-					const guild = await Guild.findOne({ where: { guild_id: threshold.guild_id } });
-					if (!guild || !guild.highsell_enabled || !guild.highsell_channel) {
-						continue;
-					}
-
-					client.channels.fetch(guild.highsell_channel).then((channel) => {
-						channel.send(EmbedHighSell.execute({
-							commodity: commodity.name,
-							system: message.systemName,
-							station: message.stationName,
-							demand: commodity.demand,
-							sellPrice: commodity.sellPrice,
-						}));
-					});
-				}
-			}
-		}
-	},
-};
