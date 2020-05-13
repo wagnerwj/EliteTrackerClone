@@ -17,24 +17,36 @@ module.exports = {
 			return message.channel.send('error in bot configuration, remove and add the bot again for proper setup');
 		}
 
-		const affectedRows = await HighSellThreshold.update({
-			minimum_price: +args[1],
-		}, {
-			where: {
+		if (+args[1] > 0) {
+			const affectedRows = await HighSellThreshold.update({
+				minimum_price: +args[1],
+			}, {
+				where: {
+					guild_id: message.guild.id,
+					material: args[0],
+				},
+			});
+			if (affectedRows > 0) {
+				return message.channel.send(`Minimum price ${args[1]} for ${args[0]} updated`);
+			}
+
+			await HighSellThreshold.create({
 				guild_id: message.guild.id,
 				material: args[0],
-			},
-		});
-		if (affectedRows > 0) {
-			return message.channel.send(`Minimum price ${args[1]} for ${args[0]} updated`);
+				minimum_price: +args[1],
+			});
+
+			return message.channel.send(`Minimum price ${args[1]} for ${args[0]} set`);
 		}
+		else {
+			await HighSellThreshold.destroy({
+				where: {
+					guild_id: message.guild.id,
+					material: args[0],
+				},
+			});
 
-		await HighSellThreshold.create({
-			guild_id: message.guild.id,
-			material: args[0],
-			minimum_price: +args[1],
-		});
-
-		return message.channel.send(`Minimum price ${args[1]} for ${args[0]} set`);
+			return message.channel.send(`Deleted ${args[0]}`);
+		}
 	},
 };

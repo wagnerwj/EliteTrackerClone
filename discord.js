@@ -2,6 +2,7 @@ const fs = require('fs');
 const Discord = require('discord.js');
 const { prefix, token } = require('./config.json');
 const Guild = require('./database/guild');
+const HighSellAnnouncement = require('./database/highsell-announcement');
 const HighSellThreshold = require('./database/highsell-threshold');
 const EmbedHighSell = require('./embeds/highsell');
 
@@ -9,21 +10,69 @@ const client = new Discord.Client();
 client.commands = new Discord.Collection();
 const cooldowns = new Discord.Collection();
 
+const highSellMarketCache = {};
+async function initHighSellCache() {
+	const announcements = await HighSellAnnouncement.findAll();
+	if (announcements.length < 1) {
+		return;
+	}
+
+	for (const announcement of announcements) {
+		const guild = await Guild.findOne({ where: { guild_id: announcement.guild_id } });
+		if (!guild || !guild.highsell_enabled || !guild.highsell_channel) {
+			await HighSellAnnouncement.destroy({ where: {
+				guild_id: announcement.guild_id,
+				market_id: announcement.market_id,
+				material: announcement.material,
+			}});
+			continue;
+		}
+
+		const channel = await client.channels.fetch(guild.highsell_channel);
+		const messages = await channel.messages.fetch({around: announcement.message_id, limit: 1});
+		const message = messages.first();
+		if (message && !message.deleted && message.id === announcement.message_id) {
+			if (!highSellMarketCache[announcement.market_id]) {
+				highSellMarketCache[announcement.market_id] = {};
+			}
+			if (!highSellMarketCache[announcement.market_id][announcement.material]) {
+				highSellMarketCache[announcement.market_id][announcement.material] = {};
+			}
+
+			console.log('found', announcement.market_id, announcement.material, announcement.guild_id);
+			highSellMarketCache[announcement.market_id][announcement.material][announcement.guild_id] = {
+				message: message,
+				highestSellPrice: announcement.highest_sell_price,
+				updated: announcement.timestamp,
+			};
+		}
+		else {
+			console.log('deleted', announcement.market_id, announcement.material, announcement.guild_id);
+			await HighSellAnnouncement.destroy({ where: {
+				guild_id: announcement.guild_id,
+				market_id: announcement.market_id,
+				material: announcement.material,
+			}});
+		}
+	}
+}
+
 module.exports = {
-	connect() {
-		client.login(token);
+	async connect() {
+		await client.login(token);
+		await initHighSellCache();
 	},
 	async disconnect() {
 		await client.user.setStatus("dnd");
 		await client.destroy();
 	},
-	async checkHighSell(message) {
+	async checkHighSell(event) {
 		const thresholds = await HighSellThreshold.findAll();
 		if (thresholds.length < 1) {
 			return;
 		}
 
-		for (const commodity of message.commodities) {
+		for (const commodity of event.commodities) {
 			for (const threshold of thresholds) {
 				if (commodity.name === threshold.material && commodity.sellPrice >= threshold.minimum_price) {
 					const guild = await Guild.findOne({ where: { guild_id: threshold.guild_id } });
@@ -31,15 +80,71 @@ module.exports = {
 						continue;
 					}
 
-					client.channels.fetch(guild.highsell_channel).then((channel) => {
-						channel.send(EmbedHighSell.execute({
-							commodity: commodity.name,
-							system: message.systemName,
-							station: message.stationName,
-							demand: commodity.demand,
-							sellPrice: commodity.sellPrice,
-						}));
+					if (!highSellMarketCache[event.marketId]) {
+						highSellMarketCache[event.marketId] = {};
+					}
+					if (!highSellMarketCache[event.marketId][commodity.name]) {
+						highSellMarketCache[event.marketId][commodity.name] = {};
+					}
+
+					let highestSellPrice = highSellMarketCache[event.marketId][commodity.name][threshold.guild_id] ? highSellMarketCache[event.marketId][commodity.name][threshold.guild_id].highestSellPrice : commodity.sellPrice;
+					if (highestSellPrice < commodity.sellPrice) {
+						highestSellPrice = commodity.sellPrice;
+					}
+
+					const embed = EmbedHighSell.execute({
+						commodity: commodity.name,
+						system: event.systemName,
+						station: event.stationName,
+						demand: commodity.demand,
+						sellPrice: commodity.sellPrice,
+						highestSellPrice: highestSellPrice,
 					});
+
+					if (highSellMarketCache[event.marketId][commodity.name][threshold.guild_id]) {
+						highSellMarketCache[event.marketId][commodity.name][threshold.guild_id].message.edit(embed);
+						highSellMarketCache[event.marketId][commodity.name][threshold.guild_id].highestSellPrice = highestSellPrice;
+						highSellMarketCache[event.marketId][commodity.name][threshold.guild_id].updated = Date.now();
+
+						await HighSellAnnouncement.update({
+							highest_sell_price: highestSellPrice,
+							timestamp: Date.now().toString(),
+						}, {
+							where: {
+								guild_id: threshold.guild_id,
+								market_id: event.marketId,
+								material: commodity.name,
+							},
+						});
+					}
+					else {
+						const channel = await client.channels.fetch(guild.highsell_channel)
+						const message = await channel.send(embed);
+						highSellMarketCache[event.marketId][commodity.name][threshold.guild_id] = {
+							message: message,
+							highestSellPrice: highestSellPrice,
+							updated: Date.now(),
+						};
+
+						await HighSellAnnouncement.create({
+							guild_id: threshold.guild_id,
+							message_id: message.id,
+							market_id: event.marketId,
+							material: commodity.name,
+							highest_sell_price: highestSellPrice,
+							timestamp: Date.now(),
+						});
+					}
+				}
+				else if (commodity.name === threshold.material && commodity.sellPrice < threshold.minimum_price && highSellMarketCache[event.marketId] && highSellMarketCache[event.marketId][commodity.name] && highSellMarketCache[event.marketId][commodity.name][threshold.guild_id]) {
+					highSellMarketCache[event.marketId][commodity.name][threshold.guild_id].message.delete();
+					delete highSellMarketCache[event.marketId][commodity.name][threshold.guild_id];
+
+					await HighSellAnnouncement.destroy({ where: {
+						guild_id: threshold.guild_id,
+						market_id: event.marketId,
+						material: commodity.name,
+					}});
 				}
 			}
 		}
@@ -54,8 +159,6 @@ for (const file of commandFiles) {
 }
 
 client.on('ready', async () => {
-	await Guild.sync();
-	await HighSellThreshold.sync();
 	console.log(`Logged in as ${client.user.tag}!`);
 });
 

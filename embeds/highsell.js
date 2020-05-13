@@ -11,9 +11,12 @@ module.exports = {
 			.addFields(
 				{ name: 'System', value: values.system, inline: true },
 				{ name: 'Station', value: values.station, inline: true },
-				{ name: '\u200b', value: '\u200b', inline: false },
-				{ name: 'Demand', value: values.demand, inline: true },
+				{ name: '\u200b', value: '\u200b', inline: true },
+				{ name: 'Demand', value: values.demand.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2), inline: true },
 				{ name: 'Sell Price', value: values.sellPrice.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2), inline: true },
+				{ name: 'Highest Sell Price', value: (values.highestSellPrice ? values.highestSellPrice.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2) : 'N/A'), inline: true },
+				{ name: 'Distance to star', value: 'too much', inline: true },
+				{ name: 'Landing Pad', value: 'XS', inline: true },
 			)
 			.setTimestamp();
 	},
