@@ -5,4 +5,4 @@ metadata:
   labels:
 {{ include "elitetracker.labels" . | indent 4 }}
 data:
-	config.json: {{ .Values.config | toJson | quote }}
+  config.json: {{ .Values.config | toJson | quote }}
