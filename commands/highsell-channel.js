@@ -6,6 +6,7 @@ module.exports = {
 	guildOnly: true,
 	args: true,
 	usage: '<channel>',
+	admin: true,
 	async execute(message, args) {
 		if (!message.mentions.channels.size) {
 			return message.channel.send('wrong channel argument, you need to mention it');

@@ -13,7 +13,3 @@ async function start() {
 	eddn.connect();
 }
 start();
-
-
-
-

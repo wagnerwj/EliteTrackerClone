@@ -24,12 +24,12 @@ async function initHighSellCache() {
 				guild_id: announcement.guild_id,
 				market_id: announcement.market_id,
 				material: announcement.material,
-			}});
+			} });
 			continue;
 		}
 
 		const channel = await client.channels.fetch(guild.highsell_channel);
-		const messages = await channel.messages.fetch({around: announcement.message_id, limit: 1});
+		const messages = await channel.messages.fetch({ around: announcement.message_id, limit: 1 });
 		const message = messages.first();
 		if (message && !message.deleted && message.id === announcement.message_id) {
 			if (!highSellMarketCache[announcement.market_id]) {
@@ -52,7 +52,7 @@ async function initHighSellCache() {
 				guild_id: announcement.guild_id,
 				market_id: announcement.market_id,
 				material: announcement.material,
-			}});
+			} });
 		}
 	}
 }
@@ -63,7 +63,7 @@ module.exports = {
 		await initHighSellCache();
 	},
 	async disconnect() {
-		await client.user.setStatus("dnd");
+		await client.user.setStatus('dnd');
 		await client.destroy();
 	},
 	async checkHighSell(event) {
@@ -118,7 +118,7 @@ module.exports = {
 						});
 					}
 					else {
-						const channel = await client.channels.fetch(guild.highsell_channel)
+						const channel = await client.channels.fetch(guild.highsell_channel);
 						const message = await channel.send(embed);
 						highSellMarketCache[event.marketId][commodity.name][threshold.guild_id] = {
 							message: message,
@@ -144,7 +144,7 @@ module.exports = {
 						guild_id: threshold.guild_id,
 						market_id: event.marketId,
 						material: commodity.name,
-					}});
+					} });
 				}
 			}
 		}
@@ -170,6 +170,8 @@ client.on('guildCreate', async guild => {
 });
 client.on('guildDelete', async guild => {
 	await Guild.destroy({ where: { guild_id: guild.id } });
+	await HighSellAnnouncement.destroy({ where: { guild_id: guild.id } });
+	await HighSellThreshold.destroy({ where: { guild_id: guild.id } });
 	console.log(`Guild ${guild.id} (${guild.name}) deleted`);
 });
 
@@ -196,7 +198,6 @@ client.on('warn', warning => {
 client.on('invalidated', () => {
 	// EXIT
 });
-
 
 client.on('message', async message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
@@ -231,6 +232,18 @@ client.on('message', async message => {
 	if (command.guildOnly && message.channel.type !== 'text') {
 		return message.reply('I can\'t execute that command inside DMs!');
 	}
+
+	if (command.guildOnly && command.admin) {
+		const guild = await Guild.findOne({ where: { guild_id: message.channel.guild.id } });
+		if (!guild) {
+			return;
+		}
+
+		if (!message.member.roles.cache.find(role => role.id === guild.admin_role_id)) {
+			return message.channel.send(`You are not authorized to use this command, ${message.author}!`);
+		}
+	}
+
 	if (command.args && !args.length) {
 		let reply = `You didn't provide any arguments, ${message.author}!`;
 

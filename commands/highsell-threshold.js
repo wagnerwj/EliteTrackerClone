@@ -7,6 +7,7 @@ module.exports = {
 	guildOnly: true,
 	args: true,
 	usage: '<material> <minimum sell price>',
+	admin: true,
 	async execute(message, args) {
 		if (args.length !== 2 || isNaN(+args[1])) {
 			return message.channel.send('wrong arguments');

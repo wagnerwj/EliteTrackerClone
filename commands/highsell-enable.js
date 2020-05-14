@@ -7,6 +7,7 @@ module.exports = {
 	guildOnly: true,
 	args: true,
 	usage: '<yes|no>',
+	admin: true,
 	async execute(message, args) {
 		const guild = await Guild.findOne({ where: { guild_id: message.guild.id } });
 		if (!guild) {

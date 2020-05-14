@@ -5,9 +5,7 @@ const getGitId = async () => {
 	if (gitId.indexOf(':') === -1) {
 		return gitId;
 	}
-	console.log(gitId);
 	const refPath = '.git/' + gitId.substring(5).trim();
-	console.log(refPath);
 	return fs.readFileSync(refPath, 'utf8');
 };
 
@@ -16,7 +14,7 @@ module.exports = {
 	description: 'Version',
 	hidden: true,
 	async execute(message) {
-		let revision = await getGitId();
-		message.reply('My current commit hash is: ' + revision)
+		const revision = await getGitId();
+		message.reply('My current commit hash is: ' + revision);
 	},
 };

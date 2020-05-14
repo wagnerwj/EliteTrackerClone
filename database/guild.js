@@ -8,6 +8,7 @@ const Guild = db.define('guild', {
 	},
 	highsell_enabled: Sequelize.BOOLEAN,
 	highsell_channel: Sequelize.STRING,
+	admin_role_id: Sequelize.STRING,
 });
 
 module.exports = Guild;
