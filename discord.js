@@ -1,6 +1,6 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const { prefix, token } = require('./config.json');
+const { prefix, token } = require(process.env.CONFIG_PATH || './config.json');
 const Guild = require('./database/guild');
 const HighSellAnnouncement = require('./database/highsell-announcement');
 const HighSellThreshold = require('./database/highsell-threshold');

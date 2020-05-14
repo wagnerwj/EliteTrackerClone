@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "elitetracker.fullname" . }}
+  labels:
+{{ include "elitetracker.labels" . | indent 4 }}
+data:
+	config.json: {{ .Values.config | toJson | quote }}

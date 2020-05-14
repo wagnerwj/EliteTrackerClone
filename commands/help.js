@@ -1,4 +1,4 @@
-const { prefix } = require('../config.json');
+const { prefix } = require(process.env.CONFIG_PATH || '../config.json');
 
 module.exports = {
 	name: 'help',

@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const { db } = require('../config.json');
+const { db } = require(process.env.CONFIG_PATH || '../config.json');
 
 const sequelize = new Sequelize(db.database, db.username, db.password, db.options);
 
