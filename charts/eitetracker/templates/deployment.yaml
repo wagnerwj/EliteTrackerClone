@@ -38,10 +38,10 @@ spec:
               protocol: TCP
           volumeMounts:
             - name: config
-              mountPath: /etc/sensa
+              mountPath: /etc/elitetracker
               readOnly: true
             - name: data
-              mountPath: /var/lib/sensa
+              mountPath: /var/lib/elitetracker
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
