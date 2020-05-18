@@ -43,7 +43,7 @@ async function initHighSellCache() {
 			highSellMarketCache[announcement.market_id][announcement.material][announcement.guild_id] = {
 				message: message,
 				highestSellPrice: announcement.highest_sell_price,
-				updated: announcement.timestamp,
+				updated: new Date(announcement.timestamp),
 			};
 		}
 		else {
@@ -104,11 +104,11 @@ module.exports = {
 					if (highSellMarketCache[event.marketId][commodity.name][threshold.guild_id]) {
 						highSellMarketCache[event.marketId][commodity.name][threshold.guild_id].message.edit(embed);
 						highSellMarketCache[event.marketId][commodity.name][threshold.guild_id].highestSellPrice = highestSellPrice;
-						highSellMarketCache[event.marketId][commodity.name][threshold.guild_id].updated = Date.now();
+						highSellMarketCache[event.marketId][commodity.name][threshold.guild_id].updated = new Date(event.timestamp);
 
 						await HighSellAnnouncement.update({
 							highest_sell_price: highestSellPrice,
-							timestamp: Date.now().toString(),
+							timestamp: event.timestamp,
 						}, {
 							where: {
 								guild_id: threshold.guild_id,
@@ -123,7 +123,7 @@ module.exports = {
 						highSellMarketCache[event.marketId][commodity.name][threshold.guild_id] = {
 							message: message,
 							highestSellPrice: highestSellPrice,
-							updated: Date.now(),
+							updated: new Date(event.timestamp),
 						};
 
 						await HighSellAnnouncement.create({
@@ -132,7 +132,7 @@ module.exports = {
 							market_id: event.marketId,
 							material: commodity.name,
 							highest_sell_price: highestSellPrice,
-							timestamp: Date.now(),
+							timestamp: event.timestamp,
 						});
 					}
 				}
@@ -145,6 +145,25 @@ module.exports = {
 						market_id: event.marketId,
 						material: commodity.name,
 					} });
+				}
+			}
+		}
+	},
+	async bgsTick(time) {
+		const date = new Date(time);
+		for (const marketId in highSellMarketCache) {
+			for (const commodity in highSellMarketCache[marketId]) {
+				for (const guildId in highSellMarketCache[marketId][commodity]) {
+					if (highSellMarketCache[marketId][commodity][guildId].updated < date) {
+						highSellMarketCache[marketId][commodity][guildId].message.delete();
+						delete highSellMarketCache[marketId][commodity][guildId];
+
+						await HighSellAnnouncement.destroy({ where: {
+							guild_id: guildId,
+							market_id: marketId,
+							material: commodity,
+						} });
+					}
 				}
 			}
 		}

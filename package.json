@@ -17,12 +17,13 @@
 	"license": "MIT",
 	"dependencies": {
 		"discord.js": "^12.2.0",
-		"sequelize": "^5.21.7",
+		"got": "^11.1.4",
+		"sequelize": "^5.21.9",
 		"sqlite3": "^4.2.0",
 		"zeromq": "^6.0.0-beta.6",
 		"zlib": "^1.0.5"
 	},
 	"devDependencies": {
-		"eslint": "^6.8.0"
+		"eslint": "^7.0.0"
 	}
 }

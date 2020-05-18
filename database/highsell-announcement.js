@@ -9,7 +9,7 @@ const HighSellAnnouncement = db.define(
 		market_id: Sequelize.BIGINT,
 		material: Sequelize.STRING,
 		highest_sell_price: Sequelize.INTEGER,
-		timestamp: Sequelize.BIGINT,
+		timestamp: Sequelize.STRING,
 	},
 	{
 		indexes: [
