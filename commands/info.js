@@ -5,6 +5,7 @@ module.exports = {
 	name: 'info',
 	description: 'Show current configuration',
 	guildOnly: true,
+	admin: true,
 	async execute(message) {
 		const guild = await Guild.findOne({ where: { guild_id: message.guild.id } });
 		if (!guild) {

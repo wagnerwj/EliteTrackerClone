@@ -12,14 +12,21 @@ function start() {
 	}, 1000 * 60 * 10);
 }
 
-async function runBGS() {
+async function getTick() {
 	const response = await got('https://elitebgs.app/api/ebgs/v4/ticks', { responseType: 'json' });
-	await discord.bgsTick(response.body[0].time);
+	return response.body[0];
+}
+
+async function runBGS() {
+	await discord.bgsTick(getTick().time);
 }
 
 module.exports = {
 	init: async () => {
 		await runBGS();
 		start();
+	},
+	getTick: async () => {
+		return getTick();
 	},
 };
