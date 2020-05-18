@@ -12,7 +12,15 @@ module.exports = {
 			return message.channel.send('error in bot configuration, remove and add the bot again for proper setup');
 		}
 
+		let rolename = 'Not found';
+		const role = message.guild.roles.cache.find(r => r.id === guild.admin_role_id);
+		if (role) {
+			rolename = role.name;
+		}
+
 		let text = `**Configuration**:
+Admin role: ${rolename} (${guild.admin_role_id})
+
 Highsell:
 - Enabled: ${guild.highsell_enabled ? 'yes' : 'no'}
 - Channel: ${!guild.highsell_channel ? 'n/a' : `<#${guild.highsell_channel}>`}`;
