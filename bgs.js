@@ -18,7 +18,7 @@ async function getTick() {
 }
 
 async function runBGS() {
-	await discord.bgsTick(getTick().time);
+	await discord.bgsTick(await getTick().time);
 }
 
 module.exports = {
