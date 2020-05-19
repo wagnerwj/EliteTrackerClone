@@ -74,7 +74,15 @@ module.exports = {
 
 		for (const commodity of event.commodities) {
 			for (const threshold of thresholds) {
-				if (commodity.name === threshold.material && commodity.sellPrice >= threshold.minimum_price) {
+				const highestPrice = (
+					highSellMarketCache[event.marketId]
+					&& highSellMarketCache[event.marketId][commodity.name]
+					&& highSellMarketCache[event.marketId][commodity.name][threshold.guild_id]
+					&& highSellMarketCache[event.marketId][commodity.name][threshold.guild_id].highestSellPrice > 0
+						? highSellMarketCache[event.marketId][commodity.name][threshold.guild_id].highestSellPrice
+						: commodity.sellPrice
+				);
+				if (commodity.name === threshold.material && highestPrice >= threshold.minimum_price) {
 					const guild = await Guild.findOne({ where: { guild_id: threshold.guild_id } });
 					if (!guild || !guild.highsell_enabled || !guild.highsell_channel) {
 						continue;
