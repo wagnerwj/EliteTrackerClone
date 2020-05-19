@@ -12,7 +12,7 @@ module.exports = {
 		const { commands } = message.client;
 
 		let guild;
-		if (message.channel.type !== 'text') {
+		if (message.channel.type === 'text') {
 			guild = await Guild.findOne({ where: { guild_id: message.channel.guild.id } });
 		}
 
@@ -20,7 +20,7 @@ module.exports = {
 			data.push('Here\'s a list of all my commands:');
 			data.push(commands
 				.filter(command => !command.hidden)
-				.filter(command => !command.guildOnly || message.channel.type !== 'text')
+				.filter(command => !command.guildOnly || message.channel.type === 'text')
 				.filter(command => !command.admin || (guild && message.member.roles.cache.find(r => r.id === guild.admin_role_id)))
 				.map(command => command.name).join(', '),
 			);
