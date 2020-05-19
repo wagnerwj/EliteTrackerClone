@@ -1,4 +1,5 @@
 const { prefix } = require(process.env.CONFIG_PATH || '../config.json');
+const Guild = require('../database/guild');
 
 module.exports = {
 	name: 'help',
@@ -6,13 +7,23 @@ module.exports = {
 	aliases: ['commands'],
 	usage: '[command name]',
 	cooldown: 1,
-	execute(message, args) {
+	async execute(message, args) {
 		const data = [];
 		const { commands } = message.client;
 
+		let guild;
+		if (message.channel.type !== 'text') {
+			guild = await Guild.findOne({ where: { guild_id: message.channel.guild.id } });
+		}
+
 		if (!args.length) {
 			data.push('Here\'s a list of all my commands:');
-			data.push(commands.filter(command => !command.hidden).map(command => command.name).join(', '));
+			data.push(commands
+				.filter(command => !command.hidden)
+				.filter(command => !command.guildOnly || message.channel.type !== 'text')
+				.filter(command => !command.admin || (guild && message.member.roles.cache.find(r => r.id === guild.admin_role_id)))
+				.map(command => command.name).join(', '),
+			);
 			data.push(`\nYou can send \`${prefix}help [command name]\` to get info on a specific command!`);
 
 			return message.reply(data, { split: true })
