@@ -2,7 +2,6 @@ const Guild = require('./database/guild');
 const HighSellAnnouncement = require('./database/highsell-announcement');
 const HighSellThreshold = require('./database/highsell-threshold');
 const discord = require('./discord');
-const eddn = require('./eddn');
 const bgs = require('./bgs');
 
 async function start() {
@@ -12,6 +11,5 @@ async function start() {
 
 	await discord.connect();
 	await bgs.init();
-	eddn.connect();
 }
 start();
