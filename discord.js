@@ -5,7 +5,6 @@ const Guild = require('./database/guild');
 const HighSellAnnouncement = require('./database/highsell-announcement');
 const HighSellThreshold = require('./database/highsell-threshold');
 const EmbedHighSell = require('./embeds/highsell');
-const eddn = require('./eddn');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -60,7 +59,12 @@ async function initHighSellCache() {
 
 module.exports = {
 	async connect() {
-		await client.login(token);
+		client.login(token);
+		return new Promise((resolve) => {
+			client.on('ready', () => {
+				resolve();
+			});
+		});
 	},
 	async disconnect() {
 		await client.user.setStatus('dnd');
@@ -188,7 +192,6 @@ for (const file of commandFiles) {
 client.on('ready', async () => {
 	console.log(`Logged in as ${client.user.tag}!`);
 	await initHighSellCache();
-	eddn.connect();
 });
 
 client.on('guildCreate', async guild => {
