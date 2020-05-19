@@ -60,7 +60,6 @@ async function initHighSellCache() {
 module.exports = {
 	async connect() {
 		await client.login(token);
-		await initHighSellCache();
 	},
 	async disconnect() {
 		await client.user.setStatus('dnd');
@@ -187,6 +186,7 @@ for (const file of commandFiles) {
 
 client.on('ready', async () => {
 	console.log(`Logged in as ${client.user.tag}!`);
+	await initHighSellCache();
 });
 
 client.on('guildCreate', async guild => {
