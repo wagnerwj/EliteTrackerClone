@@ -131,6 +131,9 @@ module.exports = {
 									console.error('no station found');
 								}
 							}
+							else {
+								console.error('no system found');
+							}
 						}
 						catch (e) {
 							console.error('edsm station', e);

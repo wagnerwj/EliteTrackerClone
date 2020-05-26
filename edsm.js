@@ -6,6 +6,7 @@ module.exports = {
 		if (systemName) {
 			url.searchParams.append('systemName', systemName);
 		}
+		console.log(url.href);
 		const response = await got(url.href, { responseType: 'json' });
 		if (response.id > 0) {
 			return response;
