@@ -8,10 +8,8 @@ module.exports = {
 	cooldown: 30,
 	hidden: true,
 	async execute(message) {
-		try {
-			await Guild.findOne({ where: { guild_id: message.channel.guild.id } });
-		}
-		catch (e) {
+		const guild = await Guild.findOne({ where: { guild_id: message.channel.guild.id } });
+		if (!guild) {
 			await Guild.create({
 				guild_id: message.channel.guild.id,
 			});
