@@ -5,12 +5,15 @@ const Guild = require('./database/guild');
 const HighSellAnnouncement = require('./database/highsell-announcement');
 const HighSellThreshold = require('./database/highsell-threshold');
 const EmbedHighSell = require('./embeds/highsell');
+const EDSM = require('./edsm');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 const cooldowns = new Discord.Collection();
 
 const highSellMarketCache = {};
+const marketStationInfo = {};
+
 async function initHighSellCache() {
 	const announcements = await HighSellAnnouncement.findAll();
 	if (announcements.length < 1) {
@@ -105,13 +108,37 @@ module.exports = {
 						highestSellPrice = commodity.sellPrice;
 					}
 
+					let stationInfo;
+					if (marketStationInfo[event.marketId]) {
+						stationInfo = marketStationInfo[event.marketId];
+					}
+					else {
+						try {
+							const system = await EDSM.stations(event.systemName);
+							if (system) {
+								for (const station of system.stations) {
+									if (station.marketId === event.marketId) {
+										stationInfo = station;
+										break;
+									}
+								}
+
+								marketStationInfo[event.marketId] = stationInfo;
+							}
+						}
+						catch (e) {
+							console.error('edsm station', e);
+						}
+					}
+
 					const embed = EmbedHighSell.execute({
 						commodity: commodity.name,
-						system: event.systemName,
-						station: event.stationName,
+						systemName: event.systemName,
+						stationName: event.stationName,
 						demand: commodity.demand,
 						sellPrice: commodity.sellPrice,
 						highestSellPrice: highestSellPrice,
+						station: stationInfo,
 					});
 
 					if (highSellMarketCache[event.marketId][commodity.name][threshold.guild_id]) {
@@ -181,6 +208,10 @@ module.exports = {
 					}
 				}
 			}
+		}
+
+		for (const marketId in marketStationInfo) {
+			delete marketStationInfo[marketId];
 		}
 	},
 };
