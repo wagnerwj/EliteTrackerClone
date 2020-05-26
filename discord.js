@@ -43,7 +43,8 @@ async function initHighSellCache() {
 			highSellMarketCache[announcement.market_id][announcement.material][announcement.guild_id] = {
 				message: message,
 				highestSellPrice: announcement.highest_sell_price,
-				updated: new Date(announcement.timestamp),
+				inserted: new Date(announcement.inserted),
+				updated: new Date(announcement.updated),
 			};
 		}
 		else {
@@ -120,7 +121,7 @@ module.exports = {
 
 						await HighSellAnnouncement.update({
 							highest_sell_price: highestSellPrice,
-							timestamp: event.timestamp,
+							updated: event.timestamp,
 						}, {
 							where: {
 								guild_id: threshold.guild_id,
@@ -135,6 +136,7 @@ module.exports = {
 						highSellMarketCache[event.marketId][commodity.name][threshold.guild_id] = {
 							message: message,
 							highestSellPrice: highestSellPrice,
+							inserted: new Date(event.timestamp),
 							updated: new Date(event.timestamp),
 						};
 
@@ -144,7 +146,8 @@ module.exports = {
 							market_id: event.marketId,
 							material: commodity.name,
 							highest_sell_price: highestSellPrice,
-							timestamp: event.timestamp,
+							inserted: event.timestamp,
+							updated: event.timestamp,
 						});
 					}
 				}
@@ -166,7 +169,7 @@ module.exports = {
 		for (const marketId in highSellMarketCache) {
 			for (const commodity in highSellMarketCache[marketId]) {
 				for (const guildId in highSellMarketCache[marketId][commodity]) {
-					if (highSellMarketCache[marketId][commodity][guildId].updated < date) {
+					if (highSellMarketCache[marketId][commodity][guildId].inserted < date) {
 						highSellMarketCache[marketId][commodity][guildId].message.delete();
 						delete highSellMarketCache[marketId][commodity][guildId];
 
