@@ -18,8 +18,9 @@ module.exports = {
 			await HighSellAnnouncement.destroy({ where: {
 				guild_id: message.channel.guild.id,
 			} });
+			await message.react('question');
 		}
 
-		await message.react(':white_check_mark:');
+		await message.react('white_check_mark');
 	},
 };
