@@ -117,13 +117,15 @@ module.exports = {
 							const system = await EDSM.stations(event.systemName);
 							if (system) {
 								for (const station of system.stations) {
-									if (station.marketId === event.marketId) {
+									if (station.name === event.stationName) {
 										stationInfo = station;
 										break;
 									}
 								}
 
-								marketStationInfo[event.marketId] = stationInfo;
+								if (stationInfo) {
+									marketStationInfo[event.marketId] = stationInfo;
+								}
 							}
 						}
 						catch (e) {
