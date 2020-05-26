@@ -118,7 +118,6 @@ module.exports = {
 							if (system) {
 								for (const station of system.stations) {
 									if (station.name === event.stationName) {
-										console.log('check station', event.stationName, station.name);
 										stationInfo = station;
 										break;
 									}
