@@ -18,9 +18,9 @@ module.exports = {
 			await HighSellAnnouncement.destroy({ where: {
 				guild_id: message.channel.guild.id,
 			} });
-			await message.react('question');
+			await message.channel.send('Created missing server configuration');
 		}
 
-		await message.react('white_check_mark');
+		await message.channel.send('Fix complete');
 	},
 };
