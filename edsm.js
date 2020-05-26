@@ -8,6 +8,7 @@ module.exports = {
 		}
 		console.log(url.href);
 		const response = await got(url.href, { responseType: 'json' });
+		console.log(response);
 		if (response.id > 0) {
 			return response;
 		}
