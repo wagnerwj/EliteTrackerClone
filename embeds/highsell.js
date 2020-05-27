@@ -18,8 +18,11 @@ module.exports = {
 		embed = embed.addField('Latest Reported Sell Price', values.sellPrice.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2), true);
 
 		if (values.station) {
+			const landingPadSize = ['Orbis', 'Coriolis', 'Ocellus', 'Asteroid', 'Planetary Outpost'].some(r => r.indexOf(values.station.type) >= 0) ? 'L' : 'M';
+			const isPlanetary = ['Planetary'].some(r => r.indexOf(values.station.type) >= 0);
+
 			embed = embed.addField('Distance to star', `${values.station.distanceToArrival.toFixed(2)} ls`, true);
-			embed = embed.addField('Landing Pad', (['Orbis', 'Coriolis', 'Ocellus', 'Asteroid'].indexOf(values.station.type) >= 0 ? 'L' : 'M'), true);
+			embed = embed.addField('Landing Pad', `${landingPadSize}${isPlanetary ? ' (Planetary)' : ''}`, true);
 			embed = embed.addField('\u200b', '\u200b', true);
 			embed = embed.addField('Faction', values.station.controllingFaction.name, true);
 		}
