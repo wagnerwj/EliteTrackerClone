@@ -200,6 +200,7 @@ module.exports = {
 		}
 	},
 	async bgsTick(time) {
+		console.log(time);
 		const date = new Date(time);
 		for (const marketId in highSellMarketCache) {
 			for (const commodity in highSellMarketCache[marketId]) {
