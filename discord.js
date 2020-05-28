@@ -150,7 +150,7 @@ module.exports = {
 					});
 
 					if (highSellMarketCache[event.marketId][commodity.name][threshold.guild_id]) {
-						highSellMarketCache[event.marketId][commodity.name][threshold.guild_id].message.edit(embed);
+						await highSellMarketCache[event.marketId][commodity.name][threshold.guild_id].message.edit(embed);
 						highSellMarketCache[event.marketId][commodity.name][threshold.guild_id].highestSellPrice = highestSellPrice;
 						highSellMarketCache[event.marketId][commodity.name][threshold.guild_id].updated = new Date(event.timestamp);
 
@@ -187,7 +187,7 @@ module.exports = {
 					}
 				}
 				else if (commodity.name === threshold.material && commodity.sellPrice < threshold.minimum_price && highSellMarketCache[event.marketId] && highSellMarketCache[event.marketId][commodity.name] && highSellMarketCache[event.marketId][commodity.name][threshold.guild_id]) {
-					highSellMarketCache[event.marketId][commodity.name][threshold.guild_id].message.delete();
+					await highSellMarketCache[event.marketId][commodity.name][threshold.guild_id].message.delete();
 					delete highSellMarketCache[event.marketId][commodity.name][threshold.guild_id];
 
 					await HighSellAnnouncement.destroy({ where: {
@@ -204,8 +204,9 @@ module.exports = {
 		for (const marketId in highSellMarketCache) {
 			for (const commodity in highSellMarketCache[marketId]) {
 				for (const guildId in highSellMarketCache[marketId][commodity]) {
+					console.log('found', highSellMarketCache[marketId][commodity][guildId].inserted, date, highSellMarketCache[marketId][commodity][guildId].inserted < date);
 					if (highSellMarketCache[marketId][commodity][guildId].inserted < date) {
-						highSellMarketCache[marketId][commodity][guildId].message.delete();
+						await highSellMarketCache[marketId][commodity][guildId].message.delete();
 						delete highSellMarketCache[marketId][commodity][guildId];
 
 						await HighSellAnnouncement.destroy({ where: {
