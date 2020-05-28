@@ -15,7 +15,14 @@ module.exports = {
 
 		embed = embed.addField('Demand', values.demand.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2), true);
 		embed = embed.addField('Highest Sell Price', values.highestSellPrice.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2), true);
-		embed = embed.addField('Latest Reported Sell Price', values.sellPrice.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2), true);
+		embed = embed.addField('\u200b', '\u200b', true);
+
+		const tonnage128 = ((-128 / values.demand) + 1.039) * values.highestSellPrice;
+		const tonnage256 = ((-256 / values.demand) + 1.039) * values.highestSellPrice;
+		const tonnage512 = ((-512 / values.demand) + 1.039) * values.highestSellPrice;
+		embed = embed.addField('Sell Price for 128t Cargo', tonnage128.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2), true);
+		embed = embed.addField('Sell Price for 256t Cargo', tonnage256.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2), true);
+		embed = embed.addField('Sell Price for 512t Cargo', tonnage512.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2), true);
 
 		if (values.station) {
 			const landingPadSize = ['Orbis', 'Coriolis', 'Ocellus', 'Asteroid', 'Planetary Outpost'].some(r => r.indexOf(values.station.type) >= 0) ? 'L' : 'M';
