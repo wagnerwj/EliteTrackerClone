@@ -66,7 +66,8 @@ module.exports = {
 		client.login(token);
 		return new Promise((resolve) => {
 			client.on('ready', () => {
-				resolve();
+				console.log(`Logged in as ${client.user.tag}!`);
+				initHighSellCache().then(() => resolve());
 			});
 		});
 	},
@@ -200,12 +201,10 @@ module.exports = {
 		}
 	},
 	async bgsTick(time) {
-		console.log(time);
 		const date = new Date(time);
 		for (const marketId in highSellMarketCache) {
 			for (const commodity in highSellMarketCache[marketId]) {
 				for (const guildId in highSellMarketCache[marketId][commodity]) {
-					console.log('found', highSellMarketCache[marketId][commodity][guildId].inserted, date, highSellMarketCache[marketId][commodity][guildId].inserted < date);
 					if (highSellMarketCache[marketId][commodity][guildId].inserted < date) {
 						await highSellMarketCache[marketId][commodity][guildId].message.delete();
 						delete highSellMarketCache[marketId][commodity][guildId];
@@ -232,11 +231,6 @@ for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.name, command);
 }
-
-client.on('ready', async () => {
-	console.log(`Logged in as ${client.user.tag}!`);
-	await initHighSellCache();
-});
 
 client.on('guildCreate', async guild => {
 	await Guild.create({
