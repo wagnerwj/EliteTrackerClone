@@ -36,7 +36,7 @@ module.exports = {
 
 		if (values.station) {
 			const landingPadSize = ['Orbis', 'Coriolis', 'Ocellus', 'Asteroid', 'Planetary Outpost'].some(r => values.station.type.indexOf(r) >= 0) ? 'L' : 'M';
-			const isPlanetary = ['Planetary'].some(r => r.indexOf(values.station.type) >= 0);
+			const isPlanetary = ['Planetary'].some(r => values.station.type.indexOf(r) >= 0);
 
 			embed = embed.addField('Distance to star', `${values.station.distanceToArrival.toFixed(2)} ls`, true);
 			embed = embed.addField('Landing Pad', `${landingPadSize}${isPlanetary ? ' (Planetary)' : ''}`, true);
