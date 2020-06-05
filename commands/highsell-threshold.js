@@ -28,7 +28,7 @@ module.exports = {
 				},
 			});
 			if (affectedRows > 0) {
-				return message.channel.send(`Minimum price ${args[1]} for ${args[0]} updated`);
+				return message.channel.send(`Minimum price ${args[1].toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2)} for ${args[0]} updated`);
 			}
 
 			await HighSellThreshold.create({
@@ -37,7 +37,7 @@ module.exports = {
 				minimum_price: +args[1],
 			});
 
-			return message.channel.send(`Minimum price ${args[1]} for ${args[0]} set`);
+			return message.channel.send(`Minimum price ${args[1].toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2)} for ${args[0]} set`);
 		}
 		else {
 			await HighSellThreshold.destroy({

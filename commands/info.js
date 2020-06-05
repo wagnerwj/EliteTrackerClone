@@ -30,7 +30,7 @@ Highsell:
 			text += '\n- Thresholds:';
 		}
 		for (const threshold of thresholds) {
-			text += `\n-- ${threshold.material} >=${threshold.minimum_price}`;
+			text += `\n-- ${threshold.material} >=${threshold.minimum_price.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2)}`;
 		}
 		message.channel.send(text);
 	},
