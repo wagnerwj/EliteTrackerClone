@@ -12,42 +12,44 @@ module.exports = {
 		if (args.length !== 2 || isNaN(+args[1])) {
 			return message.channel.send('wrong arguments');
 		}
+		const material = args[0];
+		const price = +args[1];
 
 		const guild = await Guild.findOne({ where: { guild_id: message.guild.id } });
 		if (!guild) {
 			return message.channel.send('error in bot configuration, remove and add the bot again for proper setup');
 		}
 
-		if (+args[1] > 0) {
+		if (price > 0) {
 			const affectedRows = await HighSellThreshold.update({
-				minimum_price: +args[1],
+				minimum_price: price,
 			}, {
 				where: {
 					guild_id: message.guild.id,
-					material: args[0],
+					material: material,
 				},
 			});
 			if (affectedRows > 0) {
-				return message.channel.send(`Minimum price ${args[1].toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2)} for ${args[0]} updated`);
+				return message.channel.send(`Minimum price ${price.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2)} for ${material} updated`);
 			}
 
 			await HighSellThreshold.create({
 				guild_id: message.guild.id,
-				material: args[0],
-				minimum_price: +args[1],
+				material: material,
+				minimum_price: price,
 			});
 
-			return message.channel.send(`Minimum price ${args[1].toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2)} for ${args[0]} set`);
+			return message.channel.send(`Minimum price ${price.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2)} for ${material} set`);
 		}
 		else {
 			await HighSellThreshold.destroy({
 				where: {
 					guild_id: message.guild.id,
-					material: args[0],
+					material: material,
 				},
 			});
 
-			return message.channel.send(`Deleted ${args[0]}`);
+			return message.channel.send(`Deleted ${material}`);
 		}
 	},
 };
