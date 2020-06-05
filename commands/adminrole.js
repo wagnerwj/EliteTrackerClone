@@ -9,7 +9,13 @@ module.exports = {
 	usage: '<role name>',
 	async execute(message, args) {
 		const rolename = args.join(' ');
-		const role = message.guild.roles.cache.find(r => r.name === rolename);
+		let role;
+		if (message.mentions.roles.size) {
+			role = message.mentions.roles.first();
+		}
+		if (!role) {
+			role = message.guild.roles.cache.find(r => r.name === rolename);
+		}
 		if (!role) {
 			return message.channel.send(`Role ${rolename} not found`);
 		}
