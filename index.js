@@ -1,4 +1,5 @@
 const Guild = require('./database/guild');
+const FleetCarrier = require('./database/fleetcarrier');
 const HighSellAnnouncement = require('./database/highsell-announcement');
 const HighSellThreshold = require('./database/highsell-threshold');
 const discord = require('./discord');
@@ -7,6 +8,7 @@ const eddn = require('./eddn');
 
 async function start() {
 	await Guild.sync();
+	await FleetCarrier.sync();
 	await HighSellAnnouncement.sync();
 	await HighSellThreshold.sync();
 

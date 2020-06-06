@@ -118,4 +118,4 @@ dist
 .idea
 
 config.json
-database.sqlite
+*.sqlite
