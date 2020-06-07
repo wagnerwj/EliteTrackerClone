@@ -2,10 +2,7 @@ const Sequelize = require('sequelize');
 const db = require('./connection');
 
 const FleetCarrier = db.define('fleetcarrier2', {
-	station_name: {
-		type: Sequelize.STRING,
-		unique: true,
-	},
+	station_name: Sequelize.STRING,
 	market_id: Sequelize.BIGINT,
 	services: Sequelize.STRING,
 
@@ -23,6 +20,13 @@ const FleetCarrier = db.define('fleetcarrier2', {
 	},
 	updated: Sequelize.DATE,
 	deleted: Sequelize.DATE,
+}, {
+	indexes: [
+		{
+			unique: true,
+			fields: ['station_name', 'deleted'],
+		},
+	],
 });
 
 module.exports = FleetCarrier;
