@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('./connection');
 
-const FleetCarrier = db.define('fleetcarrier', {
+const FleetCarrier = db.define('fleetcarrier2', {
 	station_name: {
 		type: Sequelize.STRING,
 		unique: true,
@@ -16,6 +16,13 @@ const FleetCarrier = db.define('fleetcarrier', {
 	star_position_z: Sequelize.DECIMAL(10, 10),
 	body_name: Sequelize.STRING,
 	body_id: Sequelize.INTEGER,
+
+	inserted: {
+		type: Sequelize.DATE,
+		defaultValue: Sequelize.NOW,
+	},
+	updated: Sequelize.DATE,
+	deleted: Sequelize.DATE,
 });
 
 module.exports = FleetCarrier;

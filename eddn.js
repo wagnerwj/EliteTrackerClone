@@ -32,6 +32,8 @@ setTimeout(async () => {
 					star_position_z: eventMessage['StarPos'][2],
 					body_name: eventMessage['Body'],
 					body_id: eventMessage['BodyID'],
+
+					updated: new Date(),
 				}, {
 					where: {
 						station_name: eventMessage['StationName'],
@@ -50,6 +52,8 @@ setTimeout(async () => {
 						star_position_z: eventMessage['StarPos'][2],
 						body_name: eventMessage['Body'],
 						body_id: eventMessage['BodyID'],
+
+						inserted: new Date(),
 					});
 				}
 				break;
