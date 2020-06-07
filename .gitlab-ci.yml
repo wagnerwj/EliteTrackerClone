@@ -31,6 +31,7 @@ pages:
   stage: build
   image: node:latest
   script:
+    - npm install
     - CONFIG_PATH=$(pwd)/config-example.json nodejs build.js
     - cd pages
     - npm install
