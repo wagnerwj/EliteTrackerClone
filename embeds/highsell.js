@@ -16,15 +16,15 @@ module.exports = {
 		embed = embed.addField('Highest Sell Price', values.highestSellPrice.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2), true);
 		embed = embed.addField('\u200b', '\u200b', true);
 
-		let tonnage128 = ((-128 / values.demand) + 1.039) * values.highestSellPrice;
+		let tonnage128 = ((-1.08 * 128 / values.demand) + 1.039) * values.highestSellPrice;
 		if (tonnage128 > values.highestSellPrice) {
 			tonnage128 = values.highestSellPrice;
 		}
-		let tonnage256 = ((-256 / values.demand) + 1.039) * values.highestSellPrice;
+		let tonnage256 = ((-1.08 * 256 / values.demand) + 1.039) * values.highestSellPrice;
 		if (tonnage256 > values.highestSellPrice) {
 			tonnage256 = values.highestSellPrice;
 		}
-		let tonnage512 = ((-512 / values.demand) + 1.039) * values.highestSellPrice;
+		let tonnage512 = ((-1.08 * 512 / values.demand) + 1.039) * values.highestSellPrice;
 		if (tonnage512 > values.highestSellPrice) {
 			tonnage512 = values.highestSellPrice;
 		}
