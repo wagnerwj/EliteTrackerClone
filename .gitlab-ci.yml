@@ -29,8 +29,9 @@ docker:build:
 
 pages:
   stage: build
+  image: node:latest
   script:
-    - echo "done"
+    - nodejs build.js
   artifacts:
     paths:
       - public

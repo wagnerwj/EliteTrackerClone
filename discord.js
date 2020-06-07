@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const Discord = require('discord.js');
 const { prefix, token } = require(process.env.CONFIG_PATH || './config.json');
 const Guild = require('./database/guild');
@@ -225,10 +226,10 @@ module.exports = {
 	},
 };
 
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync(path.join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
+	const command = require(path.join(__dirname, 'commands', file));
 	client.commands.set(command.name, command);
 }
 

@@ -11,8 +11,6 @@ module.exports = {
 		const data = [];
 		const { alphaCommands: commands } = message.client;
 
-		console.log(args);
-
 		let guild;
 		if (message.channel.type === 'text') {
 			guild = await Guild.findOne({ where: { guild_id: message.channel.guild.id } });

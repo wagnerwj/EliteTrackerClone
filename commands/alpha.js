@@ -23,8 +23,6 @@ module.exports = {
 			message.client.alphaCommands = commands;
 		}
 
-		console.log(args);
-
 		const commandName = args.shift().toLowerCase();
 
 		if (!commands.has(commandName)) {
