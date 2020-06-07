@@ -5,7 +5,7 @@ module.exports = {
 	execute(values) {
 		let embed = new Discord.MessageEmbed()
 			.setColor('#fc0000')
-			.setAuthor(`High ${values.commodity} sell price`, 'https://fankserver.gitlab.io/elite-dangerous/elitetracker/highsell-icon-small.png', '')
+			.setAuthor(`High ${values.commodity} sell price`, 'https://fankserver.gitlab.io/elite-dangerous/elitetracker/assets/highsell-icon-small.png', '')
 			.setTimestamp();
 
 		embed = embed.addField('System', values.systemName, true);

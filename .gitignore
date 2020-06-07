@@ -115,7 +115,9 @@ dist
 .yarn/build-state.yml
 .pnp.*
 
+# IDEs
 .idea
 
 config.json
 *.sqlite
+public/src/assets/*.json

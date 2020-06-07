@@ -41,7 +41,7 @@ async function* getFiles(dir) {
 		return 0;
 	});
 
-	await writeFile(path.join(__dirname, 'public', 'commands.json'), JSON.stringify(commands));
+	await writeFile(path.join(__dirname, 'public', 'src', 'assets', 'commands.json'), JSON.stringify(commands));
 
 	process.exit(0);
 })();

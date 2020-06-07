@@ -1,0 +1,5 @@
+@import '~@angular/material/theming';
+
+mat-toolbar-row {
+  @include mat-elevation(8);
+}
