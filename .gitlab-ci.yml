@@ -31,7 +31,7 @@ pages:
   stage: build
   image: node:latest
   script:
-    - nodejs build.js
+    - CONFIG_PATH=$(pwd)/config-example.json nodejs build.js
     - cd pages
     - npm install
     - ./node_modules/.bin/ng build --prod --base-href /elite-dangerous/elitetracker/
