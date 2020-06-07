@@ -51,6 +51,10 @@ module.exports = {
 		timestamps.set(message.author.id, now);
 		setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
+		if (command.owner && message.author.id !== '260922583023747082') {
+			return message.channel.send(`Only the owner is authorized to use this command, ${message.author}!`);
+		}
+
 		if (command.guildOnly && message.channel.type !== 'text') {
 			return message.reply('I can\'t execute that command inside DMs!');
 		}
