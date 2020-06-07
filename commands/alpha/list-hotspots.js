@@ -2,7 +2,7 @@ const Hotspot = require('../../database/hotspot');
 
 module.exports = {
 	name: 'list-hotspots',
-	description: 'List all reported hotspots',
+	description: 'List all reported hotspot overlaps',
 	usage: '',
 	cooldown: 60,
 	async execute(message) {

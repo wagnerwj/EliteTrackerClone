@@ -3,7 +3,7 @@ const Hotspot = require('../../database/hotspot');
 
 module.exports = {
 	name: 'report-hotspot',
-	description: 'Report a new hotspot',
+	description: 'Report a new hotspot overlap',
 	args: true,
 	owner: true,
 	usage: '',
