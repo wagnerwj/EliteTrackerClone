@@ -8,12 +8,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { GettingStartedComponent } from './getting-started/getting-started.component';
 import { CommandsComponent } from './commands/commands.component';
+import { PromoComponent } from './promo/promo.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     GettingStartedComponent,
-    CommandsComponent
+    CommandsComponent,
+    PromoComponent
   ],
   imports: [
     BrowserModule,
