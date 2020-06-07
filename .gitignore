@@ -120,4 +120,4 @@ dist
 
 config.json
 *.sqlite
-public/src/assets/*.json
+pages/src/assets/*.json

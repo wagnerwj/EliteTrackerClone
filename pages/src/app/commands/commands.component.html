@@ -2,7 +2,7 @@
   <mat-card class="command" *ngFor="let command of commands$ | async">
     <mat-card-title>{{command.name}}</mat-card-title>
     <mat-card-subtitle>Usage: {{command.name}} {{command.usage}}</mat-card-subtitle>
-    <mat-card-content>{{command.description}}</mat-card-content>
+    <mat-card-content><markdown>{{command.description}}</markdown></mat-card-content>
     <mat-card-actions>
       <mat-icon *ngIf="command.admin" matTooltip="Admin only">admin_panel_settings</mat-icon>
       <mat-icon *ngIf="command.guildOnly" matTooltip="On servers only, not via direct message">message</mat-icon>

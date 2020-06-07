@@ -5,7 +5,7 @@ module.exports = {
 	description: 'Define a channel for the high selling prices announcements',
 	guildOnly: true,
 	args: true,
-	usage: '<channel>',
+	usage: '[channel]',
 	admin: true,
 	async execute(message, args) {
 		if (!message.mentions.channels.size) {

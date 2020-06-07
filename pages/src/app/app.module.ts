@@ -14,6 +14,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {APP_BASE_HREF, PlatformLocation} from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MarkdownModule} from "ngx-markdown";
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     HttpClientModule,
     MatIconModule,
     MatTooltipModule,
+    MarkdownModule.forRoot(),
   ],
   providers: [
     {

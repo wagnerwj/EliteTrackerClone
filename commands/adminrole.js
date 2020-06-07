@@ -6,7 +6,7 @@ module.exports = {
 	description: 'Define a role to access admin commands',
 	guildOnly: true,
 	args: true,
-	usage: '<role name>',
+	usage: '[role mention or name]',
 	async execute(message, args) {
 		const rolename = args.join(' ');
 		let role;

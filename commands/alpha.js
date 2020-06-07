@@ -17,7 +17,7 @@ module.exports = {
 	name: 'alpha',
 	description: 'Commands in alpha state',
 	args: true,
-	usage: '<command>',
+	usage: '[command]',
 	async execute(message, args) {
 		if (!message.client.alphaCommands) {
 			message.client.alphaCommands = commands;
