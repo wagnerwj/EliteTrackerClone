@@ -32,13 +32,13 @@ pages:
   image: node:latest
   script:
     - nodejs build.js
-    - cd public
+    - cd pages
     - npm install
     - ./node_modules/.bin/ng build --prod --base-href /elite-dangerous/elitetracker/
-    - mv dist/elitetracker public
-    - cp public/index.html public/404.html
+    - mv dist/elitetracker ../public
+    - cp ../public/index.html ../public/404.html
   artifacts:
     paths:
-      - public/public
+      - public
   only:
     - master
