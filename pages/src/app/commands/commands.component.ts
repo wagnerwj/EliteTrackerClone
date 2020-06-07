@@ -6,7 +6,8 @@ import {Observable} from 'rxjs';
 @Component({
   selector: 'app-commands',
   templateUrl: './commands.component.html',
-  styleUrls: ['./commands.component.scss']
+  styleUrls: ['./commands.component.scss'],
+  preserveWhitespaces: true,
 })
 export class CommandsComponent implements OnInit {
   public commands$: Observable<any>;

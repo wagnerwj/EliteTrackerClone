@@ -14,7 +14,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {APP_BASE_HREF, PlatformLocation} from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
 import {MatTooltipModule} from '@angular/material/tooltip';
-import {MarkdownModule} from "ngx-markdown";
+import {MarkdownModule, MarkedOptions} from 'ngx-markdown';
 
 @NgModule({
   declarations: [
@@ -33,7 +33,14 @@ import {MarkdownModule} from "ngx-markdown";
     HttpClientModule,
     MatIconModule,
     MatTooltipModule,
-    MarkdownModule.forRoot(),
+    MarkdownModule.forRoot({
+      markedOptions: {
+        provide: MarkedOptions,
+        useValue: {
+          breaks: true,
+        }
+      }
+    }),
   ],
   providers: [
     {
