@@ -6,11 +6,9 @@ const HotspotUser = require('../../database/hotspot-user');
 
 module.exports = {
 	name: 'report',
-	description: 'Report a new hotspot overlap',
 	args: true,
-	usage: `[Body]
-[description, all following text]
-
+	usage: '[Body] newline [description, all following text]',
+	description: `Report a new hotspot overlap
 > in example:
 \`\`\`
 ${prefix}hotspots report Scorpii Sector HR-W c1-34 CD 4
