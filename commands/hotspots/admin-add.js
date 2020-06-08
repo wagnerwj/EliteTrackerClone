@@ -12,14 +12,16 @@ module.exports = {
 			return message.channel.send('wrong user argument, you need to mention it');
 		}
 
-		const admin = await HotspotAdmin.findOne({ where: { adminID: message.mentions.users.first().id } });
+		const mentionUser = message.mentions.users.first();
+
+		const admin = await HotspotAdmin.findOne({ where: { adminID: mentionUser.id } });
 		if (admin) {
 			return message.channel.send('This user is already an admin');
 		}
 
 		await HotspotAdmin.create({
-			adminID: message.mentions.users.first().id,
+			adminID: mentionUser.id,
 		});
-		return message.channel.send(`<@${message.author.id}> add you <@${message.mentions.users.first().id}> as hotspot admin`);
+		return message.channel.send(`${message.author.username}#${message.author.discriminator} add you ${mentionUser.username}#${mentionUser.discriminator} as hotspot admin`);
 	},
 };
