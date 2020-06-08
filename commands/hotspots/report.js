@@ -12,13 +12,14 @@ module.exports = {
 [description, all following text]
 
 > in example:
+\`\`\`
 ${prefix}hotspots report Scorpii Sector HR-W c1-34 CD 4
 Some text with **formatting??**
 
 And a random borann drop location https://i.imgur.com/mlWVmWL.png
 
 Some other useless picture too https://i.redd.it/p1nzpw570js21.png
-`,
+\`\`\``,
 	permission: 'hotspot user',
 	async execute(message, args) {
 		const admin = await HotspotAdmin.findOne({ where: { adminID: message.author.id } });
