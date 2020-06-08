@@ -42,6 +42,7 @@ module.exports = {
 			embed = embed.addField('Landing Pad', `${landingPadSize}${isPlanetary ? ' (Planetary)' : ''}`, true);
 			embed = embed.addField('\u200b', '\u200b', true);
 			embed = embed.addField('Faction', values.station.controllingFaction.name, true);
+			embed = embed.addField('Black market present', values.station.otherServices.some(r => r === 'Black Market') ? 'Yes' : 'No');
 		}
 
 		return embed;
