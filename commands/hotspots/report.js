@@ -55,6 +55,7 @@ const allowedCommodities = [
 	'Serendibite',
 	'Taaffeite',
 	'Uraninite',
+	'Tritium',
 ];
 
 module.exports = {
