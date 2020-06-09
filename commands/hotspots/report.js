@@ -4,8 +4,62 @@ const Hotspot = require('../../database/hotspot');
 const HotspotAdmin = require('../../database/hotspot-admin');
 const HotspotUser = require('../../database/hotspot-user');
 
+const allowedCommodities = [
+	'Aluminium',
+	'Beryllium',
+	'Bismuth',
+	'Cobalt',
+	'Copper',
+	'Gallium',
+	'Gold',
+	'H178',
+	'Indium',
+	'Lanthanum',
+	'Lithium',
+	'Osmium',
+	'Palladium',
+	'Platinum',
+	'Praseodymium',
+	'Samarium',
+	'Silver',
+	'Tantalum',
+	'Thallium',
+	'Thorium',
+	'Titanium',
+	'Uranium',
+	'Alexandrite',
+	'Bauxite',
+	'Benitoite',
+	'Bertrandite',
+	'Bromellite',
+	'Coltan',
+	'Cryolite',
+	'Gallite',
+	'Goslarite',
+	'Grandidierite',
+	'Indite',
+	'Jadeite',
+	'Lepidolite',
+	'LH',
+	'LTD',
+	'MC',
+	'MMC',
+	'Moissanite',
+	'Monazite',
+	'Musgravite',
+	'VOpal',
+	'Painite',
+	'Pyrophyllite',
+	'Rhodplumsite',
+	'Rutile',
+	'Serendibite',
+	'Taaffeite',
+	'Uraninite',
+];
+
 module.exports = {
 	name: 'report',
+	aliases: ['register'],
 	args: true,
 	usage: '[Commodity] [Amount of overlaps] [Body] newline [Description, all following text]',
 	description: `Report a new hotspot overlap
@@ -16,7 +70,7 @@ module.exports = {
 - *Hafnium 178* use *H178*
 - *Lithium Hydroxide* use *LH*
 - *Methane Clathrate* use *MC*
-- *Methanol Monohydrate* use *MNC*
+- *Methanol Monohydrate* use *MMC*
 
 > in example:
 \`\`\`
@@ -36,11 +90,18 @@ Some other useless picture too https://i.redd.it/p1nzpw570js21.png
 		}
 
 		const commodity = args.shift();
-		const overlaps = args.shift();
+		const overlaps = +args.shift();
 		const messageBody = args.join(' ');
 		const separatorIndex = messageBody.indexOf('\n');
 		const bodyName = messageBody.substr(0, separatorIndex);
 		const description = messageBody.substr(separatorIndex + 1);
+
+		if (!allowedCommodities.some((c) => c.toLowerCase() === commodity.toLowerCase())) {
+			return message.channel.send(`Commodity ${commodity} is not in the allowed commodity list, ensure it is correctly written`);
+		}
+		if (isNaN(overlaps) || overlaps <= 0) {
+			return message.channel.send('Number of overlaps needed to be greater than 0');
+		}
 
 		const bodySplit = bodyName.split(' ');
 		let systemBodies;
