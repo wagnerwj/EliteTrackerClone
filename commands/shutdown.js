@@ -4,6 +4,7 @@ module.exports = {
 	name: 'shutdown',
 	description: 'Shutdown',
 	hidden: true,
+	owner: true,
 	async execute(message) {
 		await message.reply('shutting down');
 		await discord.disconnect();
