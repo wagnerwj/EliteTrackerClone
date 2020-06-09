@@ -40,7 +40,7 @@ setTimeout(async () => {
 						station_name: eventMessage['StationName'],
 					},
 				});
-				if (affectedRows === 0) {
+				if (affectedRows[0] === 0) {
 					await FleetCarrier.create({
 						station_name: eventMessage['StationName'],
 						market_id: eventMessage['MarketID'],
