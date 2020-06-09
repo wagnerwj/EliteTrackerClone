@@ -35,6 +35,12 @@
   flex-direction: column;
   padding: 16px;
 
+  .docs-homepage-reverse-row {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: reverse;
+    flex-direction: row-reverse;
+  }
+
   .docs-homepage-row   {
     display: flex;
     max-width: 920px;
