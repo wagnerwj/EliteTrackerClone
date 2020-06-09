@@ -7,11 +7,20 @@ const HotspotUser = require('../../database/hotspot-user');
 module.exports = {
 	name: 'report',
 	args: true,
-	usage: '[Body] newline [description, all following text]',
+	usage: '[Commodity] [Amount of overlaps] [Body] newline [Description, all following text]',
 	description: `Report a new hotspot overlap
+
+**Long commodity names should be shorten**:
+- *Low temperature diamonds* use *LTD*
+- *Void Opals* use *Vopals*
+- *Hafnium 178* use *H178*
+- *Lithium Hydroxide* use *LH*
+- *Methane Clathrate* use *MC*
+- *Methanol Monohydrate* use *MNC*
+
 > in example:
 \`\`\`
-${prefix}hotspots report Scorpii Sector HR-W c1-34 CD 4
+${prefix}hotspots report LTD 3 Scorpii Sector HR-W c1-34 CD 4
 Some text with **formatting??**
 
 And a random borann drop location https://i.imgur.com/mlWVmWL.png
@@ -26,6 +35,8 @@ Some other useless picture too https://i.redd.it/p1nzpw570js21.png
 			return message.channel.send(`<@${message.author.id}> you are not a hotspot admin or user, if you want to report hotspots request access from the iMU discord server`);
 		}
 
+		const commodity = args.shift();
+		const overlaps = args.shift();
 		const messageBody = args.join(' ');
 		const separatorIndex = messageBody.indexOf('\n');
 		const bodyName = messageBody.substr(0, separatorIndex);
@@ -54,6 +65,8 @@ Some other useless picture too https://i.redd.it/p1nzpw570js21.png
 				system_name: systemBodies.name,
 				system_id64: systemBodies.id64,
 				body_name: body.name,
+				commodity: commodity,
+				overlaps: overlaps,
 				reporter: `${message.author.username}#${message.author.discriminator}`,
 				reporter_id: message.author.id,
 				description: description,

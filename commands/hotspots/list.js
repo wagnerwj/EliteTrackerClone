@@ -34,6 +34,7 @@ module.exports = {
 		const hotspots = await Hotspot.findAll(filter ? { where: filter } : undefined);
 		for (const hotspot of hotspots) {
 			text += `${!hotspot.approver_id && admin ? `> Approval:\n\`${prefix}hotspots approve ${hotspot.id}\`\n\n` : ''}Location **${hotspot.body_name}**
+Commdity **${hotspot.commodity}${hotspot.overlaps}**
 > Reported at ${hotspot.createdAt.toUTCString()} from ${hotspot.reporter}:
 ${hotspot.description}
 
