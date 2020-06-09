@@ -61,6 +61,11 @@ Some other useless picture too https://i.redd.it/p1nzpw570js21.png
 				continue;
 			}
 
+			let descriptionWithAttachments = description;
+			message.attachments.forEach(attachment => {
+				descriptionWithAttachments += '\n' + attachment.url;
+			});
+
 			await Hotspot.create({
 				system_name: systemBodies.name,
 				system_id64: systemBodies.id64,
@@ -69,7 +74,7 @@ Some other useless picture too https://i.redd.it/p1nzpw570js21.png
 				overlaps: overlaps,
 				reporter: `${message.author.username}#${message.author.discriminator}`,
 				reporter_id: message.author.id,
-				description: description,
+				description: descriptionWithAttachments,
 				approver_id: (admin ? admin.adminID : undefined),
 			});
 
