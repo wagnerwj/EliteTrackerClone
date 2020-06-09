@@ -39,10 +39,10 @@ module.exports = {
 			}
 			amountOfCommodity[hotspot.commodity]++;
 
-			if (!amountOfCommodityOverlaps[`${hotspot.commodity}x${hotspot.overlaps}`]) {
-				amountOfCommodityOverlaps[`${hotspot.commodity}x${hotspot.overlaps}`] = 0;
+			if (!amountOfCommodityOverlaps[`${hotspot.commodity} x${hotspot.overlaps}`]) {
+				amountOfCommodityOverlaps[`${hotspot.commodity} x${hotspot.overlaps}`] = 0;
 			}
-			amountOfCommodityOverlaps[`${hotspot.commodity}x${hotspot.overlaps}`]++;
+			amountOfCommodityOverlaps[`${hotspot.commodity} x${hotspot.overlaps}`]++;
 		}
 
 		let text = `**Hotspot overlap statstic**
