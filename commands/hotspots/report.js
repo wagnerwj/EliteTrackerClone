@@ -94,8 +94,8 @@ Some other useless picture too https://i.redd.it/p1nzpw570js21.png
 		const overlaps = +args.shift();
 		const messageBody = args.join(' ');
 		const separatorIndex = messageBody.indexOf('\n');
-		const bodyName = messageBody.substr(0, separatorIndex);
-		const description = messageBody.substr(separatorIndex + 1);
+		const bodyName = separatorIndex === -1 ? messageBody : messageBody.substr(0, separatorIndex);
+		const description = separatorIndex === -1 ? '' : messageBody.substr(separatorIndex + 1);
 
 		if (!allowedCommodities.some((c) => c.toLowerCase() === commodity.toLowerCase())) {
 			return message.channel.send(`Commodity ${commodity} is not in the allowed commodity list, ensure it is correctly written`);

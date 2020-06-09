@@ -16,6 +16,7 @@ for (const file of commandFiles) {
 
 module.exports = {
 	name: commandFolder,
+	aliases: ['hotspot'],
 	description: 'Hotspot commands',
 	args: true,
 	usage: '[command]',
@@ -28,7 +29,7 @@ module.exports = {
 		const commandName = args.shift().toLowerCase();
 
 		if (!commands.has(commandName)) {
-			return message.channel.send(`Command \`alpha ${commandName}\` does not exist.\nCheck \`${prefix}alpha help\` for possible commands`);
+			return message.channel.send(`Command \`hotspots ${commandName}\` does not exist.\nCheck \`${prefix}hotspots help\` for possible commands`);
 		}
 
 		const command = commands.get(commandName);
@@ -46,7 +47,7 @@ module.exports = {
 
 			if (now < expirationTime) {
 				const timeLeft = (expirationTime - now) / 1000;
-				return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`alpha ${command.name}\` command.`);
+				return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`hotspots ${command.name}\` command.`);
 			}
 		}
 
@@ -76,7 +77,7 @@ module.exports = {
 			let reply = `You didn't provide any arguments, ${message.author}!`;
 
 			if (command.usage) {
-				reply += `\nThe proper usage would be: \`${prefix}alpha ${command.name} ${command.usage}\`\nOr use \`${prefix}alpha help\``;
+				reply += `\nThe proper usage would be: \`${prefix}hotspots ${command.name} ${command.usage}\`\nOr use \`${prefix}hotspots help\``;
 			}
 
 			return message.channel.send(reply);
