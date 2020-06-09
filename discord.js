@@ -200,7 +200,13 @@ module.exports = {
 					}
 				}
 				else if (commodity.name === threshold.material && commodity.sellPrice < threshold.minimum_price && highSellMarketCache[event.marketId] && highSellMarketCache[event.marketId][commodity.name] && highSellMarketCache[event.marketId][commodity.name][threshold.guild_id]) {
-					await highSellMarketCache[event.marketId][commodity.name][threshold.guild_id].message.delete();
+					try {
+						await highSellMarketCache[event.marketId][commodity.name][threshold.guild_id].message.delete();
+					}
+					catch (e) {
+						console.warn(`error deleting high sell message for guild ${threshold.guild_id}: ${e}`);
+					}
+
 					delete highSellMarketCache[event.marketId][commodity.name][threshold.guild_id];
 
 					await HighSellAnnouncement.destroy({ where: {
