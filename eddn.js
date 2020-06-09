@@ -20,6 +20,7 @@ setTimeout(async () => {
 			case 'CarrierJump':
 				// eslint-disable-next-line no-case-declarations
 				const eventMessage = message['message'];
+				console.log(`CarrierJump message ${eventMessage['StationName']}`);
 				// eslint-disable-next-line no-case-declarations
 				const affectedRows = await FleetCarrier.update({
 					market_id: eventMessage['MarketID'],
