@@ -152,7 +152,13 @@ module.exports = {
 					});
 
 					if (highSellMarketCache[event.marketId][commodity.name][threshold.guild_id]) {
-						await highSellMarketCache[event.marketId][commodity.name][threshold.guild_id].message.edit(embed);
+						try {
+							await highSellMarketCache[event.marketId][commodity.name][threshold.guild_id].message.edit(embed);
+						}
+						catch (e) {
+							console.warn(`error updating high sell message for guild ${threshold.guild_id}: ${e}`);
+						}
+
 						highSellMarketCache[event.marketId][commodity.name][threshold.guild_id].highestSellPrice = highestSellPrice;
 						highSellMarketCache[event.marketId][commodity.name][threshold.guild_id].updated = new Date(event.timestamp);
 
@@ -168,24 +174,29 @@ module.exports = {
 						});
 					}
 					else {
-						const channel = await client.channels.fetch(guild.highsell_channel);
-						const message = await channel.send(embed);
-						highSellMarketCache[event.marketId][commodity.name][threshold.guild_id] = {
-							message: message,
-							highestSellPrice: highestSellPrice,
-							inserted: new Date(event.timestamp),
-							updated: new Date(event.timestamp),
-						};
+						try {
+							const channel = await client.channels.fetch(guild.highsell_channel);
+							const message = await channel.send(embed);
+							highSellMarketCache[event.marketId][commodity.name][threshold.guild_id] = {
+								message: message,
+								highestSellPrice: highestSellPrice,
+								inserted: new Date(event.timestamp),
+								updated: new Date(event.timestamp),
+							};
 
-						await HighSellAnnouncement.create({
-							guild_id: threshold.guild_id,
-							message_id: message.id,
-							market_id: event.marketId,
-							material: commodity.name,
-							highest_sell_price: highestSellPrice,
-							inserted: event.timestamp,
-							updated: event.timestamp,
-						});
+							await HighSellAnnouncement.create({
+								guild_id: threshold.guild_id,
+								message_id: message.id,
+								market_id: event.marketId,
+								material: commodity.name,
+								highest_sell_price: highestSellPrice,
+								inserted: event.timestamp,
+								updated: event.timestamp,
+							});
+						}
+						catch (e) {
+							console.warn(`error creating high sell message for guild ${threshold.guild_id}: ${e}`);
+						}
 					}
 				}
 				else if (commodity.name === threshold.material && commodity.sellPrice < threshold.minimum_price && highSellMarketCache[event.marketId] && highSellMarketCache[event.marketId][commodity.name] && highSellMarketCache[event.marketId][commodity.name][threshold.guild_id]) {
