@@ -132,7 +132,7 @@ Some other useless picture too https://i.redd.it/p1nzpw570js21.png
 				system_name: systemBodies.name,
 				system_id64: systemBodies.id64,
 				body_name: body.name,
-				commodity: commodity.toLowerCase(),
+				commodity: commodity,
 				overlaps: overlaps,
 				reporter: `${message.author.username}#${message.author.discriminator}`,
 				reporter_id: message.author.id,
