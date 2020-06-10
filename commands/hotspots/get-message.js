@@ -1,29 +1,30 @@
 const { prefix } = require(process.env.CONFIG_PATH || '../../config.json');
 const Hotspot = require('../../database/hotspot');
 const HotspotAdmin = require('../../database/hotspot-admin');
-const Sequelize = require('sequelize');
-const Op = Sequelize.Op;
 
 module.exports = {
-	name: 'system',
-	description: 'List all reported hotspots for a system',
+	name: 'get-message',
+	description: 'Get the raw messages to update entry',
 	usage: '[system name]',
 	args: true,
 	async execute(message, args) {
 		const admin = await HotspotAdmin.findOne({ where: { adminID: message.author.id } });
+		if (!admin) {
+			return message.channel.send(`<@${message.author.id}> you are not a hotspot admin`);
+		}
 
 		let text = '';
 		const hotspots = await Hotspot.findAll({ where: {
-			approver_id: {
-				[Op.ne]: null,
-			},
 			system_name: args.join(' '),
 		} });
 		for (const hotspot of hotspots) {
-			text += `${!hotspot.approver_id && admin ? `> Approval:\n\`${prefix}hotspots approve ${hotspot.id}\`\n\n` : ''}Location **${hotspot.body_name}**
+			text += `Location **${hotspot.body_name}**
 Commdity **${hotspot.commodity} x${hotspot.overlaps}**
 > Reported at ${hotspot.createdAt.toUTCString()} from ${hotspot.reporter}:
+\`\`\`
+${prefix}!hotspots update-message ${hotspot.id}
 ${hotspot.description}
+\`\`\`
 
 `;
 		}

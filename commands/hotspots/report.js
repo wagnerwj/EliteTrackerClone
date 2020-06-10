@@ -90,14 +90,15 @@ Some other useless picture too https://i.redd.it/p1nzpw570js21.png
 			return message.channel.send(`<@${message.author.id}> you are not a hotspot admin or user, if you want to report hotspots request access from the iMU discord server`);
 		}
 
-		const commodity = args.shift();
+		const commodityName = args.shift();
 		const overlaps = +args.shift();
 		const messageBody = args.join(' ');
 		const separatorIndex = messageBody.indexOf('\n');
 		const bodyName = separatorIndex === -1 ? messageBody : messageBody.substr(0, separatorIndex);
 		const description = separatorIndex === -1 ? '' : messageBody.substr(separatorIndex + 1);
 
-		if (!allowedCommodities.some((c) => c.toLowerCase() === commodity.toLowerCase())) {
+		const commodity = allowedCommodities.find((c) => c.toLowerCase() === commodityName.toLowerCase());
+		if (!commodity) {
 			return message.channel.send(`Commodity ${commodity} is not in the allowed commodity list, ensure it is correctly written`);
 		}
 		if (isNaN(overlaps) || overlaps <= 0) {
