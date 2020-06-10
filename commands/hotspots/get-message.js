@@ -19,7 +19,7 @@ module.exports = {
 		} });
 		for (const hotspot of hotspots) {
 			text += `Location **${hotspot.body_name}**
-Commdity **${hotspot.commodity} x${hotspot.overlaps}**
+Commodity **${hotspot.commodity} x${hotspot.overlaps}**
 > Reported at ${hotspot.createdAt.toUTCString()} from ${hotspot.reporter}:
 \`\`\`
 ${prefix}!hotspots update-message ${hotspot.id}
