@@ -1,6 +1,7 @@
 const Hotspot = require('../../database/hotspot');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+const { allowedCommodities } = require('./data');
 
 module.exports = {
 	name: 'locations',
@@ -9,11 +10,16 @@ module.exports = {
 	args: true,
 	usage: '[commodity]',
 	async execute(message, args) {
+		const commodity = allowedCommodities.find((c) => c.toLowerCase() === args[0].toLowerCase());
+		if (!commodity) {
+			return message.channel.send(`Unknown commodity ${commodity}`);
+		}
+
 		const hotspots = await Hotspot.findAll({ where: {
 			approver_id: {
 				[Op.ne]: null,
 			},
-			'commodity': args[0],
+			'commodity': commodity,
 		} });
 		const locations = {};
 		for (const hotspot of hotspots) {

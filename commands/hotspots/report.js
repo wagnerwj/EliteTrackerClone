@@ -39,7 +39,7 @@ Some other useless picture too https://i.redd.it/p1nzpw570js21.png
 
 		const commodityName = args.shift();
 		const overlaps = +args.shift();
-		const messageBody = args.join(' ');
+		const messageBody = args.join(' ').trim();
 		const separatorIndex = messageBody.indexOf('\n');
 		const bodyName = separatorIndex === -1 ? messageBody : messageBody.substr(0, separatorIndex);
 		const description = separatorIndex === -1 ? '' : messageBody.substr(separatorIndex + 1);
