@@ -6,9 +6,10 @@ module.exports = {
 	args: true,
 	usage: '[system name]',
 	async execute(message, args) {
-		const fleetcarriers = await FleetCarrier.findAll({ where: { star_system: args[0] } });
+		const systemName = args.join(' ');
+		const fleetcarriers = await FleetCarrier.findAll({ where: { star_system: systemName } });
 		if (fleetcarriers.length === 0) {
-			return message.channel.send(`No fleetcarrier(s) found in system \`${args[0]}\``);
+			return message.channel.send(`No fleetcarrier(s) found in system \`${systemName}\``);
 		}
 
 		let text = '';
