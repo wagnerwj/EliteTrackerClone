@@ -21,6 +21,7 @@ Body: ${fleetcarrier.body_name}
 				text += '\n- ' + service;
 			}
 		}
-		message.channel.send(text);
+
+		return message.channel.send(text);
 	},
 };
