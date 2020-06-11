@@ -22,7 +22,7 @@ module.exports = {
 Commodity **${hotspot.commodity} x${hotspot.overlaps}**
 > Reported at ${hotspot.createdAt.toUTCString()} from ${hotspot.reporter}:
 \`\`\`
-${prefix}!hotspots update-message ${hotspot.id}
+${prefix}hotspots update-message ${hotspot.id}
 ${hotspot.description}
 \`\`\`
 
