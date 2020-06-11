@@ -46,7 +46,7 @@ Some other useless picture too https://i.redd.it/p1nzpw570js21.png
 
 		const commodity = allowedCommodities.find((c) => c.toLowerCase() === commodityName.toLowerCase());
 		if (!commodity) {
-			return message.channel.send(`Commodity ${commodity} is not in the allowed commodity list, ensure it is correctly written`);
+			return message.channel.send(`Commodity ${commodityName} is not in the allowed commodity list, ensure it is correctly written`);
 		}
 		if (isNaN(overlaps) || overlaps <= 0) {
 			return message.channel.send('Number of overlaps needed to be greater than 0');
@@ -88,7 +88,7 @@ Some other useless picture too https://i.redd.it/p1nzpw570js21.png
 				approver_id: (admin ? admin.adminID : undefined),
 			});
 
-			return message.channel.send(`Registered new hotspot in system ${systemBodies.url} for body \`${body.name}\``);
+			return message.channel.send(`Registered new ${commodity} x${overlaps} hotspot in system ${systemBodies.url} for body \`${body.name}\``);
 		}
 
 		return message.channel.send(`No body named ${bodyName} found in ${systemBodies.url}`);
