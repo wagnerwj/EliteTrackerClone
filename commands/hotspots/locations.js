@@ -44,6 +44,6 @@ module.exports = {
 			return message.channel.send('No hotspots found');
 		}
 
-		return message.channel.send(`**Showing locations for ${args[0]} and the overlap amount:**\n\n${text}`, { split: true });
+		return message.channel.send(`**Showing locations for ${commodity} and the overlap amount:**\n\n${text}`, { split: true });
 	},
 };
