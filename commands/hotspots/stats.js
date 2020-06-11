@@ -46,6 +46,7 @@ module.exports = {
 		}
 
 		let text = `**Hotspot overlap statstic**
+Reports: ${hotspots.length}
 Systems: ${Object.keys(systems).length}
 Bodies: ${Object.keys(bodies).length}
 Reporters: ${Object.keys(reporter).length}
