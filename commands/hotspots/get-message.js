@@ -1,6 +1,6 @@
 const { prefix } = require(process.env.CONFIG_PATH || '../../config.json');
-const Hotspot = require('../../database/hotspot');
-const HotspotAdmin = require('../../database/hotspot-admin');
+const Hotspot = require('../../database2/hotspot');
+const HotspotAdmin = require('../../database2/hotspot-admin');
 
 module.exports = {
 	name: 'get-message',

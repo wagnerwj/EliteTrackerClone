@@ -1,4 +1,4 @@
-const HotspotAdmin = require('../../database/hotspot-admin');
+const HotspotAdmin = require('../../database2/hotspot-admin');
 
 module.exports = {
 	name: 'admin-add',

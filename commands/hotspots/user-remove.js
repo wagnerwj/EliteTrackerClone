@@ -1,5 +1,5 @@
-const HotspotAdmin = require('../../database/hotspot-admin');
-const HotspotUser = require('../../database/hotspot-user');
+const HotspotAdmin = require('../../database2/hotspot-admin');
+const HotspotUser = require('../../database2/hotspot-user');
 
 module.exports = {
 	name: 'user-remove',

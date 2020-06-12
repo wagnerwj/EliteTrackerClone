@@ -1,4 +1,4 @@
-const Hotspot = require('../../database/hotspot');
+const Hotspot = require('../../database2/hotspot');
 const { allowedCommodities } = require('./data');
 
 module.exports = {

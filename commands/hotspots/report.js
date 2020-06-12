@@ -1,8 +1,8 @@
 const { prefix } = require(process.env.CONFIG_PATH || '../../config.json');
 const EDSM = require('../../edsm');
-const Hotspot = require('../../database/hotspot');
-const HotspotAdmin = require('../../database/hotspot-admin');
-const HotspotUser = require('../../database/hotspot-user');
+const Hotspot = require('../../database2/hotspot');
+const HotspotAdmin = require('../../database2/hotspot-admin');
+const HotspotUser = require('../../database2/hotspot-user');
 const { allowedCommodities } = require('./data');
 
 module.exports = {
