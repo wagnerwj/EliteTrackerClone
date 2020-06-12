@@ -14,7 +14,7 @@ module.exports = {
 			return message.channel.send(`<@${message.author.id}> you are not a hotspot admin`);
 		}
 
-		const affectedRows = await Hotspot.update({ approver_id: message.author.id }, { where: { id: +args[0] } });
+		const affectedRows = await Hotspot.update({ approverID: message.author.id }, { where: { id: +args[0] } });
 		if (affectedRows < 1) {
 			return message.channel.send('hotspot not found');
 		}

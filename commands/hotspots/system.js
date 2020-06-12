@@ -14,13 +14,13 @@ module.exports = {
 
 		let text = '';
 		const hotspots = await Hotspot.findAll({ where: {
-			approver_id: {
+			approverID: {
 				[Op.ne]: null,
 			},
-			system_name: args.join(' '),
+			systemName: args.join(' '),
 		} });
 		for (const hotspot of hotspots) {
-			text += `${!hotspot.approver_id && admin ? `> Approval:\n\`${prefix}hotspots approve ${hotspot.id}\`\n\n` : ''}Location **${hotspot.body_name}**
+			text += `${!hotspot.approverID && admin ? `> Approval:\n\`${prefix}hotspots approve ${hotspot.id}\`\n\n` : ''}Location **${hotspot.bodyName}**
 Commodity **${hotspot.commodity} x${hotspot.overlaps}**
 > Reported at ${hotspot.createdAt.toUTCString()} from ${hotspot.reporter}:
 ${hotspot.description}

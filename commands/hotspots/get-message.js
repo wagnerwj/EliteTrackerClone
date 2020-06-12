@@ -15,10 +15,10 @@ module.exports = {
 
 		let text = '';
 		const hotspots = await Hotspot.findAll({ where: {
-			system_name: args.join(' '),
+			systemName: args.join(' '),
 		} });
 		for (const hotspot of hotspots) {
-			text += `Location **${hotspot.body_name}**
+			text += `Location **${hotspot.bodyName}**
 Commodity **${hotspot.commodity} x${hotspot.overlaps}**
 > Reported at ${hotspot.createdAt.toUTCString()} from ${hotspot.reporter}:
 \`\`\`

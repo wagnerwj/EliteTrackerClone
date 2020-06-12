@@ -9,9 +9,9 @@ module.exports = {
 		const admin = await HotspotAdmin.findOne({ where: { adminID: message.author.id } });
 
 		let text = '';
-		const hotspots = await Hotspot.findAll({ where: { approver_id: null } });
+		const hotspots = await Hotspot.findAll({ where: { approverID: null } });
 		for (const hotspot of hotspots) {
-			text += `${!hotspot.approver_id && admin ? `> Approval:\n\`${prefix}hotspots approve ${hotspot.id}\`\n\`${prefix}hotspots decline ${hotspot.id}\`\n\n` : ''}Location **${hotspot.body_name}**
+			text += `${!hotspot.approverID && admin ? `> Approval:\n\`${prefix}hotspots approve ${hotspot.id}\`\n\`${prefix}hotspots decline ${hotspot.id}\`\n\n` : ''}Location **${hotspot.bodyName}**
 Commodity **${hotspot.commodity} x${hotspot.overlaps}**
 > Reported at ${hotspot.createdAt.toUTCString()} from ${hotspot.reporter}:
 ${hotspot.description}

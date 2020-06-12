@@ -16,20 +16,20 @@ module.exports = {
 		}
 
 		const hotspots = await Hotspot.findAll({ where: {
-			approver_id: {
+			approverID: {
 				[Op.ne]: null,
 			},
-			'commodity': commodity,
+			commodity: commodity,
 		} });
 		const locations = {};
 		for (const hotspot of hotspots) {
-			if (!locations[hotspot.system_name]) {
-				locations[hotspot.system_name] = {};
+			if (!locations[hotspot.systemName]) {
+				locations[hotspot.systemName] = {};
 			}
-			if (!locations[hotspot.system_name][hotspot.body_name]) {
-				locations[hotspot.system_name][hotspot.body_name] = [];
+			if (!locations[hotspot.systemName][hotspot.bodyName]) {
+				locations[hotspot.systemName][hotspot.bodyName] = [];
 			}
-			locations[hotspot.system_name][hotspot.body_name].push(`x${hotspot.overlaps}`);
+			locations[hotspot.systemName][hotspot.bodyName].push(`x${hotspot.overlaps}`);
 		}
 
 		let text = '';

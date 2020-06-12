@@ -8,7 +8,7 @@ module.exports = {
 	aliases: ['stat', 'statistic'],
 	async execute(message) {
 		const hotspots = await Hotspot.findAll({ where: {
-			approver_id: {
+			approverID: {
 				[Op.ne]: null,
 			},
 		} });
@@ -19,15 +19,15 @@ module.exports = {
 		const amountOfCommodity = {};
 		const amountOfCommodityOverlaps = {};
 		for (const hotspot of hotspots) {
-			if (!systems[hotspot.system_name]) {
-				systems[hotspot.system_name] = 0;
+			if (!systems[hotspot.systemName]) {
+				systems[hotspot.systemName] = 0;
 			}
-			systems[hotspot.system_name]++;
+			systems[hotspot.systemName]++;
 
-			if (!bodies[hotspot.body_name]) {
-				bodies[hotspot.body_name] = 0;
+			if (!bodies[hotspot.bodyName]) {
+				bodies[hotspot.bodyName] = 0;
 			}
-			bodies[hotspot.body_name]++;
+			bodies[hotspot.bodyName]++;
 
 			if (!reporter[hotspot.reporter]) {
 				reporter[hotspot.reporter] = 0;

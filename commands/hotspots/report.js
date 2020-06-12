@@ -77,15 +77,15 @@ Some other useless picture too https://i.redd.it/p1nzpw570js21.png
 			});
 
 			await Hotspot.create({
-				system_name: systemBodies.name,
-				system_id64: systemBodies.id64,
-				body_name: body.name,
+				systemName: systemBodies.name,
+				systemID64: systemBodies.id64,
+				bodyName: body.name,
 				commodity: commodity,
 				overlaps: overlaps,
 				reporter: `${message.author.username}#${message.author.discriminator}`,
-				reporter_id: message.author.id,
+				reporterID: message.author.id,
+				approverID: (admin ? admin.adminID : undefined),
 				description: descriptionWithAttachments,
-				approver_id: (admin ? admin.adminID : undefined),
 			});
 
 			return message.channel.send(`Registered new ${commodity} x${overlaps} hotspot in system ${systemBodies.url} for body \`${body.name}\``);
