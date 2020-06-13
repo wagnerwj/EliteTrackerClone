@@ -14,7 +14,7 @@ const FleetCarrier = db.define('fleetcarrier', {
 	indexes: [
 		{
 			unique: true,
-			fields: ['stationName'],
+			fields: ['marketID'],
 		},
 	],
 });
