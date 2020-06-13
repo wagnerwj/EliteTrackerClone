@@ -23,38 +23,34 @@ setTimeout(async () => {
 				console.log(`CarrierJump message ${eventMessage['StationName']}`);
 				// eslint-disable-next-line no-case-declarations
 				const affectedRows = await FleetCarrier.update({
-					market_id: eventMessage['MarketID'],
+					marketID: eventMessage['MarketID'],
 					services: eventMessage['StationServices'].join('|'),
 
-					system_address: eventMessage['SystemAddress'],
-					star_system: eventMessage['StarSystem'],
-					star_position_x: eventMessage['StarPos'][0],
-					star_position_y: eventMessage['StarPos'][1],
-					star_position_z: eventMessage['StarPos'][2],
-					body_name: eventMessage['Body'],
-					body_id: eventMessage['BodyID'],
-
-					updated: new Date(),
+					systemAddress: eventMessage['SystemAddress'],
+					starSystem: eventMessage['StarSystem'],
+					starPositionX: eventMessage['StarPos'][0],
+					starPositionY: eventMessage['StarPos'][1],
+					starPositionZ: eventMessage['StarPos'][2],
+					bodyName: eventMessage['Body'],
+					bodyID: eventMessage['BodyID'],
 				}, {
 					where: {
-						station_name: eventMessage['StationName'],
+						stationName: eventMessage['StationName'],
 					},
 				});
 				if (affectedRows[0] === 0) {
 					await FleetCarrier.create({
-						station_name: eventMessage['StationName'],
-						market_id: eventMessage['MarketID'],
+						stationName: eventMessage['StationName'],
+						marketID: eventMessage['MarketID'],
 						services: (eventMessage['StationServices'] || []).join('|'),
 
-						system_address: eventMessage['SystemAddress'],
-						star_system: eventMessage['StarSystem'],
-						star_position_x: eventMessage['StarPos'][0],
-						star_position_y: eventMessage['StarPos'][1],
-						star_position_z: eventMessage['StarPos'][2],
-						body_name: eventMessage['Body'],
-						body_id: eventMessage['BodyID'],
-
-						inserted: new Date(),
+						systemAddress: eventMessage['SystemAddress'],
+						starSystem: eventMessage['StarSystem'],
+						starPositionX: eventMessage['StarPos'][0],
+						starPositionY: eventMessage['StarPos'][1],
+						starPositionZ: eventMessage['StarPos'][2],
+						bodyName: eventMessage['Body'],
+						bodyID: eventMessage['BodyID'],
 					});
 				}
 				break;
