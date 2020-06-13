@@ -1,5 +1,6 @@
 const Guild = require('./database/guild');
 const FleetCarrier = require('./database/fleetcarrier');
+const FleetCarrier2 = require('./database2/fleetcarrier');
 const HighSellAnnouncement = require('./database/highsell-announcement');
 const HighSellThreshold = require('./database/highsell-threshold');
 const Hotspot = require('./database/hotspot');
@@ -24,9 +25,10 @@ async function start() {
 	await HotspotUser.sync();
 
 
-	await Hotspot2.sync();
+	await FleetCarrier2.sync();
 	await HotspotAdmin2.sync();
 	await HotspotUser2.sync();
+	await Hotspot2.sync();
 
 	await discord.connect();
 	await bgs.init();

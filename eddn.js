@@ -2,7 +2,7 @@ const zlib = require('zlib');
 const zmq = require('zeromq');
 const discord = require('./discord');
 const { eddn } = require(process.env.CONFIG_PATH || './config.json');
-const FleetCarrier = require('./database/fleetcarrier');
+const FleetCarrier = require('./database2/fleetcarrier');
 
 const sock = new zmq.Subscriber();
 sock.subscribe('');
