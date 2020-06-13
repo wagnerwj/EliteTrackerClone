@@ -29,9 +29,7 @@ module.exports = {
 			tonnage512 = values.highestSellPrice;
 		}
 
-		embed = embed.addField('**INFO**', '!!Wrong price calculation since beta update!!', false);
-		embed = embed.addField('\u200b', '\u200b', false);
-		embed = embed.addField('\u200b', '\u200b', false);
+		embed = embed.addField('**INFO**', '!!Wrong price calculation since carrier release update!!', false);
 
 		embed = embed.addField('Sell Price for 128t Cargo', tonnage128.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2), true);
 		embed = embed.addField('Sell Price for 256t Cargo', tonnage256.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2), true);
