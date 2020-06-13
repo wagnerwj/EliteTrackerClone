@@ -1,4 +1,4 @@
-const FleetCarrier = require('../../database/fleetcarrier');
+const FleetCarrier = require('../../database2/fleetcarrier');
 
 module.exports = {
 	name: 'find-fc',
@@ -6,14 +6,14 @@ module.exports = {
 	args: true,
 	usage: '[fleetcarrier id]',
 	async execute(message, args) {
-		const fleetcarrier = await FleetCarrier.findOne({ where: { station_name: args[0] } });
+		const fleetcarrier = await FleetCarrier.findOne({ where: { stationName: args[0] } });
 		if (!fleetcarrier) {
 			return message.channel.send(`No fleetcarrier found with id \`${args[0]}\``);
 		}
 
-		let text = `Fleetcarrier **${fleetcarrier.station_name}**:
-System: ${fleetcarrier.star_system}
-Body: ${fleetcarrier.body_name}
+		let text = `Fleetcarrier **${fleetcarrier.stationName}**:
+System: ${fleetcarrier.starSystem}
+Body: ${fleetcarrier.bodyName}
 `;
 		if (fleetcarrier.services) {
 			text += 'Services:';
