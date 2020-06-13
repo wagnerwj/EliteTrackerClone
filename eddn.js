@@ -28,9 +28,6 @@ setTimeout(async () => {
 
 					systemAddress: eventMessage['SystemAddress'],
 					starSystem: eventMessage['StarSystem'],
-					starPositionX: eventMessage['StarPos'][0],
-					starPositionY: eventMessage['StarPos'][1],
-					starPositionZ: eventMessage['StarPos'][2],
 					bodyName: eventMessage['Body'],
 					bodyID: eventMessage['BodyID'],
 				}, {
@@ -46,9 +43,6 @@ setTimeout(async () => {
 
 						systemAddress: eventMessage['SystemAddress'],
 						starSystem: eventMessage['StarSystem'],
-						starPositionX: eventMessage['StarPos'][0],
-						starPositionY: eventMessage['StarPos'][1],
-						starPositionZ: eventMessage['StarPos'][2],
 						bodyName: eventMessage['Body'],
 						bodyID: eventMessage['BodyID'],
 					});

@@ -64,9 +64,6 @@ module.exports = {
 				services: fc.services,
 				systemAddress: fc.system_address,
 				starSystem: fc.star_system,
-				starPositionX: fc.star_position_x,
-				starPositionY: fc.star_position_y,
-				starPositionZ: fc.star_position_z,
 				bodyName: fc.body_name,
 				bodyID: fc.body_id,
 			});

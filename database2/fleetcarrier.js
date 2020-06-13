@@ -8,9 +8,6 @@ const FleetCarrier = db.define('fleetcarrier', {
 
 	systemAddress: Sequelize.BIGINT,
 	starSystem: Sequelize.STRING,
-	starPositionX: Sequelize.DECIMAL(10, 10),
-	starPositionY: Sequelize.DECIMAL(10, 10),
-	starPositionZ: Sequelize.DECIMAL(10, 10),
 	bodyName: Sequelize.STRING,
 	bodyID: Sequelize.INTEGER,
 }, {
