@@ -5,12 +5,12 @@ const { allowedCommodities } = require('./data');
 module.exports = {
 	name: 'update-commodity',
 	args: true,
-	usage: '[hotspot id] [commodity] [overlap amount]',
-	permission: 'hotspot admin',
+	usage: '[hotspot overlap id] [commodity] [overlap amount]',
+	permission: 'hotspot overlap admin',
 	async execute(message, args) {
 		const admin = await HotspotAdmin.findOne({ where: { adminID: message.author.id } });
 		if (!admin) {
-			return message.channel.send(`<@${message.author.id}> you are not a hotspot admin`);
+			return message.channel.send(`<@${message.author.id}> you are not a hotspot overlap admin`);
 		}
 
 		const hotspotID = +args.shift();
@@ -37,7 +37,7 @@ module.exports = {
 			},
 		});
 		if (affectedRows[0] === 0) {
-			return message.channel.send('No hotspots found');
+			return message.channel.send('No hotspot overlaps found');
 		}
 
 		return message.channel.send('Updated');

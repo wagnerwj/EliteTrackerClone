@@ -4,7 +4,7 @@ const Op = Sequelize.Op;
 
 module.exports = {
 	name: 'stats',
-	description: 'hotspots statistic',
+	description: 'hotspot overlap statistic',
 	aliases: ['stat', 'statistic'],
 	async execute(message) {
 		const hotspots = await Hotspot.findAll({ where: {

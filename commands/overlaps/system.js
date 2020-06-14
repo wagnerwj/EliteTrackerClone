@@ -20,7 +20,7 @@ module.exports = {
 			systemName: args.join(' '),
 		} });
 		for (const hotspot of hotspots) {
-			text += `${!hotspot.approverID && admin ? `> Approval:\n\`${prefix}hotspots approve ${hotspot.id}\`\n\n` : ''}Location **${hotspot.bodyName}**
+			text += `${!hotspot.approverID && admin ? `> Approval:\n\`${prefix}overlaps approve ${hotspot.id}\`\n\`${prefix}overlaps decline ${hotspot.id}\`\n\n` : ''}Location **${hotspot.bodyName}**
 Commodity **${hotspot.commodity} x${hotspot.overlaps}**
 > Reported at ${hotspot.createdAt.toUTCString()} from ${hotspot.reporter}:
 ${hotspot.description}

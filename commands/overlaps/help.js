@@ -3,7 +3,7 @@ const Guild = require('../../database/guild');
 
 module.exports = {
 	name: 'help',
-	description: 'List all of my hotspots commands or info about a specific hotspots command.',
+	description: 'List all of my hotspot overlap commands or info about a specific hotspot overlap command.',
 	aliases: ['commands', 'list'],
 	usage: '[command name]',
 	cooldown: 1,
@@ -22,9 +22,9 @@ module.exports = {
 				.filter(command => !command.hidden)
 				.filter(command => !command.guildOnly || message.channel.type === 'text')
 				.filter(command => !command.admin || (guild && message.member.roles.cache.find(r => r.id === guild.admin_role_id)))
-				.map(command => command.name).join(', '),
+				.map(command => `> \`${command.name}\` ${command.shortDescription || command.description}`).join('\n'),
 			);
-			data.push(`\nYou can send \`${prefix}hotspots help [command name]\` to get info on a specific command!`);
+			data.push(`\nYou can send \`${prefix}overlaps help [command name]\` to get info on a specific command!`);
 
 			return message.reply(data, { split: true })
 				.catch(error => {
@@ -43,7 +43,7 @@ module.exports = {
 		data.push(`**Name:** ${command.name}`);
 
 		if (command.aliases) data.push(`**Aliases:** ${command.aliases.join(', ')}`);
-		if (command.usage) data.push(`**Usage:** ${prefix}hotspots ${command.name} ${command.usage}`);
+		if (command.usage) data.push(`**Usage:** ${prefix}overlaps ${command.name} ${command.usage}`);
 		if (command.description) data.push(`**Description:** ${command.description}`);
 
 		data.push(`**Cooldown:** ${command.cooldown || 3} second(s)`);

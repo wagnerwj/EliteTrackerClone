@@ -7,7 +7,7 @@ module.exports = {
 	args: true,
 	usage: '[user]',
 	cooldown: 1,
-	permission: 'hotspot admin',
+	permission: 'hotspot overlap admin',
 	async execute(message) {
 		if (!message.mentions.users.size) {
 			return message.channel.send('wrong user argument, you need to mention it');
@@ -17,7 +17,7 @@ module.exports = {
 
 		const admin = await HotspotAdmin.findOne({ where: { adminID: message.author.id } });
 		if (!admin) {
-			return message.channel.send(`<@${message.author.id}> you are not a hotspot admin`);
+			return message.channel.send(`<@${message.author.id}> you are not a hotspot overlap admin`);
 		}
 
 		const user = await HotspotUser.findOne({ where: { userID: mentionUser.id } });
@@ -29,6 +29,6 @@ module.exports = {
 			userID: mentionUser.id,
 			adminID: message.author.id,
 		});
-		return message.channel.send(`${message.author.username}#${message.author.discriminator} add you ${mentionUser.username}#${mentionUser.discriminator} as hotspot user, you are now able to report hotspots`);
+		return message.channel.send(`${message.author.username}#${message.author.discriminator} add you ${mentionUser.username}#${mentionUser.discriminator} as hotspot overlap user, you are now able to report hotspots`);
 	},
 };

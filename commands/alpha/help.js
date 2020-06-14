@@ -22,7 +22,7 @@ module.exports = {
 				.filter(command => !command.hidden)
 				.filter(command => !command.guildOnly || message.channel.type === 'text')
 				.filter(command => !command.admin || (guild && message.member.roles.cache.find(r => r.id === guild.admin_role_id)))
-				.map(command => command.name).join(', '),
+				.map(command => `> \`${command.name}\` ${command.shortDescription || command.description}`).join('\n'),
 			);
 			data.push(`\nYou can send \`${prefix}alpha help [command name]\` to get info on a specific command!`);
 

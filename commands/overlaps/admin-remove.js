@@ -1,8 +1,8 @@
 const HotspotAdmin = require('../../database2/hotspot-admin');
 
 module.exports = {
-	name: 'admin-add',
-	description: 'Add admin to manage hotspot overlaps',
+	name: 'admin-remove',
+	description: 'Remove admin from manage hotspot overlaps',
 	args: true,
 	owner: true,
 	usage: '[user]',
@@ -15,13 +15,11 @@ module.exports = {
 		const mentionUser = message.mentions.users.first();
 
 		const admin = await HotspotAdmin.findOne({ where: { adminID: mentionUser.id } });
-		if (admin) {
-			return message.channel.send('This user is already an admin');
+		if (!admin) {
+			return message.channel.send('This user is no admin, can not be removed');
 		}
 
-		await HotspotAdmin.create({
-			adminID: mentionUser.id,
-		});
-		return message.channel.send(`${message.author.username}#${message.author.discriminator} add you ${mentionUser.username}#${mentionUser.discriminator} as hotspot admin`);
+		await HotspotAdmin.destroy({ where: { adminID: mentionUser.id } });
+		return message.channel.send(`${message.author.username}#${message.author.discriminator} removed you ${mentionUser.username}#${mentionUser.discriminator} as hotspot overlap admin`);
 	},
 };

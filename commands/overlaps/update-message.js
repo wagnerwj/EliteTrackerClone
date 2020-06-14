@@ -4,7 +4,7 @@ const HotspotAdmin = require('../../database2/hotspot-admin');
 module.exports = {
 	name: 'update-message',
 	args: true,
-	usage: '[hotspot id] newline [description]',
+	usage: '[hotspot overlap id] newline [description]',
 	permission: 'hotspot admin',
 	async execute(message, args) {
 		const admin = await HotspotAdmin.findOne({ where: { adminID: message.author.id } });
@@ -18,7 +18,7 @@ module.exports = {
 		const description = messageBody.substr(separatorIndex + 1);
 
 		if (isNaN(hotspotID) || hotspotID <= 0) {
-			return message.channel.send('Wrong hotspot id');
+			return message.channel.send('Wrong hotspot overlap id');
 		}
 
 		const affectedRows = await Hotspot.update({
@@ -29,7 +29,7 @@ module.exports = {
 			},
 		});
 		if (affectedRows[0] === 0) {
-			return message.channel.send('No hotspots found');
+			return message.channel.send('No hotspot overlaps found');
 		}
 
 		return message.channel.send('Updated');

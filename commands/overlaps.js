@@ -6,7 +6,7 @@ const Guild = require('../database/guild');
 
 const commands = new Discord.Collection();
 const cooldowns = new Discord.Collection();
-const commandFolder = 'hotspots';
+const commandFolder = 'overlaps';
 
 const commandFiles = fs.readdirSync(path.join(__dirname, commandFolder)).filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
@@ -16,8 +16,8 @@ for (const file of commandFiles) {
 
 module.exports = {
 	name: commandFolder,
-	aliases: ['hotspot'],
-	description: 'Hotspot commands',
+	aliases: ['overlap'],
+	description: 'Hotspot overlaps commands',
 	args: true,
 	usage: '[command]',
 	cooldown: 1,
@@ -29,7 +29,7 @@ module.exports = {
 		const commandName = args.shift().toLowerCase();
 
 		if (!commands.has(commandName)) {
-			return message.channel.send(`Command \`hotspots ${commandName}\` does not exist.\nCheck \`${prefix}hotspots help\` for possible commands`);
+			return message.channel.send(`Command \`overlaps ${commandName}\` does not exist.\nCheck \`${prefix}overlaps help\` for possible commands`);
 		}
 
 		const command = commands.get(commandName);
@@ -47,7 +47,7 @@ module.exports = {
 
 			if (now < expirationTime) {
 				const timeLeft = (expirationTime - now) / 1000;
-				return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`hotspots ${command.name}\` command.`);
+				return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`overlaps ${command.name}\` command.`);
 			}
 		}
 
@@ -77,7 +77,7 @@ module.exports = {
 			let reply = `You didn't provide any arguments, ${message.author}!`;
 
 			if (command.usage) {
-				reply += `\nThe proper usage would be: \`${prefix}hotspots ${command.name} ${command.usage}\`\nOr use \`${prefix}hotspots help\``;
+				reply += `\nThe proper usage would be: \`${prefix}overlaps ${command.name} ${command.usage}\`\nOr use \`${prefix}overlaps help\``;
 			}
 
 			return message.channel.send(reply);
