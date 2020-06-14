@@ -1,4 +1,4 @@
-const Hotspot = require('../../database2/hotspot');
+const Overlap = require('../../database2/overlap');
 const { allowedCommodities } = require('./data');
 
 module.exports = {
@@ -9,11 +9,11 @@ module.exports = {
 	owner: true,
 	async execute(message) {
 		let changes = 0;
-		const hotspots = await Hotspot.findAll({});
+		const hotspots = await Overlap.findAll({});
 		for (const hotspot of hotspots) {
 			const commodity = allowedCommodities.find((c) => c.toLowerCase() === hotspot.commodity.toLowerCase());
 			if (commodity && commodity !== hotspot.commodity) {
-				const affectedRows = await Hotspot.update({
+				const affectedRows = await Overlap.update({
 					commodity: commodity,
 				}, {
 					where: {

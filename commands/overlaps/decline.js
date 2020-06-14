@@ -1,5 +1,5 @@
-const Hotspot = require('../../database2/hotspot');
-const HotspotAdmin = require('../../database2/hotspot-admin');
+const Overlap = require('../../database2/overlap');
+const OverlapAdmin = require('../../database2/overlap-admin');
 
 module.exports = {
 	name: 'decline',
@@ -9,12 +9,12 @@ module.exports = {
 	cooldown: 1,
 	permission: 'hotspot admin',
 	async execute(message, args) {
-		const admin = await HotspotAdmin.findOne({ where: { adminID: message.author.id } });
+		const admin = await OverlapAdmin.findOne({ where: { adminID: message.author.id } });
 		if (!admin) {
 			return message.channel.send(`<@${message.author.id}> you are not a hotspot overlap admin`);
 		}
 
-		const affectedRows = await Hotspot.destroy({ where: { id: +args[0] } });
+		const affectedRows = await Overlap.destroy({ where: { id: +args[0] } });
 		if (affectedRows < 1) {
 			return message.channel.send('Hotspot overlap not found');
 		}

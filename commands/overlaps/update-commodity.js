@@ -1,5 +1,5 @@
-const Hotspot = require('../../database2/hotspot');
-const HotspotAdmin = require('../../database2/hotspot-admin');
+const Overlap = require('../../database2/overlap');
+const OverlapAdmin = require('../../database2/overlap-admin');
 const { allowedCommodities } = require('./data');
 
 module.exports = {
@@ -8,7 +8,7 @@ module.exports = {
 	usage: '[hotspot overlap id] [commodity] [overlap amount]',
 	permission: 'hotspot overlap admin',
 	async execute(message, args) {
-		const admin = await HotspotAdmin.findOne({ where: { adminID: message.author.id } });
+		const admin = await OverlapAdmin.findOne({ where: { adminID: message.author.id } });
 		if (!admin) {
 			return message.channel.send(`<@${message.author.id}> you are not a hotspot overlap admin`);
 		}
@@ -28,7 +28,7 @@ module.exports = {
 			return message.channel.send('Number of overlaps needed to be greater than 0');
 		}
 
-		const affectedRows = await Hotspot.update({
+		const affectedRows = await Overlap.update({
 			commodity: commodity,
 			overlaps: overlaps,
 		}, {

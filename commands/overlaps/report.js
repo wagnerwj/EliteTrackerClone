@@ -1,8 +1,8 @@
 const { prefix } = require(process.env.CONFIG_PATH || '../../config.json');
 const EDSM = require('../../edsm');
-const Hotspot = require('../../database2/hotspot');
-const HotspotAdmin = require('../../database2/hotspot-admin');
-const HotspotUser = require('../../database2/hotspot-user');
+const Overlap = require('../../database2/overlap');
+const OverlapAdmin = require('../../database2/overlap-admin');
+const OverlapUser = require('../../database2/overlap-user');
 const { allowedCommodities } = require('./data');
 
 module.exports = {
@@ -32,8 +32,8 @@ Some other useless picture too https://i.redd.it/p1nzpw570js21.png
 \`\`\``,
 	permission: 'hotspot overlap user',
 	async execute(message, args) {
-		const admin = await HotspotAdmin.findOne({ where: { adminID: message.author.id } });
-		const user = await HotspotUser.findOne({ where: { userID: message.author.id } });
+		const admin = await OverlapAdmin.findOne({ where: { adminID: message.author.id } });
+		const user = await OverlapUser.findOne({ where: { userID: message.author.id } });
 		if (!admin && !user) {
 			return message.channel.send(`<@${message.author.id}> you are not a hotspot overlap admin or user, if you want to report hotspots request access from the iMU discord server`);
 		}
@@ -77,7 +77,7 @@ Some other useless picture too https://i.redd.it/p1nzpw570js21.png
 				descriptionWithAttachments += '\n' + attachment.url;
 			});
 
-			await Hotspot.create({
+			await Overlap.create({
 				systemName: systemBodies.name,
 				systemID64: systemBodies.id64,
 				bodyName: body.name,

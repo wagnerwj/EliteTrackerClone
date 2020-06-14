@@ -1,4 +1,4 @@
-const Hotspot = require('../../database2/hotspot');
+const Overlap = require('../../database2/overlap');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const { allowedCommodities } = require('./data');
@@ -27,7 +27,7 @@ module.exports = {
 			filter['overlaps'] = { [Op.gte]: overlapAmount };
 		}
 
-		const hotspots = await Hotspot.findAll({ where: filter });
+		const hotspots = await Overlap.findAll({ where: filter });
 		const locations = {};
 		for (const hotspot of hotspots) {
 			if (!locations[hotspot.systemName]) {

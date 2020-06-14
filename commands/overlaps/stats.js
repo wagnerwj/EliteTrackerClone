@@ -1,4 +1,4 @@
-const Hotspot = require('../../database2/hotspot');
+const Overlap = require('../../database2/overlap');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
@@ -7,7 +7,7 @@ module.exports = {
 	description: 'hotspot overlap statistic',
 	aliases: ['stat', 'statistic'],
 	async execute(message) {
-		const hotspots = await Hotspot.findAll({ where: {
+		const hotspots = await Overlap.findAll({ where: {
 			approverID: {
 				[Op.ne]: null,
 			},

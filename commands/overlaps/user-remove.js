@@ -1,5 +1,5 @@
-const HotspotAdmin = require('../../database2/hotspot-admin');
-const HotspotUser = require('../../database2/hotspot-user');
+const OverlapAdmin = require('../../database2/overlap-admin');
+const OverlapUser = require('../../database2/overlap-user');
 
 module.exports = {
 	name: 'user-remove',
@@ -15,17 +15,17 @@ module.exports = {
 
 		const mentionUser = message.mentions.users.first();
 
-		const admin = await HotspotAdmin.findOne({ where: { adminID: message.author.id } });
+		const admin = await OverlapAdmin.findOne({ where: { adminID: message.author.id } });
 		if (!admin) {
 			return message.channel.send(`<@${message.author.id}> you are not a hotspot overlap admin`);
 		}
 
-		const user = await HotspotUser.findOne({ where: { userID: mentionUser.id } });
+		const user = await OverlapUser.findOne({ where: { userID: mentionUser.id } });
 		if (!user) {
 			return message.channel.send('This user is not listed, can not be removed');
 		}
 
-		await HotspotUser.destroy({ where: { userID: mentionUser.id } });
+		await OverlapUser.destroy({ where: { userID: mentionUser.id } });
 		return message.channel.send(`${message.author.username}#${message.author.discriminator} removed you ${mentionUser.username}#${mentionUser.discriminator} as hotspot overlap user, you are not longer able to report hotspots`);
 	},
 };

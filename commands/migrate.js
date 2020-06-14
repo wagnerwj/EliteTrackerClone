@@ -26,21 +26,21 @@ module.exports = {
 		// await message.channel.send(`Migrate ${count} hotspots`);
 		// count = 0;
 		//
-		// const hotspotUsers = await HotspotUser.findAll();
-		// for (const hotspotUser of hotspotUsers) {
-		// 	await HotspotUser2.create({
-		// 		userID: hotspotUser.userID,
-		// 		adminID: hotspotUser.adminID,
+		// const OverlapUsers = await OverlapUser.findAll();
+		// for (const OverlapUser of OverlapUsers) {
+		// 	await OverlapUser2.create({
+		// 		userID: OverlapUser.userID,
+		// 		adminID: OverlapUser.adminID,
 		// 	});
 		// 	count++;
 		// }
 		// await message.channel.send(`Migrate ${count} users`);
 		// count = 0;
 		//
-		// const hotspotAdmins = await HotspotAdmin.findAll();
-		// for (const hotspotAdmin of hotspotAdmins) {
-		// 	await HotspotAdmin2.create({
-		// 		adminID: hotspotAdmin.adminID,
+		// const OverlapAdmins = await OverlapAdmin.findAll();
+		// for (const OverlapAdmin of OverlapAdmins) {
+		// 	await OverlapAdmin2.create({
+		// 		adminID: OverlapAdmin.adminID,
 		// 	});
 		// 	count++;
 		// }

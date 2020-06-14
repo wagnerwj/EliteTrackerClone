@@ -1,6 +1,6 @@
 const { prefix } = require(process.env.CONFIG_PATH || '../../config.json');
-const Hotspot = require('../../database2/hotspot');
-const HotspotAdmin = require('../../database2/hotspot-admin');
+const Overlap = require('../../database2/overlap');
+const OverlapAdmin = require('../../database2/overlap-admin');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
@@ -10,10 +10,10 @@ module.exports = {
 	usage: '[system name]',
 	args: true,
 	async execute(message, args) {
-		const admin = await HotspotAdmin.findOne({ where: { adminID: message.author.id } });
+		const admin = await OverlapAdmin.findOne({ where: { adminID: message.author.id } });
 
 		let text = '';
-		const hotspots = await Hotspot.findAll({ where: {
+		const hotspots = await Overlap.findAll({ where: {
 			approverID: {
 				[Op.ne]: null,
 			},

@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('./connection');
 
-const Hotspot = db.define('hotspot', {
+const Overlap = db.define('overlap', {
 	systemName: Sequelize.STRING,
 	systemID64: Sequelize.BIGINT,
 	bodyName: Sequelize.STRING,
@@ -13,4 +13,4 @@ const Hotspot = db.define('hotspot', {
 	description: Sequelize.TEXT,
 });
 
-module.exports = Hotspot;
+module.exports = Overlap;

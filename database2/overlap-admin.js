@@ -1,12 +1,11 @@
 const Sequelize = require('sequelize');
 const db = require('./connection');
 
-const HotspotUser = db.define('hotspot_user', {
-	userID: {
+const OverlapAdmin = db.define('overlap_admin', {
+	adminID: {
 		type: Sequelize.STRING,
 		unique: true,
 	},
-	adminID: Sequelize.STRING,
 });
 
-module.exports = HotspotUser;
+module.exports = OverlapAdmin;
