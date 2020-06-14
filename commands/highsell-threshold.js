@@ -3,6 +3,7 @@ const HighSellThreshold = require('../database/highsell-threshold');
 
 module.exports = {
 	name: 'highsell-threshold',
+	shortDescription: 'Define the threshold to be notified if price is greater or equal',
 	description: `Define the threshold to be notified if price is greater or equal.
 
 **Commodites**:

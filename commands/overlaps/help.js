@@ -9,7 +9,7 @@ module.exports = {
 	cooldown: 1,
 	async execute(message, args) {
 		const data = [];
-		const { hotspotCommands: commands } = message.client;
+		const { overlapCommands: commands } = message.client;
 
 		let guild;
 		if (message.channel.type === 'text') {
