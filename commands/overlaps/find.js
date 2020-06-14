@@ -7,19 +7,27 @@ module.exports = {
 	name: 'find',
 	description: 'Find locations for a given commodity',
 	args: true,
-	usage: '[commodity]',
+	usage: '[commodity] [overlap amount, optional]',
 	async execute(message, args) {
-		const commodity = allowedCommodities.find((c) => c.toLowerCase() === args[0].toLowerCase());
+		const commodityName = args.shift().toLowerCase();
+		const overlapAmount = +args.shift();
+
+		const commodity = allowedCommodities.find((c) => c.toLowerCase() === commodityName);
 		if (!commodity) {
 			return message.channel.send(`Unknown commodity ${commodity}`);
 		}
 
-		const hotspots = await Hotspot.findAll({ where: {
+		const filter = {
 			approverID: {
 				[Op.ne]: null,
 			},
 			commodity: commodity,
-		} });
+		};
+		if (overlapAmount > 0) {
+			filter['overlaps'] = { [Op.gte]: overlapAmount };
+		}
+
+		const hotspots = await Hotspot.findAll({ where: filter });
 		const locations = {};
 		for (const hotspot of hotspots) {
 			if (!locations[hotspot.systemName]) {
