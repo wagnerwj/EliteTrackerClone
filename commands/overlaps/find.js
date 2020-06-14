@@ -4,9 +4,8 @@ const Op = Sequelize.Op;
 const { allowedCommodities } = require('./data');
 
 module.exports = {
-	name: 'locations',
-	description: 'List all location for a given commodity',
-	aliases: ['loc', 'location'],
+	name: 'find',
+	description: 'Find locations for a given commodity',
 	args: true,
 	usage: '[commodity]',
 	async execute(message, args) {
