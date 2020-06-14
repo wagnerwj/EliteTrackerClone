@@ -25,11 +25,12 @@ module.exports = {
 
 		const commandName = args.shift().toLowerCase();
 
-		if (!commands.has(commandName)) {
+		const command = message.client.alphaCommands.get(commandName)
+			|| message.client.alphaCommands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+
+		if (!command) {
 			return message.channel.send(`Command \`alpha ${commandName}\` does not exist.\nCheck \`${prefix}alpha help\` for possible commands`);
 		}
-
-		const command = commands.get(commandName);
 
 		if (!cooldowns.has(command.name)) {
 			cooldowns.set(command.name, new Discord.Collection());

@@ -22,17 +22,18 @@ module.exports = {
 	usage: '[command]',
 	cooldown: 1,
 	async execute(message, args) {
-		if (!message.client.hotspotCommands) {
-			message.client.hotspotCommands = commands;
+		if (!message.client.overlapCommands) {
+			message.client.overlapCommands = commands;
 		}
 
 		const commandName = args.shift().toLowerCase();
 
-		if (!commands.has(commandName)) {
+		const command = message.client.overlapCommands.get(commandName)
+			|| message.client.overlapCommands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+
+		if (!command) {
 			return message.channel.send(`Command \`overlaps ${commandName}\` does not exist.\nCheck \`${prefix}overlaps help\` for possible commands`);
 		}
-
-		const command = commands.get(commandName);
 
 		if (!cooldowns.has(command.name)) {
 			cooldowns.set(command.name, new Discord.Collection());

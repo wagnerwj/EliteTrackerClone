@@ -3,8 +3,9 @@ const Hotspot = require('../../database2/hotspot');
 const HotspotAdmin = require('../../database2/hotspot-admin');
 
 module.exports = {
-	name: 'unapproved',
+	name: 'status',
 	description: 'List unapproved hotspot overlaps',
+	alias: ['unapproved'],
 	async execute(message) {
 		const admin = await HotspotAdmin.findOne({ where: { adminID: message.author.id } });
 
