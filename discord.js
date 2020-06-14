@@ -62,6 +62,8 @@ async function initHighSellCache() {
 	}
 }
 
+let lastKnownBGSTick;
+
 module.exports = {
 	async connect() {
 		client.login(token);
@@ -77,6 +79,9 @@ module.exports = {
 		await client.destroy();
 	},
 	async checkHighSell(event) {
+		const timestamp = new Date(event.timestamp);
+		if (timestamp < lastKnownBGSTick) return;
+
 		const thresholds = await HighSellThreshold.findAll();
 		if (thresholds.length < 1) {
 			return;
@@ -160,7 +165,7 @@ module.exports = {
 						}
 
 						highSellMarketCache[event.marketId][commodity.name][threshold.guild_id].highestSellPrice = highestSellPrice;
-						highSellMarketCache[event.marketId][commodity.name][threshold.guild_id].updated = new Date(event.timestamp);
+						highSellMarketCache[event.marketId][commodity.name][threshold.guild_id].updated = timestamp;
 
 						await HighSellAnnouncement.update({
 							highest_sell_price: highestSellPrice,
@@ -180,8 +185,8 @@ module.exports = {
 							highSellMarketCache[event.marketId][commodity.name][threshold.guild_id] = {
 								message: message,
 								highestSellPrice: highestSellPrice,
-								inserted: new Date(event.timestamp),
-								updated: new Date(event.timestamp),
+								inserted: timestamp,
+								updated: timestamp,
 							};
 
 							await HighSellAnnouncement.create({
@@ -219,11 +224,11 @@ module.exports = {
 		}
 	},
 	async bgsTick(time) {
-		const date = new Date(time);
+		lastKnownBGSTick = new Date(time);
 		for (const marketId in highSellMarketCache) {
 			for (const commodity in highSellMarketCache[marketId]) {
 				for (const guildId in highSellMarketCache[marketId][commodity]) {
-					if (highSellMarketCache[marketId][commodity][guildId].inserted < date) {
+					if (highSellMarketCache[marketId][commodity][guildId].inserted < lastKnownBGSTick) {
 						await highSellMarketCache[marketId][commodity][guildId].message.delete();
 						delete highSellMarketCache[marketId][commodity][guildId];
 
