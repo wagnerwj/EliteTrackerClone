@@ -19,7 +19,7 @@ module.exports = {
 				[Op.ne]: null,
 			},
 			systemName: {
-				[Op.like]: args.join(' ').replace('%', ''),
+				[Op.iLike]: args.join(' ').replace('%', ''),
 			},
 		} });
 		for (const hotspot of hotspots) {
