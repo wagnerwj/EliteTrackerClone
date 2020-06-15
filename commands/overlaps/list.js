@@ -11,10 +11,13 @@ module.exports = {
 \`${prefix}overlaps system [system name]\`
 
 **Show hotspots location for a given commodity**:
-\`${prefix}overlaps locations [commodity]\`
+\`${prefix}overlaps find [commodity]\`
+
+**Show hotspots location for a given commodity with a minimum overlap**:
+\`${prefix}overlaps find [commodity] [overlap amount]\`
 
 **Show all unapproved hotspots reports**:
-\`${prefix}overlaps unapproved\`
+\`${prefix}overlaps status\`
 `);
 	},
 };
