@@ -18,7 +18,9 @@ module.exports = {
 			approverID: {
 				[Op.ne]: null,
 			},
-			systemName: args.join(' '),
+			systemName: {
+				[Op.like]: args.join(' ').replace('%', ''),
+			},
 		} });
 		for (const hotspot of hotspots) {
 			text += `${!hotspot.approverID && admin ? `> Approval:\n\`${prefix}overlaps approve ${hotspot.id}\`\n\`${prefix}overlaps decline ${hotspot.id}\`\n\n` : ''}Location **${hotspot.bodyName}**
