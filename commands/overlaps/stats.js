@@ -35,15 +35,15 @@ module.exports = {
 			}
 			reporter[hotspot.reporter]++;
 
-			if (!amountOfCommodity[hotspot.commodity]) {
-				amountOfCommodity[hotspot.commodity] = 0;
+			if (!amountOfCommodity[commoditiesTranslation[hotspot.commodity]]) {
+				amountOfCommodity[commoditiesTranslation[hotspot.commodity]] = 0;
 			}
-			amountOfCommodity[hotspot.commodity]++;
+			amountOfCommodity[commoditiesTranslation[hotspot.commodity]]++;
 
-			if (!amountOfCommodityOverlaps[`${hotspot.commodity} x${hotspot.overlaps}`]) {
-				amountOfCommodityOverlaps[`${hotspot.commodity} x${hotspot.overlaps}`] = 0;
+			if (!amountOfCommodityOverlaps[`${commoditiesTranslation[hotspot.commodity]} x${hotspot.overlaps}`]) {
+				amountOfCommodityOverlaps[`${commoditiesTranslation[hotspot.commodity]} x${hotspot.overlaps}`] = 0;
 			}
-			amountOfCommodityOverlaps[`${hotspot.commodity} x${hotspot.overlaps}`]++;
+			amountOfCommodityOverlaps[`${commoditiesTranslation[hotspot.commodity]} x${hotspot.overlaps}`]++;
 		}
 
 		let text = `**Hotspot overlap statstic**
@@ -56,11 +56,11 @@ Reporters: ${Object.keys(reporter).length}
 
 		text += 'Amount of commodities:\n';
 		for (const commodity of Object.keys(amountOfCommodity).sort()) {
-			text += `- ${commoditiesTranslation[commodity]}: ${amountOfCommodity[commodity]}\n`;
+			text += `- ${commodity}: ${amountOfCommodity[commodity]}\n`;
 		}
 		text += '\nAmount of commodities per overlap count:\n';
 		for (const commodity of Object.keys(amountOfCommodityOverlaps).sort()) {
-			text += `- ${commoditiesTranslation[commodity]}: ${amountOfCommodityOverlaps[commodity]}\n`;
+			text += `- ${commodity}: ${amountOfCommodityOverlaps[commodity]}\n`;
 		}
 
 		return message.channel.send(text, { split: true });
