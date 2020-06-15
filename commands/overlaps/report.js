@@ -3,7 +3,7 @@ const EDSM = require('../../edsm');
 const Overlap = require('../../database2/overlap');
 const OverlapAdmin = require('../../database2/overlap-admin');
 const OverlapUser = require('../../database2/overlap-user');
-const { allowedCommodities } = require('./data');
+const { allowedCommodities, commoditiesMap, commoditiesTranslation } = require('./data');
 
 module.exports = {
 	name: 'report',
@@ -52,6 +52,7 @@ Some other useless picture too https://i.redd.it/p1nzpw570js21.png
 		if (isNaN(overlaps) || overlaps <= 0) {
 			return message.channel.send('Number of overlaps needed to be greater than 0');
 		}
+		const inGameCommodity = commoditiesMap[commodity];
 
 		const bodySplit = bodyName.split(' ');
 		let systemBodies;
@@ -81,7 +82,7 @@ Some other useless picture too https://i.redd.it/p1nzpw570js21.png
 				systemName: systemBodies.name,
 				systemID64: systemBodies.id64,
 				bodyName: body.name,
-				commodity: commodity,
+				commodity: inGameCommodity,
 				overlaps: overlaps,
 				reporter: `${message.author.username}#${message.author.discriminator}`,
 				reporterID: message.author.id,
@@ -89,7 +90,7 @@ Some other useless picture too https://i.redd.it/p1nzpw570js21.png
 				description: descriptionWithAttachments,
 			});
 
-			return message.channel.send(`Registered new ${commodity} x${overlaps} hotspot overlap in system ${systemBodies.url} for body \`${body.name}\``);
+			return message.channel.send(`Registered new ${commoditiesTranslation[inGameCommodity]} x${overlaps} hotspot overlap in system ${systemBodies.url} for body \`${body.name}\``);
 		}
 
 		return message.channel.send(`No body named ${bodyName} found in ${systemBodies.url}`);

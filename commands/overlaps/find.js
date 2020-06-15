@@ -1,7 +1,7 @@
 const Overlap = require('../../database2/overlap');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
-const { allowedCommodities } = require('./data');
+const { allowedCommodities, commoditiesMap, commoditiesTranslation } = require('./data');
 
 module.exports = {
 	name: 'find',
@@ -16,12 +16,13 @@ module.exports = {
 		if (!commodity) {
 			return message.channel.send(`Unknown commodity ${commodity}`);
 		}
+		const inGameCommodity = commoditiesMap[commodity];
 
 		const filter = {
 			approverID: {
 				[Op.ne]: null,
 			},
-			commodity: commodity,
+			commodity: inGameCommodity,
 		};
 		if (overlapAmount > 0) {
 			filter['overlaps'] = { [Op.gte]: overlapAmount };
@@ -51,6 +52,6 @@ module.exports = {
 			return message.channel.send('No hotspots found');
 		}
 
-		return message.channel.send(`**Showing locations for ${commodity} and the overlap amount:**\n\n${text}`, { split: true });
+		return message.channel.send(`**Showing locations for ${commoditiesTranslation[inGameCommodity]} and the overlap amount:**\n\n${text}`, { split: true });
 	},
 };

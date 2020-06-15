@@ -2,6 +2,7 @@ const { prefix } = require(process.env.CONFIG_PATH || '../../config.json');
 const Overlap = require('../../database2/overlap');
 const OverlapAdmin = require('../../database2/overlap-admin');
 const Sequelize = require('sequelize');
+const { commoditiesTranslation } = require('./data');
 const Op = Sequelize.Op;
 
 module.exports = {
@@ -21,7 +22,7 @@ module.exports = {
 		} });
 		for (const hotspot of hotspots) {
 			text += `${!hotspot.approverID && admin ? `> Approval:\n\`${prefix}overlaps approve ${hotspot.id}\`\n\`${prefix}overlaps decline ${hotspot.id}\`\n\n` : ''}Location **${hotspot.bodyName}**
-Commodity **${hotspot.commodity} x${hotspot.overlaps}**
+Commodity **${commoditiesTranslation[hotspot.commodity]} x${hotspot.overlaps}**
 > Reported at ${hotspot.createdAt.toUTCString()} from ${hotspot.reporter}:
 ${hotspot.description}
 

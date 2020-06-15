@@ -1,6 +1,7 @@
 const { prefix } = require(process.env.CONFIG_PATH || '../../config.json');
 const Overlap = require('../../database2/overlap');
 const OverlapAdmin = require('../../database2/overlap-admin');
+const { commoditiesMap, commoditiesTranslation } = require('./data');
 
 module.exports = {
 	name: 'get-commodity',
@@ -18,12 +19,14 @@ module.exports = {
 		const hotspots = await Overlap.findAll({ where: {
 			systemName: args.join(' '),
 		} });
+		const commodities = Object.keys(commoditiesMap).map((v) => ({ inGame: commoditiesMap[v], name: v }));
 		for (const hotspot of hotspots) {
+			const commodity = commodities.find((v) => v.inGame === hotspots.commodity).name;
 			text += `Location **${hotspot.bodyName}**
-Commodity **${hotspot.commodity} x${hotspot.overlaps}**
+Commodity **${commoditiesTranslation[hotspot.commodity]} x${hotspot.overlaps}**
 > Reported at ${hotspot.createdAt.toUTCString()} from ${hotspot.reporter}:
 \`\`\`
-${prefix}overlaps update-commodity ${hotspot.id} ${hotspot.commodity} ${hotspot.overlaps}
+${prefix}overlaps update-commodity ${hotspot.id} ${commodity} ${hotspot.overlaps}
 \`\`\`
 
 `;

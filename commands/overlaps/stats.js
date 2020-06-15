@@ -1,6 +1,7 @@
 const Overlap = require('../../database2/overlap');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+const { commoditiesTranslation } = require('./data');
 
 module.exports = {
 	name: 'stats',
@@ -55,11 +56,11 @@ Reporters: ${Object.keys(reporter).length}
 
 		text += 'Amount of commodities:\n';
 		for (const commodity of Object.keys(amountOfCommodity).sort()) {
-			text += `- ${commodity}: ${amountOfCommodity[commodity]}\n`;
+			text += `- ${commoditiesTranslation[commodity]}: ${amountOfCommodity[commodity]}\n`;
 		}
 		text += '\nAmount of commodities per overlap count:\n';
 		for (const commodity of Object.keys(amountOfCommodityOverlaps).sort()) {
-			text += `- ${commodity}: ${amountOfCommodityOverlaps[commodity]}\n`;
+			text += `- ${commoditiesTranslation[commodity]}: ${amountOfCommodityOverlaps[commodity]}\n`;
 		}
 
 		return message.channel.send(text, { split: true });

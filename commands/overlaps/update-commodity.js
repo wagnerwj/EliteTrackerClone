@@ -1,6 +1,6 @@
 const Overlap = require('../../database2/overlap');
 const OverlapAdmin = require('../../database2/overlap-admin');
-const { allowedCommodities } = require('./data');
+const { allowedCommodities, commoditiesMap } = require('./data');
 
 module.exports = {
 	name: 'update-commodity',
@@ -27,9 +27,10 @@ module.exports = {
 		if (isNaN(overlaps) || overlaps <= 0) {
 			return message.channel.send('Number of overlaps needed to be greater than 0');
 		}
+		const inGameCommodity = commoditiesMap[commodity];
 
 		const affectedRows = await Overlap.update({
-			commodity: commodity,
+			commodity: inGameCommodity,
 			overlaps: overlaps,
 		}, {
 			where: {
