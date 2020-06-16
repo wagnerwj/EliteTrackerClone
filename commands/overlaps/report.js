@@ -68,10 +68,9 @@ Some other useless picture too https://i.redd.it/p1nzpw570js21.png
 			return message.channel.send(`No system for body ${bodyName} found`);
 		}
 
-		const simplifiedBodyName = bodyName.replace(' ', '').toLowerCase();
+		const simplifiedBodyName = bodyName.replace(/ /g, '').toLowerCase();
 		for (const body of systemBodies.bodies) {
-			console.log(simplifiedBodyName, body.name.replace(' ', '').toLowerCase());
-			if (body.name.replace(' ', '').toLowerCase() !== simplifiedBodyName) {
+			if (body.name.replace(/ /g, '').toLowerCase() !== simplifiedBodyName) {
 				continue;
 			}
 
