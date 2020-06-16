@@ -1,6 +1,6 @@
 const zlib = require('zlib');
 const zmq = require('zeromq');
-const discord = require('./discord');
+const highSell = require('./high-sell');
 const { eddn } = require(process.env.CONFIG_PATH || './config.json');
 const FleetCarrier = require('./database2/fleetcarrier');
 
@@ -12,7 +12,7 @@ setTimeout(async () => {
 		const message = JSON.parse(zlib.inflateSync(topic));
 		switch (message['$schemaRef']) {
 		case 'https://eddn.edcd.io/schemas/commodity/3':
-			await discord.checkHighSell(message.message);
+			await highSell.check(message.message);
 			break;
 
 		case 'https://eddn.edcd.io/schemas/journal/1':

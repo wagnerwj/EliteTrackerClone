@@ -1,5 +1,5 @@
 const got = require('got');
-const discord = require('./discord');
+const highSell = require('./high-sell');
 
 function start() {
 	setInterval(async () => {
@@ -19,7 +19,7 @@ async function getTick() {
 
 async function runBGS() {
 	const tick = await getTick();
-	await discord.bgsTick(tick.time);
+	await highSell.bgsTick(tick.time);
 }
 
 module.exports = {
