@@ -17,7 +17,7 @@ module.exports = {
 			await highSell.checkPermissions(channel.id);
 		}
 		catch (e) {
-			return message.channel.send(`Got \`${e.message}\` on testing permissions for channel <#${guild.highsell_channel}>, ${message.author}`);
+			return message.channel.send(`Got \`${e.message}\` on testing permissions for channel <#${channel.id}>, ${message.author}`);
 		}
 
 		const channel = message.mentions.channels.first();
