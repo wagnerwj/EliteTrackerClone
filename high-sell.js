@@ -8,6 +8,13 @@ const highSellMarketCache = {};
 const marketStationInfo = {};
 let discordClient;
 
+async function checkPermissions(channelID) {
+	const channel = await discordClient.channels.fetch(channelID);
+	const message = await channel.send('TEST create permission');
+	await message.edit('TEST update permission');
+	await message.delete();
+}
+
 async function disableHighSell(guildID) {
 	console.log(`Disabled highsell for guild id (${guildID})`);
 	await Guild.update({ highsell_enabled: false }, { where: { guild_id: guildID } });
@@ -252,4 +259,5 @@ module.exports = {
 	init: init,
 	bgsTick: bgsTick,
 	check: check,
+	checkPermissions: checkPermissions,
 };

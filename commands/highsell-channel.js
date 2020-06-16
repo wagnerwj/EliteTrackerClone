@@ -1,4 +1,5 @@
 const Guild = require('../database/guild');
+const highSell = require('../high-sell');
 
 module.exports = {
 	name: 'highsell-channel',
@@ -10,6 +11,13 @@ module.exports = {
 	async execute(message, args) {
 		if (!message.mentions.channels.size) {
 			return message.channel.send('wrong channel argument, you need to mention it');
+		}
+
+		try {
+			await highSell.checkPermissions(channel.id);
+		}
+		catch (e) {
+			return message.channel.send(`Got \`${e.message}\` on testing permissions for channel <#${guild.highsell_channel}>, ${message.author}`);
 		}
 
 		const channel = message.mentions.channels.first();
