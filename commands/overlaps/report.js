@@ -70,6 +70,7 @@ Some other useless picture too https://i.redd.it/p1nzpw570js21.png
 
 		const simplifiedBodyName = bodyName.replace(' ', '').toLowerCase();
 		for (const body of systemBodies.bodies) {
+			console.log(simplifiedBodyName, body.name.replace(' ', '').toLowerCase());
 			if (body.name.replace(' ', '').toLowerCase() !== simplifiedBodyName) {
 				continue;
 			}
