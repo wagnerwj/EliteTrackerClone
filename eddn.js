@@ -25,6 +25,7 @@ setTimeout(async () => {
 				const affectedRows = await FleetCarrier.update({
 					marketID: eventMessage['MarketID'],
 					services: eventMessage['StationServices'].join('|'),
+					stationName: eventMessage['StationName'],
 
 					systemAddress: eventMessage['SystemAddress'],
 					starSystem: eventMessage['StarSystem'],
@@ -32,7 +33,7 @@ setTimeout(async () => {
 					bodyID: eventMessage['BodyID'],
 				}, {
 					where: {
-						stationName: eventMessage['StationName'],
+						marketID: eventMessage['MarketID'],
 					},
 				});
 				if (affectedRows[0] === 0) {
