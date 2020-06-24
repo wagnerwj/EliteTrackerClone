@@ -10,7 +10,7 @@ module.exports = {
 	admin: true,
 	async execute(message, args) {
 		if (!message.mentions.channels.size) {
-			return message.channel.send('wrong channel argument, you need to mention it');
+			return message.channel.send('Wrong channel argument, you need to mention it');
 		}
 
 		try {
@@ -23,9 +23,9 @@ module.exports = {
 		const channel = message.mentions.channels.first();
 		const affectedRows = await Guild.update({ marketAnnouncementsChannel: channel.id }, { where: { guildID: message.guild.id } });
 		if (affectedRows < 1) {
-			return message.channel.send('error updating configuration');
+			return message.channel.send('Error updating configuration');
 		}
 
-		message.channel.send(`set ${args[0]} for announcements`);
+		message.channel.send(`Set ${args[0]} for announcements`);
 	},
 };

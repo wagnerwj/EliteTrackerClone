@@ -5,11 +5,9 @@ const Message = db.define(
 	'market_announcement_message',
 	{
 		guildID: Sequelize.STRING,
-		messageID: Sequelize.STRING,
-		marketID: Sequelize.STRING,
 		commodity: Sequelize.STRING,
-		sellPrice: Sequelize.INTEGER,
-		buyPrice: Sequelize.INTEGER,
+		operator: Sequelize.STRING,
+		value: Sequelize.INTEGER,
 	},
 	{
 		indexes: [
