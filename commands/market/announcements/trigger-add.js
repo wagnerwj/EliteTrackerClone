@@ -10,6 +10,14 @@ Syntax for \`[trigger value]\`:	\`[operator][amount][modifier]\`
 Allowed \`[operator]\` values: \`<\`, \`<=\`, \`>\`, \`>=\`
 Allowed \`[source]\` values: \`sell\`, \`buy\`
 
+**Long commodity names should be shorten**:
+- *Low temperature diamonds* use *LTD*
+- *Void Opals* use *Vopals*
+- *Hafnium 178* use *H178*
+- *Lithium Hydroxide* use *LH*
+- *Methane Clathrate* use *MC*
+- *Methanol Monohydrate* use *MMC*
+
 **Examples**:
 \`${prefix}market announcements trigger-add sell LTD >1.6mil\`: selling LTDs above 1.6 million
 \`${prefix}market announcements trigger-add sell LTD >=1.6mil\`: selling LTDs match or above 1.6 million

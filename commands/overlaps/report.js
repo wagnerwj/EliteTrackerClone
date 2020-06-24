@@ -2,7 +2,7 @@ const { prefix } = require(process.env.CONFIG_PATH || '../../config.json');
 const EDSM = require('../../edsm');
 const Overlap = require('../../database2/overlap');
 const OverlapAdmin = require('../../database2/overlap-admin');
-const OverlapUser = require('../../database2/overlap-user');
+// const OverlapUser = require('../../database2/overlap-user');
 const { allowedCommodities, commoditiesMap, commoditiesTranslation } = require('./data');
 
 module.exports = {
