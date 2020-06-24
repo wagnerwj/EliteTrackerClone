@@ -1,4 +1,4 @@
-const Guild = require('./database/guild');
+const Guild = require('./database2/guild');
 const HighSellAnnouncement = require('./database/highsell-announcement');
 const HighSellThreshold = require('./database/highsell-threshold');
 const EmbedHighSell = require('./embeds/highsell');
@@ -17,7 +17,7 @@ async function checkPermissions(channelID) {
 
 async function disableHighSell(guildID) {
 	console.log(`Disabled highsell for guild id (${guildID})`);
-	await Guild.update({ highsell_enabled: false }, { where: { guild_id: guildID } });
+	await Guild.update({ marketAnnouncementsEnabled: false }, { where: { guildID: guildID } });
 }
 
 async function init(client) {
@@ -29,8 +29,8 @@ async function init(client) {
 	}
 
 	for (const announcement of announcements) {
-		const guild = await Guild.findOne({ where: { guild_id: announcement.guild_id } });
-		if (!guild || !guild.highsell_enabled || !guild.highsell_channel) {
+		const guild = await Guild.findOne({ where: { guildID: announcement.guild_id } });
+		if (!guild || !guild.marketAnnouncementsEnabled || !guild.marketAnnouncementsChannel) {
 			await HighSellAnnouncement.destroy({ where: {
 				guild_id: announcement.guild_id,
 				market_id: announcement.market_id,
@@ -39,7 +39,7 @@ async function init(client) {
 			continue;
 		}
 
-		const channel = await discordClient.channels.fetch(guild.highsell_channel);
+		const channel = await discordClient.channels.fetch(guild.marketAnnouncementsChannel);
 		const messages = await channel.messages.fetch({ around: announcement.message_id, limit: 1 });
 		const message = messages.first();
 		if (message && !message.deleted && message.id === announcement.message_id) {
@@ -95,7 +95,7 @@ async function check(event) {
 			);
 			if (commodity.name === threshold.material && highestPrice >= threshold.minimum_price) {
 				const guild = await Guild.findOne({ where: { guild_id: threshold.guild_id } });
-				if (!guild || !guild.highsell_enabled || !guild.highsell_channel) {
+				if (!guild || !guild.marketAnnouncementsEnabled || !guild.marketAnnouncementsChannel) {
 					continue;
 				}
 
@@ -179,7 +179,7 @@ async function check(event) {
 				}
 				else {
 					try {
-						const channel = await discordClient.channels.fetch(guild.highsell_channel);
+						const channel = await discordClient.channels.fetch(guild.marketAnnouncementsChannel);
 						const message = await channel.send(embed);
 						highSellMarketCache[event.marketId][commodity.name][threshold.guild_id] = {
 							message: message,

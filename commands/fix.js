@@ -1,4 +1,4 @@
-const Guild = require('../database/guild');
+const Guild = require('../database2/guild');
 const HighSellAnnouncement = require('../database/highsell-announcement');
 
 module.exports = {
@@ -8,10 +8,10 @@ module.exports = {
 	cooldown: 30,
 	hidden: true,
 	async execute(message) {
-		const guild = await Guild.findOne({ where: { guild_id: message.channel.guild.id } });
+		const guild = await Guild.findOne({ where: { guildID: message.channel.guild.id } });
 		if (!guild) {
 			await Guild.create({
-				guild_id: message.channel.guild.id,
+				guildID: message.channel.guild.id,
 			});
 			await HighSellAnnouncement.destroy({ where: {
 				guild_id: message.channel.guild.id,

@@ -1,3 +1,6 @@
+const Guild = require('../database/guild');
+const Guild2 = require('../database2/guild');
+
 module.exports = {
 	name: 'migrate',
 	description: 'migrate data',
@@ -6,7 +9,7 @@ module.exports = {
 	owner: true,
 	hidden: true,
 	async execute(message) {
-		const count = 0;
+		let count = 0;
 
 		// const hotspots = await Hotspot.findAll();
 		// for (const hotspot of hotspots) {
@@ -62,5 +65,18 @@ module.exports = {
 		// }
 		// await message.channel.send(`Migrate ${count} fleetcarriers`);
 		// count = 0;
+
+		const guilds = await Guild.findAll();
+		for (const guild of guilds) {
+			await Guild2.create({
+				guildID: guild.guild_id,
+				adminRoleID: guild.admin_role_id,
+				marketAnnouncementsEnabled: guild.highsell_enabled,
+				marketAnnouncementsChannel: guild.highsell_channel,
+			});
+			count++;
+		}
+		await message.channel.send(`Migrate ${count} guilds`);
+		count = 0;
 	},
 };

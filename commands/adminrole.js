@@ -1,5 +1,5 @@
 const { prefix } = require(process.env.CONFIG_PATH || '../config.json');
-const Guild = require('../database/guild');
+const Guild = require('../database2/guild');
 
 module.exports = {
 	name: 'adminrole',
@@ -20,15 +20,15 @@ module.exports = {
 			return message.channel.send(`Role ${rolename} not found`);
 		}
 
-		const guild = await Guild.findOne({ where: { guild_id: message.channel.guild.id } });
+		const guild = await Guild.findOne({ where: { guildID: message.channel.guild.id } });
 		if (!guild) {
 			return message.channel.send(`error updating configuration, use \`${prefix}fix\` to fix it`);
 		}
-		if (guild.admin_role_id && !message.member.roles.cache.find(r => r.id === guild.admin_role_id)) {
+		if (guild.adminRoleID && !message.member.roles.cache.find(r => r.id === guild.adminRoleID)) {
 			return message.channel.send(`Only admins are allowed to change that, ${message.author}`);
 		}
 
-		const affectedRows = await Guild.update({ admin_role_id: role.id }, { where: { guild_id: message.guild.id } });
+		const affectedRows = await Guild.update({ adminRoleID: role.id }, { where: { guildID: message.guild.id } });
 		if (affectedRows < 1) {
 			return message.channel.send('error updating configuration');
 		}

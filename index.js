@@ -2,6 +2,7 @@ const Guild = require('./database/guild');
 const HighSellAnnouncement = require('./database/highsell-announcement');
 const HighSellThreshold = require('./database/highsell-threshold');
 
+const Guild2 = require('./database2/guild');
 const FleetCarrier = require('./database2/fleetcarrier');
 const Overlap = require('./database2/overlap');
 const OverlapAdmin = require('./database2/overlap-admin');
@@ -16,6 +17,7 @@ async function start() {
 	await HighSellAnnouncement.sync();
 	await HighSellThreshold.sync();
 
+	await Guild2.sync();
 	await FleetCarrier.sync();
 	await OverlapAdmin.sync();
 	await OverlapUser.sync();

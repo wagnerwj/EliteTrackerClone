@@ -1,4 +1,4 @@
-const Guild = require('../database/guild');
+const Guild = require('../database2/guild');
 const HighSellThreshold = require('../database/highsell-threshold');
 
 module.exports = {
@@ -7,23 +7,23 @@ module.exports = {
 	guildOnly: true,
 	admin: true,
 	async execute(message) {
-		const guild = await Guild.findOne({ where: { guild_id: message.guild.id } });
+		const guild = await Guild.findOne({ where: { guildID: message.guild.id } });
 		if (!guild) {
 			return message.channel.send('error in bot configuration, remove and add the bot again for proper setup');
 		}
 
 		let rolename = 'Not found';
-		const role = message.guild.roles.cache.find(r => r.id === guild.admin_role_id);
+		const role = message.guild.roles.cache.find(r => r.id === guild.adminRoleID);
 		if (role) {
 			rolename = role.name;
 		}
 
 		let text = `**Configuration**:
-Admin role: ${rolename} (${guild.admin_role_id})
+Admin role: ${rolename} (${guild.adminRoleID})
 
 Highsell:
-- Enabled: ${guild.highsell_enabled ? 'yes' : 'no'}
-- Channel: ${!guild.highsell_channel ? 'n/a' : `<#${guild.highsell_channel}>`}`;
+- Enabled: ${guild.marketAnnouncementsEnabled ? 'yes' : 'no'}
+- Channel: ${!guild.marketAnnouncementsChannel ? 'n/a' : `<#${guild.marketAnnouncementsChannel}>`}`;
 
 		const thresholds = await HighSellThreshold.findAll({ where: { guild_id: message.guild.id } });
 		if (thresholds.length > 0) {

@@ -1,9 +1,9 @@
-const Guild = require('../database/guild');
-const highSell = require('../high-sell');
+const Guild = require('../../../database2/guild');
+const highSell = require('../../../high-sell');
 
 module.exports = {
-	name: 'highsell-channel',
-	description: 'Define a channel for the high selling prices announcements',
+	name: 'channel',
+	description: 'Define a channel for market announcements',
 	guildOnly: true,
 	args: true,
 	usage: '[channel]',
@@ -21,7 +21,7 @@ module.exports = {
 		}
 
 		const channel = message.mentions.channels.first();
-		const affectedRows = await Guild.update({ highsell_channel: channel.id }, { where: { guild_id: message.guild.id } });
+		const affectedRows = await Guild.update({ marketAnnouncementsChannel: channel.id }, { where: { guildID: message.guild.id } });
 		if (affectedRows < 1) {
 			return message.channel.send('error updating configuration');
 		}

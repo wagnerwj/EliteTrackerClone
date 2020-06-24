@@ -1,4 +1,4 @@
-const Guild = require('../database/guild');
+const Guild = require('../database2/guild');
 const HighSellThreshold = require('../database/highsell-threshold');
 
 module.exports = {
@@ -56,7 +56,7 @@ BattleWeapons Landmines NonLethalWeapons PersonalWeapons ReactiveArmour`,
 		const material = args[0].toLowerCase();
 		const price = +args[1];
 
-		const guild = await Guild.findOne({ where: { guild_id: message.guild.id } });
+		const guild = await Guild.findOne({ where: { guildID: message.guild.id } });
 		if (!guild) {
 			return message.channel.send('error in bot configuration, remove and add the bot again for proper setup');
 		}

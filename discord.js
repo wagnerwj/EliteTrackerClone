@@ -2,10 +2,11 @@ const fs = require('fs');
 const path = require('path');
 const Discord = require('discord.js');
 const { prefix, token } = require(process.env.CONFIG_PATH || './config.json');
-const Guild = require('./database/guild');
+const Guild = require('./database2/guild');
 const HighSellAnnouncement = require('./database/highsell-announcement');
 const HighSellThreshold = require('./database/highsell-threshold');
 const { init: initHighSell } = require('./high-sell');
+const { genericCommand } = require('./generic');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -40,28 +41,28 @@ for (const file of commandFiles) {
 
 client.on('guildCreate', async guild => {
 	await Guild.create({
-		guild_id: guild.id,
+		guildID: guild.id,
 	});
 	console.log(`Guild ${guild.id} (${guild.name}) added`);
 });
 client.on('guildDelete', async guild => {
-	await Guild.destroy({ where: { guild_id: guild.id } });
+	await Guild.destroy({ where: { guildID: guild.id } });
 	await HighSellAnnouncement.destroy({ where: { guild_id: guild.id } });
 	await HighSellThreshold.destroy({ where: { guild_id: guild.id } });
 	console.log(`Guild ${guild.id} (${guild.name}) deleted`);
 });
 
 client.on('channelDelete', async channel => {
-	const guild = await Guild.findOne({ where: { guild_id: channel.guild.id } });
+	const guild = await Guild.findOne({ where: { guildID: channel.guild.id } });
 	if (!guild) {
 		return;
 	}
 
-	if (guild.highsell_channel === channel.id) {
+	if (guild.marketAnnouncementsChannel === channel.id) {
 		const affectedRows = await Guild.update({
-			highsell_enabled: false,
-			highsell_channel: '',
-		}, { where: { guild_id: channel.guild.id } });
+			marketAnnouncementsEnabled: false,
+			marketAnnouncementsChannel: '',
+		}, { where: { guildID: channel.guild.id } });
 		if (affectedRows < 1) {
 			return console.error('error updating channel delete configuration');
 		}
@@ -79,67 +80,12 @@ client.on('message', async message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
 	const args = message.content.slice(prefix.length).split(/ +/);
-	const commandName = args.shift().toLowerCase();
-
-	const command = client.commands.get(commandName)
-		|| client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
-
-	if (!command) return;
-
-	if (!cooldowns.has(command.name)) {
-		cooldowns.set(command.name, new Discord.Collection());
-	}
-
-	const now = Date.now();
-	const timestamps = cooldowns.get(command.name);
-	const cooldownAmount = (command.cooldown || 3) * 1000;
-
-	if (timestamps.has(message.author.id)) {
-		const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
-
-		if (now < expirationTime) {
-			const timeLeft = (expirationTime - now) / 1000;
-			return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
-		}
-	}
-
-	timestamps.set(message.author.id, now);
-	setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-
-	if (command.owner && message.author.id !== '260922583023747082') {
-		return message.channel.send(`Only the owner is authorized to use this command, ${message.author}!`);
-	}
-
-	if (command.guildOnly && message.channel.type !== 'text') {
-		return message.reply('I can\'t execute that command inside DMs!');
-	}
-
-	if (command.guildOnly && command.admin) {
-		const guild = await Guild.findOne({ where: { guild_id: message.channel.guild.id } });
-		if (!guild) {
-			return;
-		}
-
-		if (!message.member.roles.cache.find(role => role.id === guild.admin_role_id)) {
-			return message.channel.send(`You are not authorized to use this command, ${message.author}!`);
-		}
-	}
-
-	if (command.args && !args.length) {
-		let reply = `You didn't provide any arguments, ${message.author}!`;
-
-		if (command.usage) {
-			reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
-		}
-
-		return message.channel.send(reply);
-	}
 
 	try {
-		await command.execute(message, args);
+		await genericCommand(message, args, client.commands);
 	}
 	catch (error) {
 		console.error(error);
-		message.reply('there was an error trying to execute that command!');
+		await message.reply('there was an error trying to execute that command!');
 	}
 });

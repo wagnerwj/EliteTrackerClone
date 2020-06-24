@@ -2,13 +2,13 @@ const Sequelize = require('sequelize');
 const db = require('../database/connection');
 
 const Guild = db.define('guild', {
-	guild_id: {
+	guildID: {
 		type: Sequelize.STRING,
 		unique: true,
 	},
-	highsell_enabled: Sequelize.BOOLEAN,
-	highsell_channel: Sequelize.STRING,
-	admin_role_id: Sequelize.STRING,
+	marketAnnouncementsEnabled: Sequelize.BOOLEAN,
+	marketAnnouncementsChannel: Sequelize.STRING,
+	adminRoleID: Sequelize.STRING,
 });
 
 module.exports = Guild;
