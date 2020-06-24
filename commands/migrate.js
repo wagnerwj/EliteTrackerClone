@@ -1,5 +1,7 @@
 const Guild = require('../database/guild');
 const Guild2 = require('../database2/guild');
+const Threshold = require('../database/highsell-threshold');
+const AnnouncementTrigger = require('../database2/market-announcement-trigger');
 
 module.exports = {
 	name: 'migrate',
@@ -77,6 +79,20 @@ module.exports = {
 			count++;
 		}
 		await message.channel.send(`Migrate ${count} guilds`);
+		count = 0;
+
+		const thresholds = await Threshold.findAll();
+		for (const threshold of thresholds) {
+			await AnnouncementTrigger.create({
+				guildID: threshold.guild_id,
+				source: 'sell',
+				commodity: threshold.material,
+				operator: 'gte',
+				value: threshold.minimum_price,
+			});
+			count++;
+		}
+		await message.channel.send(`Migrate ${count} market trigger`);
 		count = 0;
 	},
 };
