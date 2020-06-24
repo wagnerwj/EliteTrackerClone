@@ -8,10 +8,12 @@
     margin-right: 20px;
     margin-bottom: 20px;
 
-    code {
-      background: #2f3136;
-      border: 1px solid #202225;
-      border-radius: 4px;
+    markdown ::ng-deep {
+      code {
+        background: #2f3136;
+        border: 1px solid #202225;
+        border-radius: 4px;
+      }
     }
   }
 }
