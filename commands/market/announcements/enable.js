@@ -1,6 +1,6 @@
-const { prefix } = require(process.env.CONFIG_PATH || '../config.json');
+const { prefix } = require(process.env.CONFIG_PATH || '../../../config.json');
 const Guild = require('../../../database2/guild');
-const highSell = require('../../../high-sell');
+const market = require('../../../market');
 
 module.exports = {
 	name: 'enable',
@@ -16,7 +16,7 @@ module.exports = {
 
 		if (guild.marketAnnouncementsChannel) {
 			try {
-				await highSell.checkPermissions(guild.marketAnnouncementsChannel);
+				await market.checkPermissions(guild.marketAnnouncementsChannel);
 			}
 			catch (e) {
 				return message.channel.send(`Got \`${e.message}\` on testing permissions for channel <#${guild.marketAnnouncementsChannel}>, ${message.author}`);

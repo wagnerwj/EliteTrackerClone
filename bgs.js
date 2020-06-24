@@ -1,5 +1,5 @@
 const got = require('got');
-const highSell = require('./high-sell');
+const market = require('./market');
 
 function start() {
 	setInterval(async () => {
@@ -19,7 +19,7 @@ async function getTick() {
 
 async function runBGS() {
 	const tick = await getTick();
-	await highSell.bgsTick(tick.time);
+	await market.bgsTick(tick.time);
 }
 
 module.exports = {

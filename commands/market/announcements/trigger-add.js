@@ -1,5 +1,6 @@
 const { prefix } = require(process.env.CONFIG_PATH || '../../../config.json');
 const { allowedCommodities, commoditiesMap, commoditiesTranslation } = require('./../../overlaps/data');
+const Trigger = require('../../../database2/market-announcement-trigger');
 
 module.exports = {
 	name: 'trigger-add',
@@ -28,7 +29,7 @@ Allowed \`[source]\` values: \`sell\`, \`buy\`
 	usage: '[source] [commodity] [trigger value]',
 	admin: true,
 	async execute(message, args) {
-		const source = args.shift();
+		const source = args.shift().toLowerCase();
 		const commodityName = args.shift();
 
 		const commodity = allowedCommodities.find((c) => c.toLowerCase() === commodityName.toLowerCase());
@@ -57,23 +58,53 @@ Allowed \`[source]\` values: \`sell\`, \`buy\`
 			trigger.value *= 1000000;
 		}
 
+		console.log(triggerValue);
+
+		let translatedOperator = '';
 		if (triggerValue.startsWith('>=')) {
 			trigger.operator = 'gte';
+			translatedOperator = 'greater than or equal';
 		}
 		else if (triggerValue.startsWith('>')) {
 			trigger.operator = 'gt';
+			translatedOperator = 'greater than';
 		}
 		else if (triggerValue.startsWith('<=')) {
 			trigger.operator = 'lte';
+			translatedOperator = 'lower than or equal';
 		}
 		else if (triggerValue.startsWith('<')) {
 			trigger.operator = 'lt';
+			translatedOperator = 'lower than';
 		}
 		else {
 			return message.channel.send(`Unknown operator for trigger value \`${triggerValue}\`, ${message.author}`);
 		}
 
+		const text = `${commoditiesTranslation[inGameCommodity]} when ${source} price is ${translatedOperator} ${trigger.value.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2)}`;
 
-		message.channel.send(`set ${args[0]} for announcements`);
+		const affectedRows = await Trigger.update({
+			operator: trigger.operator,
+			value: trigger.value,
+		}, {
+			where: {
+				guildID: message.guild.id,
+				source: trigger.source,
+				commodity: inGameCommodity,
+			},
+		});
+		if (affectedRows[0] > 0) {
+			return message.channel.send('Change trigger for ' + text);
+		}
+
+		await Trigger.create({
+			guildID: message.guild.id,
+			source: trigger.source,
+			commodity: inGameCommodity,
+			operator: trigger.operator,
+			value: trigger.value,
+		});
+
+		return message.channel.send('Setup trigger for ' + text);
 	},
 };

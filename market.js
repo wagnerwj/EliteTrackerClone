@@ -1,6 +1,6 @@
 const Guild = require('./database2/guild');
 const HighSellAnnouncement = require('./database/highsell-announcement');
-const HighSellThreshold = require('./database/highsell-threshold');
+const AnnouncementTrigger = require('./database2/market-announcement-trigger');
 const EmbedHighSell = require('./embeds/highsell');
 const EDSM = require('./edsm');
 
@@ -78,13 +78,55 @@ async function check(event) {
 		return;
 	}
 
-	const thresholds = await HighSellThreshold.findAll();
-	if (thresholds.length < 1) {
+	const triggers = await AnnouncementTrigger.findAll();
+	if (triggers.length < 1) {
 		return;
 	}
 
 	for (const commodity of event.commodities) {
-		for (const threshold of thresholds) {
+		for (const trigger of triggers) {
+			if (commodity.name !== trigger.commodity) continue;
+
+			if (trigger.source === 'sell') {
+				let condition = false;
+				if (trigger.operator === 'gte') {
+					condition = commodity.sellPrice >= trigger.value;
+				}
+				else if (trigger.operator === 'gt') {
+					condition = commodity.sellPrice > trigger.value;
+				}
+				else if (trigger.operator === 'lte') {
+					condition = commodity.sellPrice <= trigger.value;
+				}
+				else if (trigger.operator === 'lt') {
+					condition = commodity.sellPrice < trigger.value;
+				}
+
+				if (condition) {
+					console.log('condition match');
+				}
+			}
+			else if (trigger.source === 'buy') {
+				let condition = false;
+				if (trigger.operator === 'gte') {
+					condition = commodity.buyPrice >= trigger.value;
+				}
+				else if (trigger.operator === 'gt') {
+					condition = commodity.buyPrice > trigger.value;
+				}
+				else if (trigger.operator === 'lte') {
+					condition = commodity.buyPrice <= trigger.value;
+				}
+				else if (trigger.operator === 'lt') {
+					condition = commodity.buyPrice < trigger.value;
+				}
+
+				if (condition) {
+					console.log('condition match');
+				}
+			}
+			/*
+
 			const highestPrice = (
 				highSellMarketCache[event.marketId]
 				&& highSellMarketCache[event.marketId][commodity.name]
@@ -94,7 +136,7 @@ async function check(event) {
 					: commodity.sellPrice
 			);
 			if (commodity.name === threshold.material && highestPrice >= threshold.minimum_price) {
-				const guild = await Guild.findOne({ where: { guild_id: threshold.guild_id } });
+				const guild = await Guild.findOne({ where: { guildID: threshold.guild_id } });
 				if (!guild || !guild.marketAnnouncementsEnabled || !guild.marketAnnouncementsChannel) {
 					continue;
 				}
@@ -225,6 +267,8 @@ async function check(event) {
 					material: commodity.name,
 				} });
 			}
+
+			 */
 		}
 	}
 }

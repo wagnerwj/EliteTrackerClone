@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const db = require('../database/connection');
+const db = require('./connection');
 
 const Guild = db.define('guild', {
 	guildID: {

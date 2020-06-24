@@ -5,12 +5,11 @@ const { prefix, token } = require(process.env.CONFIG_PATH || './config.json');
 const Guild = require('./database2/guild');
 const HighSellAnnouncement = require('./database/highsell-announcement');
 const HighSellThreshold = require('./database/highsell-threshold');
-const { init: initHighSell } = require('./high-sell');
+const { init: initMarket } = require('./market');
 const { genericCommand } = require('./generic');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
-const cooldowns = new Discord.Collection();
 
 function discordReady(c) {
 	return new Promise((resolve) => {
@@ -24,7 +23,7 @@ module.exports = {
 			discordReady(client),
 			client.login(token),
 		]);
-		await initHighSell(client);
+		await initMarket(client);
 	},
 	async disconnect() {
 		await client.user.setStatus('dnd');

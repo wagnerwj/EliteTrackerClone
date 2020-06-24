@@ -1,5 +1,5 @@
 const Guild = require('../../../database2/guild');
-const highSell = require('../../../high-sell');
+const market = require('../../../market');
 
 module.exports = {
 	name: 'channel',
@@ -14,7 +14,7 @@ module.exports = {
 		}
 
 		try {
-			await highSell.checkPermissions(channel.id);
+			await market.checkPermissions(channel.id);
 		}
 		catch (e) {
 			return message.channel.send(`Got \`${e.message}\` on testing permissions for channel <#${channel.id}>, ${message.author}`);
@@ -26,6 +26,6 @@ module.exports = {
 			return message.channel.send('Error updating configuration');
 		}
 
-		message.channel.send(`Set ${args[0]} for announcements`);
+		return message.channel.send(`Set ${args[0]} for announcements`);
 	},
 };
