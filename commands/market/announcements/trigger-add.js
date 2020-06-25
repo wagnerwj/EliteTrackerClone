@@ -20,10 +20,10 @@ Allowed \`[source]\` values: \`sell\`, \`buy\`
 - *Methanol Monohydrate* use *MMC*
 
 **Examples**:
-\`${prefix}market announcements trigger-add sell LTD >1.6mil\`: selling LTDs above 1.6 million
-\`${prefix}market announcements trigger-add sell LTD >=1.6mil\`: selling LTDs match or above 1.6 million
-\`${prefix}market announcements trigger-add sell Painite >=500k\`: selling painite match or above 500 thousand
-\`${prefix}market announcements trigger-add buy Tritium <10k\`: buying tritum match or above 500 thousand`,
+\`${prefix}market announcements trigger-add sell LTD >1.6mil\`: selling LTDs above 1 600 000
+\`${prefix}market announcements trigger-add sell LTD >=1.6mil\`: selling LTDs match or above 1 600 000
+\`${prefix}market announcements trigger-add sell Painite >=500k\`: selling painite match or above 500 000
+\`${prefix}market announcements trigger-add buy Tritium <10k\`: buying tritum match or below 10 000`,
 	guildOnly: true,
 	args: true,
 	usage: '[source] [commodity] [trigger value]',

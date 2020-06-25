@@ -1,5 +1,4 @@
 const Guild = require('../database2/guild');
-const HighSellThreshold = require('../database/highsell-threshold');
 
 module.exports = {
 	name: 'info',
@@ -18,20 +17,8 @@ module.exports = {
 			rolename = role.name;
 		}
 
-		let text = `**Configuration**:
-Admin role: ${rolename} (${guild.adminRoleID})
-
-Highsell:
-- Enabled: ${guild.marketAnnouncementsEnabled ? 'yes' : 'no'}
-- Channel: ${!guild.marketAnnouncementsChannel ? 'n/a' : `<#${guild.marketAnnouncementsChannel}>`}`;
-
-		const thresholds = await HighSellThreshold.findAll({ where: { guild_id: message.guild.id } });
-		if (thresholds.length > 0) {
-			text += '\n- Thresholds:';
-		}
-		for (const threshold of thresholds) {
-			text += `\n-- ${threshold.material} >=${threshold.minimum_price.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2)}`;
-		}
+		const text = `**Configuration**:
+Admin role: ${rolename} (${guild.adminRoleID})`;
 		message.channel.send(text);
 	},
 };
