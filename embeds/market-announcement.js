@@ -13,33 +13,40 @@ module.exports = {
 		embed = embed.addField('\u200b', '\u200b', true);
 
 		embed = embed.addField('Demand', values.demand.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2), true);
-		embed = embed.addField('Highest Sell Price', values.highestSellPrice.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2), true);
+		embed = embed.addField('Highest Sell Price', values.price.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2), true);
 		embed = embed.addField('\u200b', '\u200b', true);
 
-		// let tonnage128 = ((-1.08 * 128 / values.demand) + 1.039) * values.highestSellPrice;
-		// if (tonnage128 > values.highestSellPrice) {
-		// 	tonnage128 = values.highestSellPrice;
+		// let tonnage128 = ((-1.08 * 128 / values.demand) + 1.039) * values.price;
+		// if (tonnage128 > values.price) {
+		// 	tonnage128 = values.price;
 		// }
-		// let tonnage256 = ((-1.08 * 256 / values.demand) + 1.039) * values.highestSellPrice;
-		// if (tonnage256 > values.highestSellPrice) {
-		// 	tonnage256 = values.highestSellPrice;
+		// let tonnage256 = ((-1.08 * 256 / values.demand) + 1.039) * values.price;
+		// if (tonnage256 > values.price) {
+		// 	tonnage256 = values.price;
 		// }
-		// let tonnage512 = ((-1.08 * 512 / values.demand) + 1.039) * values.highestSellPrice;
-		// if (tonnage512 > values.highestSellPrice) {
-		// 	tonnage512 = values.highestSellPrice;
+		// let tonnage512 = ((-1.08 * 512 / values.demand) + 1.039) * values.price;
+		// if (tonnage512 > values.price) {
+		// 	tonnage512 = values.price;
 		// }
-		let tonnage128 = values.highestSellPrice;
+		let tonnage128 = values.price;
 		if (0.25 * values.demand < 128) {
-			tonnage128 = values.highestSellPrice - (1042 * (128 - (0.25 * values.demand)));
+			tonnage128 = values.price - (1042 * (128 - (0.25 * values.demand)));
 		}
-		let tonnage256 = values.highestSellPrice;
+		let tonnage256 = values.price;
 		if (0.25 * values.demand < 256) {
-			tonnage256 = values.highestSellPrice - (1042 * (256 - (0.25 * values.demand)));
+			tonnage256 = values.price - (1042 * (256 - (0.25 * values.demand)));
 		}
-		let tonnage512 = values.highestSellPrice;
+		let tonnage512 = values.price;
 		if (0.25 * values.demand < 512) {
-			tonnage512 = values.highestSellPrice - (1042 * (512 - (0.25 * values.demand)));
+			tonnage512 = values.price - (1042 * (512 - (0.25 * values.demand)));
 		}
+
+		// let tonnageWithoutLoss;
+		// for (tonnageWithoutLoss = 1; tonnageWithoutLoss < 1500; tonnageWithoutLoss++) {
+		// 	if (0.25 * values.demand < tonnageWithoutLoss) {
+		// 		break;
+		// 	}
+		// }
 
 		embed = embed.addField('**INFO**', '!!Wrong price calculation since carrier release update!!', false);
 
