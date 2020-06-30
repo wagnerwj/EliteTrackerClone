@@ -94,5 +94,7 @@ module.exports = {
 		}
 		await message.channel.send(`Migrate ${count} market trigger`);
 		count = 0;
+
+		process.exit(1);
 	},
 };

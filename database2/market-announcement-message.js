@@ -6,16 +6,16 @@ const Message = db.define(
 	{
 		guildID: Sequelize.STRING,
 		messageID: Sequelize.STRING,
+		source: Sequelize.STRING,
 		marketID: Sequelize.STRING,
 		commodity: Sequelize.STRING,
-		sellPrice: Sequelize.INTEGER,
-		buyPrice: Sequelize.INTEGER,
+		price: Sequelize.INTEGER,
 	},
 	{
 		indexes: [
 			{
 				unique: true,
-				fields: ['guildID', 'marketID', 'commodity'],
+				fields: ['source', 'guildID', 'marketID', 'commodity'],
 			},
 		],
 	},
