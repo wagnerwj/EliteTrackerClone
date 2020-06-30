@@ -1,7 +1,5 @@
-const Guild = require('../database/guild');
-const Guild2 = require('../database2/guild');
-const Threshold = require('../database/highsell-threshold');
-const AnnouncementTrigger = require('../database2/market-announcement-trigger');
+const Announcement = require('../database/highsell-announcement');
+const AnnouncementMessage = require('../database2/market-announcement-message');
 
 module.exports = {
 	name: 'migrate',
@@ -68,31 +66,48 @@ module.exports = {
 		// await message.channel.send(`Migrate ${count} fleetcarriers`);
 		// count = 0;
 
-		const guilds = await Guild.findAll();
-		for (const guild of guilds) {
-			await Guild2.create({
-				guildID: guild.guild_id,
-				adminRoleID: guild.admin_role_id,
-				marketAnnouncementsEnabled: guild.highsell_enabled,
-				marketAnnouncementsChannel: guild.highsell_channel,
-			});
-			count++;
-		}
-		await message.channel.send(`Migrate ${count} guilds`);
-		count = 0;
+		// const guilds = await Guild.findAll();
+		// for (const guild of guilds) {
+		// 	await Guild2.create({
+		// 		guildID: guild.guild_id,
+		// 		adminRoleID: guild.admin_role_id,
+		// 		marketAnnouncementsEnabled: guild.highsell_enabled,
+		// 		marketAnnouncementsChannel: guild.highsell_channel,
+		// 	});
+		// 	count++;
+		// }
+		// await message.channel.send(`Migrate ${count} guilds`);
+		// count = 0;
+		//
+		// const thresholds = await Threshold.findAll();
+		// for (const threshold of thresholds) {
+		// 	await AnnouncementTrigger.create({
+		// 		guildID: threshold.guild_id,
+		// 		source: 'sell',
+		// 		commodity: threshold.material,
+		// 		operator: 'gte',
+		// 		value: threshold.minimum_price,
+		// 	});
+		// 	count++;
+		// }
+		// await message.channel.send(`Migrate ${count} market trigger`);
+		// count = 0;
 
-		const thresholds = await Threshold.findAll();
-		for (const threshold of thresholds) {
-			await AnnouncementTrigger.create({
-				guildID: threshold.guild_id,
+		const announcements = await Announcement.findAll();
+		for (const announcement of announcements) {
+			await AnnouncementMessage.create({
+				guildID: announcement.guild_id,
 				source: 'sell',
-				commodity: threshold.material,
-				operator: 'gte',
-				value: threshold.minimum_price,
+				messageID: announcement.message_id,
+				marketID: announcement.market_id,
+				commodity: announcement.material,
+				price: announcement.highest_sell_price,
+				createdAt: announcement.inserted,
+				updatedAt: announcement.updated,
 			});
 			count++;
 		}
-		await message.channel.send(`Migrate ${count} market trigger`);
+		await message.channel.send(`Migrate ${count} market announcements`);
 		count = 0;
 
 		process.exit(1);
