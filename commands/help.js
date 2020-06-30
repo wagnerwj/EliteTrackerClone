@@ -1,4 +1,4 @@
-const { genericHelp } = require('../../generic');
+const { genericHelp } = require('../generic');
 
 module.exports = {
 	name: 'help',
