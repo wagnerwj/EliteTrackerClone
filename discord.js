@@ -3,8 +3,8 @@ const path = require('path');
 const Discord = require('discord.js');
 const { prefix, token } = require(process.env.CONFIG_PATH || './config.json');
 const Guild = require('./database2/guild');
-const HighSellAnnouncement = require('./database/highsell-announcement');
-const HighSellThreshold = require('./database/highsell-threshold');
+const AnnouncementMessage = require('./database2/market-announcement-message');
+const AnnouncementTrigger = require('./database2/market-announcement-trigger');
 const { init: initMarket } = require('./market');
 const { genericCommand } = require('./generic');
 
@@ -46,8 +46,8 @@ client.on('guildCreate', async guild => {
 });
 client.on('guildDelete', async guild => {
 	await Guild.destroy({ where: { guildID: guild.id } });
-	await HighSellAnnouncement.destroy({ where: { guild_id: guild.id } });
-	await HighSellThreshold.destroy({ where: { guild_id: guild.id } });
+	await AnnouncementMessage.destroy({ where: { guildID: guild.id } });
+	await AnnouncementTrigger.destroy({ where: { guildID: guild.id } });
 	console.log(`Guild ${guild.id} (${guild.name}) deleted`);
 });
 
