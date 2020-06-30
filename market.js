@@ -40,7 +40,7 @@ async function init(client) {
 		const channel = await discordClient.channels.fetch(guild.marketAnnouncementsChannel);
 		const messages = await channel.messages.fetch({ around: announcementMessage.messageID, limit: 1 });
 		const message = messages.first();
-		if (message && !message.deleted && message.id === message.messageID) {
+		if (message && !message.deleted && message.id === announcementMessage.messageID) {
 			if (!marketAnnouncementsCache[announcementMessage.source]) {
 				marketAnnouncementsCache[announcementMessage.source] = {};
 			}
