@@ -72,7 +72,10 @@ async function check(event) {
 	const timestamp = new Date(event.timestamp);
 	if (timestamp < lastKnownBGSTick) return;
 
-	const isFleetCarrier = event.economies && event.economies.some((v) => v.name === 'Carrier');
+	const isFleetCarrier = (
+		(event.economies && event.economies.some((v) => v.name === 'Carrier'))
+		|| /^\w{3}-\w{3}$/.test(event.stationName)
+	);
 	// Ignore fleet carrier market
 	if (isFleetCarrier) return;
 
