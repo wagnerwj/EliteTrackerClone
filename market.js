@@ -40,7 +40,7 @@ async function init(client) {
 		const channel = await discordClient.channels.fetch(guild.marketAnnouncementsChannel);
 		const messages = await channel.messages.fetch({ around: announcementMessage.messageID, limit: 1 });
 		const message = messages.first();
-		if (message && !message.deleted && message.id === message.message_id) {
+		if (message && !message.deleted && message.id === message.messageID) {
 			if (!marketAnnouncementsCache[announcementMessage.source]) {
 				marketAnnouncementsCache[announcementMessage.source] = {};
 			}
@@ -251,17 +251,17 @@ async function bgsTick(time) {
 	lastKnownBGSTick = new Date(time);
 
 	for (const source in marketAnnouncementsCache) {
-		for (const marketId in marketAnnouncementsCache[source]) {
-			for (const commodity in marketAnnouncementsCache[source][marketId]) {
-				for (const guildId in marketAnnouncementsCache[source][marketId][commodity]) {
-					if (marketAnnouncementsCache[source][marketId][commodity][guildId].inserted < lastKnownBGSTick) {
-						await marketAnnouncementsCache[source][marketId][commodity][guildId].message.delete();
-						delete marketAnnouncementsCache[source][marketId][commodity][guildId];
+		for (const marketID in marketAnnouncementsCache[source]) {
+			for (const commodity in marketAnnouncementsCache[source][marketID]) {
+				for (const guildID in marketAnnouncementsCache[source][marketID][commodity]) {
+					if (marketAnnouncementsCache[source][marketID][commodity][guildID].inserted < lastKnownBGSTick) {
+						await marketAnnouncementsCache[source][marketID][commodity][guildID].message.delete();
+						delete marketAnnouncementsCache[source][marketID][commodity][guildID];
 
 						await AnnouncementMessage.destroy({ where: {
 							source: source,
-							guild_id: guildId,
-							market_id: marketId,
+							guildID: guildID,
+							marketID: marketID,
 							material: commodity,
 						} });
 					}
