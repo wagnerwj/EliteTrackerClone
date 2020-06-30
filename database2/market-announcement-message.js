@@ -14,7 +14,7 @@ const Message = db.define(
 	{
 		indexes: [
 			{
-				name: 'market_announcement_message_idx',
+				name: 'market_announcement_messages_idx',
 				unique: true,
 				fields: ['source', 'guildID', 'marketID', 'commodity'],
 			},

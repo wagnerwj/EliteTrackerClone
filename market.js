@@ -86,7 +86,7 @@ async function check(event) {
 			if (commodity.name !== trigger.commodity) continue;
 
 			const cache = (
-				marketAnnouncementsCache[trigger.source][event.marketId]
+				marketAnnouncementsCache[trigger.source]
 				&& marketAnnouncementsCache[trigger.source][event.marketId]
 				&& marketAnnouncementsCache[trigger.source][event.marketId][commodity.name]
 				&& marketAnnouncementsCache[trigger.source][event.marketId][commodity.name][trigger.guildID]
