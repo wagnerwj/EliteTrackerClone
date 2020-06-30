@@ -136,8 +136,8 @@ async function check(event) {
 				}
 			}
 
+			console.log('condition', condition, trigger.commodity, trigger.source, price, trigger.operator, trigger.value);
 			if (condition) {
-				console.log('condition match');
 				const guild = await Guild.findOne({ where: { guildID: trigger.guildID } });
 				if (!guild || !guild.marketAnnouncementsEnabled || !guild.marketAnnouncementsChannel) {
 					continue;
