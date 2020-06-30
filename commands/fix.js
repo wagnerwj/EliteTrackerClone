@@ -1,5 +1,6 @@
 const Guild = require('../database2/guild');
-const HighSellAnnouncement = require('../database/highsell-announcement');
+const MarketAnnouncementMessage = require('../database2/market-announcement-message');
+const MarketAnnouncementTrigger = require('../database2/market-announcement-trigger');
 
 module.exports = {
 	name: 'fix',
@@ -13,8 +14,11 @@ module.exports = {
 			await Guild.create({
 				guildID: message.channel.guild.id,
 			});
-			await HighSellAnnouncement.destroy({ where: {
-				guild_id: message.channel.guild.id,
+			await MarketAnnouncementMessage.destroy({ where: {
+				guildID: message.channel.guild.id,
+			} });
+			await MarketAnnouncementTrigger.destroy({ where: {
+				guildID: message.channel.guild.id,
 			} });
 			await message.channel.send('Created missing server configuration');
 		}
