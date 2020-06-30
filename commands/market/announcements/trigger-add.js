@@ -13,7 +13,7 @@ Allowed \`[source]\` values: \`sell\`, \`buy\`
 
 **Long commodity names should be shorten**:
 - *Low temperature diamonds* use *LTD*
-- *Void Opals* use *Vopals*
+- *Void Opals* use *VOpal*
 - *Hafnium 178* use *H178*
 - *Lithium Hydroxide* use *LH*
 - *Methane Clathrate* use *MC*
