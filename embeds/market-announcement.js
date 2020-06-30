@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 
 module.exports = {
-	name: 'highsell',
+	name: 'market-announcement',
 	execute(values) {
 		let embed = new Discord.MessageEmbed()
 			.setColor('#fc0000')
@@ -52,6 +52,8 @@ module.exports = {
 		if (values.station) {
 			const landingPadSize = ['Orbis', 'Coriolis', 'Ocellus', 'Asteroid', 'Planetary Outpost'].some(r => values.station.type.indexOf(r) >= 0) ? 'L' : 'M';
 			const isPlanetary = ['Planetary'].some(r => values.station.type.indexOf(r) >= 0);
+
+			embed = embed.setThumbnail(`https://fankserver.gitlab.io/elite-dangerous/elitetracker/assets/stations/${values.station.type.replace(/ /g, '_').toLowerCase()}.png`);
 
 			embed = embed.addField('Distance to star', `${values.station.distanceToArrival.toFixed(2)} ls`, true);
 			embed = embed.addField('Landing Pad', `${landingPadSize}${isPlanetary ? ' (Planetary)' : ''}`, true);

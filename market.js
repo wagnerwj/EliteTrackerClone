@@ -1,10 +1,10 @@
 const Guild = require('./database2/guild');
 const HighSellAnnouncement = require('./database/highsell-announcement');
 const AnnouncementTrigger = require('./database2/market-announcement-trigger');
-const EmbedHighSell = require('./embeds/highsell');
+const EmbedHighSell = require('./embeds/market-announcement');
 const EDSM = require('./edsm');
 
-const highSellMarketCache = {};
+const marketAnnouncementsCache = {};
 const marketStationInfo = {};
 let discordClient;
 
@@ -73,10 +73,9 @@ async function check(event) {
 	const timestamp = new Date(event.timestamp);
 	if (timestamp < lastKnownBGSTick) return;
 
+	const isFleetCarrier = event.economies && event.economies.some((v) => v.name === 'Carrier');
 	// Ignore fleet carrier market
-	if (event.economies && event.economies.some((v) => v.name === 'Carrier')) {
-		return;
-	}
+	if (isFleetCarrier) return;
 
 	const triggers = await AnnouncementTrigger.findAll();
 	if (triggers.length < 1) {
@@ -87,42 +86,163 @@ async function check(event) {
 		for (const trigger of triggers) {
 			if (commodity.name !== trigger.commodity) continue;
 
+			const cache = (
+				marketAnnouncementsCache[trigger.source][event.marketId]
+				&& marketAnnouncementsCache[trigger.source][event.marketId]
+				&& marketAnnouncementsCache[trigger.source][event.marketId][commodity.name]
+				&& marketAnnouncementsCache[trigger.source][event.marketId][commodity.name][trigger.guildID]
+					? marketAnnouncementsCache[trigger.source][event.marketId][commodity.name][trigger.guildID]
+					: null
+			);
+
+			let condition = false;
+			let price = 0;
 			if (trigger.source === 'sell') {
-				let condition = false;
 				if (trigger.operator === 'gte') {
-					condition = commodity.sellPrice >= trigger.value;
+					price = (cache && cache.price > commodity.sellPrice ? cache.price : commodity.sellPrice);
+					condition = price >= trigger.value;
 				}
 				else if (trigger.operator === 'gt') {
-					condition = commodity.sellPrice > trigger.value;
+					price = (cache && cache.price > commodity.sellPrice ? cache.price : commodity.sellPrice);
+					condition = price > trigger.value;
 				}
 				else if (trigger.operator === 'lte') {
-					condition = commodity.sellPrice <= trigger.value;
+					price = (cache && cache.price < commodity.sellPrice ? cache.price : commodity.sellPrice);
+					condition = price <= trigger.value;
 				}
 				else if (trigger.operator === 'lt') {
-					condition = commodity.sellPrice < trigger.value;
-				}
-
-				if (condition) {
-					console.log('condition match');
+					price = (cache && cache.price < commodity.sellPrice ? cache.price : commodity.sellPrice);
+					condition = price < trigger.value;
 				}
 			}
 			else if (trigger.source === 'buy') {
-				let condition = false;
 				if (trigger.operator === 'gte') {
+					price = (cache && cache.price > commodity.buyPrice ? cache.price : commodity.buyPrice);
 					condition = commodity.buyPrice >= trigger.value;
 				}
 				else if (trigger.operator === 'gt') {
+					price = (cache && cache.price > commodity.buyPrice ? cache.price : commodity.buyPrice);
 					condition = commodity.buyPrice > trigger.value;
 				}
 				else if (trigger.operator === 'lte') {
+					price = (cache && cache.price < commodity.buyPrice ? cache.price : commodity.buyPrice);
 					condition = commodity.buyPrice <= trigger.value;
 				}
 				else if (trigger.operator === 'lt') {
+					price = (cache && cache.price < commodity.buyPrice ? cache.price : commodity.buyPrice);
 					condition = commodity.buyPrice < trigger.value;
 				}
+			}
 
-				if (condition) {
-					console.log('condition match');
+			if (condition) {
+				console.log('condition match');
+				const guild = await Guild.findOne({ where: { guildID: trigger.guildID } });
+				if (!guild || !guild.marketAnnouncementsEnabled || !guild.marketAnnouncementsChannel) {
+					continue;
+				}
+
+				if (!marketAnnouncementsCache[trigger.source]) {
+					marketAnnouncementsCache[trigger.source] = {};
+				}
+				if (!marketAnnouncementsCache[trigger.source][event.marketId]) {
+					marketAnnouncementsCache[trigger.source][event.marketId] = {};
+				}
+				if (!marketAnnouncementsCache[trigger.source][event.marketId][commodity.name]) {
+					marketAnnouncementsCache[trigger.source][event.marketId][commodity.name] = {};
+				}
+
+				let stationInfo;
+				if (marketStationInfo[event.marketId]) {
+					stationInfo = marketStationInfo[event.marketId];
+				}
+				else {
+					try {
+						const system = await EDSM.stations(event.systemName);
+						if (system) {
+							for (const station of system.stations) {
+								if (station.name === event.stationName) {
+									stationInfo = station;
+									break;
+								}
+							}
+
+							if (stationInfo) {
+								marketStationInfo[event.marketId] = stationInfo;
+							}
+							else {
+								console.error('no station found');
+							}
+						}
+						else {
+							console.error('no system found');
+						}
+					}
+					catch (e) {
+						console.error('edsm station', e);
+					}
+				}
+
+				const embed = EmbedHighSell.execute({
+					commodity: commodity.name,
+					systemName: event.systemName,
+					stationName: event.stationName,
+					demand: commodity.demand,
+					price: price,
+					station: stationInfo,
+				});
+
+				if (marketAnnouncementsCache[trigger.source][event.marketId][commodity.name][trigger.guildID]) {
+					try {
+						await marketAnnouncementsCache[trigger.source][event.marketId][commodity.name][trigger.guildID].message.edit(embed);
+					}
+					catch (e) {
+						console.warn(`error updating high sell message for guild ${trigger.guildID}: ${e}`);
+						if (e.message && (e.message === 'Missing Access' || e.message === 'Missing Permissions')) {
+							await disableHighSell(trigger.guildID);
+						}
+					}
+
+					marketAnnouncementsCache[trigger.source][event.marketId][commodity.name][trigger.guildID].price = price;
+					marketAnnouncementsCache[trigger.source][event.marketId][commodity.name][trigger.guildID].updated = timestamp;
+
+					// await HighSellAnnouncement.update({
+					// 	highest_sell_price: highestSellPrice,
+					// 	updated: event.timestamp,
+					// }, {
+					// 	where: {
+					// 		guild_id: threshold.guild_id,
+					// 		market_id: event.marketId,
+					// 		material: commodity.name,
+					// 	},
+					// });
+				}
+				else {
+					try {
+						const channel = await discordClient.channels.fetch(guild.marketAnnouncementsChannel);
+						const message = await channel.send(embed);
+						marketAnnouncementsCache[trigger.source][event.marketId][commodity.name][trigger.guildID] = {
+							message: message,
+							price: price,
+							inserted: timestamp,
+							updated: timestamp,
+						};
+
+						// await HighSellAnnouncement.create({
+						// 	guild_id: threshold.guild_id,
+						// 	message_id: message.id,
+						// 	market_id: event.marketId,
+						// 	material: commodity.name,
+						// 	highest_sell_price: highestSellPrice,
+						// 	inserted: event.timestamp,
+						// 	updated: event.timestamp,
+						// });
+					}
+					catch (e) {
+						console.warn(`error creating high sell message for guild ${trigger.guildID}: ${e}`);
+						if (e.message && (e.message === 'Missing Access' || e.message === 'Missing Permissions')) {
+							await disableHighSell(trigger.guildID);
+						}
+					}
 				}
 			}
 			/*
