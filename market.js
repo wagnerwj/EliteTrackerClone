@@ -266,7 +266,7 @@ async function bgsTick(time) {
 							source: source,
 							guildID: guildID,
 							marketID: marketID,
-							material: commodity,
+							commodity: commodity,
 						} });
 					}
 				}
