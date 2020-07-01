@@ -52,7 +52,6 @@ async function init(client) {
 			}
 
 			console.log('found', announcementMessage.source, announcementMessage.marketID, announcementMessage.commodity, announcementMessage.guildID);
-			console.log(announcementMessage.createdAt, new Date(announcementMessage.createdAt));
 			marketAnnouncementsCache[announcementMessage.source][announcementMessage.marketID][announcementMessage.commodity][announcementMessage.guildID] = {
 				message: message,
 				price: announcementMessage.price,
@@ -137,7 +136,7 @@ async function check(event) {
 				}
 			}
 
-			console.log('condition', condition, trigger.commodity, trigger.source, price, trigger.operator, trigger.value);
+			// console.log('condition', condition, trigger.commodity, trigger.source, price, trigger.operator, trigger.value);
 			if (condition) {
 				const guild = await Guild.findOne({ where: { guildID: trigger.guildID } });
 				if (!guild || !guild.marketAnnouncementsEnabled || !guild.marketAnnouncementsChannel) {
