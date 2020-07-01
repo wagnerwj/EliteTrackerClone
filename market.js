@@ -52,6 +52,7 @@ async function init(client) {
 			}
 
 			console.log('found', announcementMessage.source, announcementMessage.marketID, announcementMessage.commodity, announcementMessage.guildID);
+			console.log(announcementMessage.createdAt, new Date(announcementMessage.createdAt));
 			marketAnnouncementsCache[announcementMessage.source][announcementMessage.marketID][announcementMessage.commodity][announcementMessage.guildID] = {
 				message: message,
 				price: announcementMessage.price,
