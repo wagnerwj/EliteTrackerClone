@@ -99,7 +99,7 @@ async function check(event) {
 
 			let condition = false;
 			let price = 0;
-			if (trigger.source === 'sell') {
+			if (trigger.source === 'sell' && commodity.sellPrice > 0) {
 				if (trigger.operator === 'gte') {
 					price = (cache && cache.price > commodity.sellPrice ? cache.price : commodity.sellPrice);
 					condition = price >= trigger.value;
@@ -117,7 +117,7 @@ async function check(event) {
 					condition = price < trigger.value;
 				}
 			}
-			else if (trigger.source === 'buy') {
+			else if (trigger.source === 'buy' && commodity.buyPrice > 0) {
 				if (trigger.operator === 'gte') {
 					price = (cache && cache.price > commodity.buyPrice ? cache.price : commodity.buyPrice);
 					condition = commodity.buyPrice >= trigger.value;
@@ -185,6 +185,7 @@ async function check(event) {
 				}
 
 				const embed = MarketAnnouncement.execute({
+					source: trigger.source,
 					commodity: commodity.name,
 					systemName: event.systemName,
 					stationName: event.stationName,

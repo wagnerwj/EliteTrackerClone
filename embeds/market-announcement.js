@@ -4,17 +4,31 @@ module.exports = {
 	name: 'market-announcement',
 	execute(values) {
 		let embed = new Discord.MessageEmbed()
-			.setColor('#fc0000')
-			.setAuthor(`High ${values.commodity} sell price`, 'https://fankserver.gitlab.io/elite-dangerous/elitetracker/assets/highsell-icon-small.png', '')
 			.setTimestamp();
+
+		if (values.source === 'sell') {
+			embed = embed.setColor('#fc0000')
+				.setAuthor(`High ${values.commodity} sell price`, 'https://fankserver.gitlab.io/elite-dangerous/elitetracker/assets/arrow-up-orange.png', '');
+		}
+		else if (values.source === 'buy') {
+			embed = embed.setColor('#fc0000')
+				.setAuthor(`Low ${values.commodity} buy price`, 'https://fankserver.gitlab.io/elite-dangerous/elitetracker/assets/arrow-down-blue.png', '');
+		}
 
 		embed = embed.addField('System', values.systemName, true);
 		embed = embed.addField('Station', values.stationName, true);
 		embed = embed.addField('\u200b', '\u200b', true);
 
-		embed = embed.addField('Demand', values.demand.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2), true);
-		embed = embed.addField('Highest Sell Price', values.price.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2), true);
-		embed = embed.addField('\u200b', '\u200b', true);
+		if (values.source === 'sell') {
+			embed = embed.addField('Demand', values.demand.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2), true);
+			embed = embed.addField('Price', values.price.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2), true);
+			embed = embed.addField('\u200b', '\u200b', true);
+		}
+		else {
+			embed = embed.addField('Price', values.price.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2), true);
+			embed = embed.addField('\u200b', '\u200b', true);
+			embed = embed.addField('\u200b', '\u200b', true);
+		}
 
 		// let tonnage128 = ((-1.08 * 128 / values.demand) + 1.039) * values.price;
 		// if (tonnage128 > values.price) {
@@ -48,13 +62,12 @@ module.exports = {
 		// 	}
 		// }
 
-		// embed = embed.addField('**INFO**', '!!Wrong price calculation since carrier release update!!', false);
-
-		embed = embed.addField('Sell Price for 128t Cargo', tonnage128.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2), true);
-		embed = embed.addField('Sell Price for 256t Cargo', tonnage256.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2), true);
-		embed = embed.addField('Sell Price for 512t Cargo', tonnage512.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2), true);
-
-		embed = embed.addField('\u200b', '\u200b', false);
+		if (values.source === 'sell') {
+			embed = embed.addField('Sell Price for 128t Cargo', tonnage128.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2), true);
+			embed = embed.addField('Sell Price for 256t Cargo', tonnage256.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2), true);
+			embed = embed.addField('Sell Price for 512t Cargo', tonnage512.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$& ').slice(0, -2), true);
+			embed = embed.addField('\u200b', '\u200b', false);
+		}
 
 		if (values.station) {
 			const landingPadSize = ['Orbis', 'Coriolis', 'Ocellus', 'Asteroid', 'Planetary Outpost'].some(r => values.station.type.indexOf(r) >= 0) ? 'L' : 'M';
