@@ -11,7 +11,7 @@ module.exports = {
 				.setAuthor(`High ${values.commodity} sell price`, 'https://fankserver.gitlab.io/elite-dangerous/elitetracker/assets/arrow-up-orange.png', '');
 		}
 		else if (values.source === 'buy') {
-			embed = embed.setColor('#fc0000')
+			embed = embed.setColor('#0000fc')
 				.setAuthor(`Low ${values.commodity} buy price`, 'https://fankserver.gitlab.io/elite-dangerous/elitetracker/assets/arrow-down-blue.png', '');
 		}
 
