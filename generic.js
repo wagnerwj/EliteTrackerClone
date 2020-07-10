@@ -5,7 +5,7 @@ const Guild = require('./database2/guild');
 const cooldowns = new Discord.Collection();
 
 async function genericHelp(message, args, commands, parentCommands = []) {
-	const prefix = parentCommands.length > 0 ? parentCommands.join(' ') + ' ' : '';
+	const prefix = parentCommands.join(' ') + (parentCommands.length > 0 ? ' ' : '');
 
 	const data = [];
 
