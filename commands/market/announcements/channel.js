@@ -13,6 +13,7 @@ module.exports = {
 			return message.channel.send('Wrong channel argument, you need to mention it');
 		}
 
+		const channel = message.mentions.channels.first();
 		try {
 			await market.checkPermissions(channel.id);
 		}
@@ -20,7 +21,6 @@ module.exports = {
 			return message.channel.send(`Got \`${e.message}\` on testing permissions for channel <#${channel.id}>, ${message.author}`);
 		}
 
-		const channel = message.mentions.channels.first();
 		const affectedRows = await Guild.update({ marketAnnouncementsChannel: channel.id }, { where: { guildID: message.guild.id } });
 		if (affectedRows < 1) {
 			return message.channel.send('Error updating configuration');
