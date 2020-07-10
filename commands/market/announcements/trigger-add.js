@@ -29,8 +29,8 @@ Allowed \`[source]\` values: \`sell\`, \`buy\`
 	usage: '[source] [commodity] [trigger value]',
 	admin: true,
 	async execute(message, args) {
-		const source = args.shift().toLowerCase();
-		const commodityName = args.shift();
+		const source = (args.shift() || '').toLowerCase();
+		const commodityName = (args.shift() || '');
 
 		const commodity = allowedCommodities.find((c) => c.toLowerCase() === commodityName.toLowerCase());
 		if (!commodity) {

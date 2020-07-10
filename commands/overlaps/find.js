@@ -14,7 +14,7 @@ module.exports = {
 
 		const commodity = allowedCommodities.find((c) => c.toLowerCase() === commodityName);
 		if (!commodity) {
-			return message.channel.send(`Unknown commodity ${commodity}`);
+			return message.channel.send(`Unknown commodity ${commodityName}`);
 		}
 		const inGameCommodity = commoditiesMap[commodity];
 
