@@ -1,5 +1,5 @@
-const Overlap = require('../../database2/overlap');
-const OverlapAdmin = require('../../database2/overlap-admin');
+const Overlap = require('../../database/overlap');
+const OverlapAdmin = require('../../database/overlap-admin');
 
 module.exports = {
 	name: 'approve',

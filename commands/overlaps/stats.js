@@ -1,4 +1,4 @@
-const Overlap = require('../../database2/overlap');
+const Overlap = require('../../database/overlap');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const { commoditiesTranslation } = require('./data');

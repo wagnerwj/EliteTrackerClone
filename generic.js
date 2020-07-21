@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const { prefix: botPrefix } = require(process.env.CONFIG_PATH || './config.json');
-const Guild = require('./database2/guild');
+const Guild = require('./database/guild');
 
 const cooldowns = new Discord.Collection();
 

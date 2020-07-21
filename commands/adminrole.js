@@ -1,5 +1,5 @@
 const { prefix } = require(process.env.CONFIG_PATH || '../config.json');
-const Guild = require('../database2/guild');
+const Guild = require('../database/guild');
 
 module.exports = {
 	name: 'adminrole',

@@ -1,5 +1,5 @@
 const { allowedCommodities, commoditiesMap, commoditiesTranslation } = require('./../../overlaps/data');
-const Trigger = require('../../../database2/market-announcement-trigger');
+const Trigger = require('../../../database/market-announcement-trigger');
 
 module.exports = {
 	name: 'trigger-remove',

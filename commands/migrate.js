@@ -1,6 +1,3 @@
-const Announcement = require('../database/highsell-announcement');
-const AnnouncementMessage = require('../database2/market-announcement-message');
-
 module.exports = {
 	name: 'migrate',
 	description: 'migrate data',
@@ -93,23 +90,23 @@ module.exports = {
 		// await message.channel.send(`Migrate ${count} market trigger`);
 		// count = 0;
 
-		const announcements = await Announcement.findAll();
-		for (const announcement of announcements) {
-			await AnnouncementMessage.create({
-				guildID: announcement.guild_id,
-				source: 'sell',
-				messageID: announcement.message_id,
-				marketID: announcement.market_id,
-				commodity: announcement.material,
-				price: announcement.highest_sell_price,
-				createdAt: announcement.inserted,
-				updatedAt: announcement.updated,
-			});
-			count++;
-		}
-		await message.channel.send(`Migrate ${count} market announcements`);
-		count = 0;
-
-		process.exit(1);
+		// const announcements = await Announcement.findAll();
+		// for (const announcement of announcements) {
+		// 	await AnnouncementMessage.create({
+		// 		guildID: announcement.guild_id,
+		// 		source: 'sell',
+		// 		messageID: announcement.message_id,
+		// 		marketID: announcement.market_id,
+		// 		commodity: announcement.material,
+		// 		price: announcement.highest_sell_price,
+		// 		createdAt: announcement.inserted,
+		// 		updatedAt: announcement.updated,
+		// 	});
+		// 	count++;
+		// }
+		// await message.channel.send(`Migrate ${count} market announcements`);
+		// count = 0;
+		//
+		// process.exit(1);
 	},
 };

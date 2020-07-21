@@ -1,4 +1,4 @@
-const OverlapAdmin = require('../../database2/overlap-admin');
+const OverlapAdmin = require('../../database/overlap-admin');
 
 module.exports = {
 	name: 'admin-add',

@@ -10,14 +10,5 @@
 			"logging": false
 		}
 	},
-	"db2": {
-		"database": "database",
-		"username": "username",
-		"password": "password",
-		"options": {
-			"dialect": "sqlite",
-			"logging": false
-		}
-	},
 	"eddn": "tcp://eddn.edcd.io:9500"
 }

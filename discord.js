@@ -2,9 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const Discord = require('discord.js');
 const { prefix, token } = require(process.env.CONFIG_PATH || './config.json');
-const Guild = require('./database2/guild');
-const AnnouncementMessage = require('./database2/market-announcement-message');
-const AnnouncementTrigger = require('./database2/market-announcement-trigger');
+const Guild = require('./database/guild');
+const AnnouncementMessage = require('./database/market-announcement-message');
+const AnnouncementTrigger = require('./database/market-announcement-trigger');
 const { init: initMarket } = require('./market');
 const { genericCommand } = require('./generic');
 

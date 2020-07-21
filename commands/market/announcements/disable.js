@@ -1,4 +1,4 @@
-const Guild = require('../../../database2/guild');
+const Guild = require('../../../database/guild');
 
 module.exports = {
 	name: 'disable',

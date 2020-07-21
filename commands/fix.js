@@ -1,6 +1,6 @@
-const Guild = require('../database2/guild');
-const MarketAnnouncementMessage = require('../database2/market-announcement-message');
-const MarketAnnouncementTrigger = require('../database2/market-announcement-trigger');
+const Guild = require('../database/guild');
+const MarketAnnouncementMessage = require('../database/market-announcement-message');
+const MarketAnnouncementTrigger = require('../database/market-announcement-trigger');
 
 module.exports = {
 	name: 'fix',

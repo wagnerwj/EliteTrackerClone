@@ -1,4 +1,4 @@
-const FleetCarrier = require('../../database2/fleetcarrier');
+const FleetCarrier = require('../../database/fleetcarrier');
 
 module.exports = {
 	name: 'find-fc',

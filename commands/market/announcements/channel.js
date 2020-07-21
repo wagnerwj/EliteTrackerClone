@@ -1,4 +1,4 @@
-const Guild = require('../../../database2/guild');
+const Guild = require('../../../database/guild');
 const market = require('../../../market');
 
 module.exports = {

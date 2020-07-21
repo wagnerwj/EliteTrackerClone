@@ -1,5 +1,5 @@
 const { prefix } = require(process.env.CONFIG_PATH || '../../../config.json');
-const Guild = require('../../../database2/guild');
+const Guild = require('../../../database/guild');
 const market = require('../../../market');
 
 module.exports = {
@@ -30,7 +30,7 @@ module.exports = {
 
 		let info = '';
 		if (args[0] === 'yes' && !guild.marketAnnouncementsChannel) {
-			info = `\nNo channel configured, use \`${prefix}highsell-channel\` to define the channel for the announcements`;
+			info = `\nNo channel configured, use \`${prefix}market announcements channel\` to define the channel for the announcements`;
 		}
 		await message.channel.send(`Market announcements are enabled${info}`);
 	},

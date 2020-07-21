@@ -1,6 +1,6 @@
-const Guild = require('./database2/guild');
-const AnnouncementMessage = require('./database2/market-announcement-message');
-const AnnouncementTrigger = require('./database2/market-announcement-trigger');
+const Guild = require('./database/guild');
+const AnnouncementMessage = require('./database/market-announcement-message');
+const AnnouncementTrigger = require('./database/market-announcement-trigger');
 const MarketAnnouncement = require('./embeds/market-announcement');
 const EDSM = require('./edsm');
 
