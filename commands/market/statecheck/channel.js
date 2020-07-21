@@ -3,7 +3,7 @@ const market = require('../../../market/announcements');
 
 module.exports = {
 	name: 'channel',
-	description: 'Define a channel for market announcements',
+	description: 'Define a channel for system state check',
 	guildOnly: true,
 	args: true,
 	usage: '[channel]',
@@ -21,7 +21,7 @@ module.exports = {
 			return message.channel.send(`Got \`${e.message}\` on testing permissions for channel <#${channel.id}>, ${message.author}`);
 		}
 
-		const affectedRows = await Guild.update({ marketAnnouncementsChannel: channel.id }, { where: { guildID: message.guild.id } });
+		const affectedRows = await Guild.update({ marketStateCheckChannel: channel.id }, { where: { guildID: message.guild.id } });
 		if (affectedRows < 1) {
 			return message.channel.send('Error updating configuration');
 		}

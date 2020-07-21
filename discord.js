@@ -5,7 +5,7 @@ const { prefix, token } = require(process.env.CONFIG_PATH || './config.json');
 const Guild = require('./database/guild');
 const AnnouncementMessage = require('./database/market-announcement-message');
 const AnnouncementTrigger = require('./database/market-announcement-trigger');
-const { init: initMarket } = require('./market');
+const { init: initMarket } = require('./market/announcements');
 const { genericCommand } = require('./generic');
 
 const client = new Discord.Client();

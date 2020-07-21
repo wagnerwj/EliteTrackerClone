@@ -1,5 +1,6 @@
 const got = require('got');
-const market = require('./market');
+const marketAnnouncements = require('./market/announcements');
+const marketStateCheck = require('./market/statecheck');
 
 function start() {
 	setInterval(async () => {
@@ -19,7 +20,8 @@ async function getTick() {
 
 async function runBGS() {
 	const tick = await getTick();
-	await market.bgsTick(tick.time);
+	await marketAnnouncements.bgsTick(tick.time);
+	await marketStateCheck.bgsTick(tick.time);
 }
 
 module.exports = {

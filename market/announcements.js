@@ -1,12 +1,13 @@
-const Guild = require('./database/guild');
-const AnnouncementMessage = require('./database/market-announcement-message');
-const AnnouncementTrigger = require('./database/market-announcement-trigger');
-const MarketAnnouncement = require('./embeds/market-announcement');
-const EDSM = require('./edsm');
+const Guild = require('../database/guild');
+const AnnouncementMessage = require('../database/market-announcement-message');
+const AnnouncementTrigger = require('../database/market-announcement-trigger');
+const MarketAnnouncement = require('../embeds/market-announcement');
+const EDSM = require('../edsm');
 
 const marketAnnouncementsCache = {};
 const marketStationInfo = {};
 let discordClient;
+let lastKnownBGSTick;
 
 async function checkPermissions(channelID) {
 	const channel = await discordClient.channels.fetch(channelID);
@@ -278,8 +279,6 @@ async function bgsTick(time) {
 		delete marketStationInfo[marketId];
 	}
 }
-
-let lastKnownBGSTick;
 
 module.exports = {
 	init: init,

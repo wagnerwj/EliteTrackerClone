@@ -4,7 +4,7 @@ const market = require('../../../market/announcements');
 
 module.exports = {
 	name: 'enable',
-	description: 'Enable announcements for market changes',
+	description: 'Enable announcements for system state check',
 	guildOnly: true,
 	args: false,
 	admin: true,
@@ -14,24 +14,24 @@ module.exports = {
 			return message.channel.send('Error in bot configuration, remove and add the bot again for proper setup');
 		}
 
-		if (guild.marketAnnouncementsChannel) {
+		if (guild.marketStateCheckChannel) {
 			try {
-				await market.checkPermissions(guild.marketAnnouncementsChannel);
+				await market.checkPermissions(guild.marketStateCheckChannel);
 			}
 			catch (e) {
-				return message.channel.send(`Got \`${e.message}\` on testing permissions for channel <#${guild.marketAnnouncementsChannel}>, ${message.author}`);
+				return message.channel.send(`Got \`${e.message}\` on testing permissions for channel <#${guild.marketStateCheckChannel}>, ${message.author}`);
 			}
 		}
 
-		const affectedRows = await Guild.update({ marketAnnouncementsEnabled: true }, { where: { guildID: message.guild.id } });
+		const affectedRows = await Guild.update({ marketStateCheckEnabled: true }, { where: { guildID: message.guild.id } });
 		if (affectedRows < 1) {
 			return message.channel.send('Error updating configuration');
 		}
 
 		let info = '';
-		if (args[0] === 'yes' && !guild.marketAnnouncementsChannel) {
+		if (args[0] === 'yes' && !guild.marketStateCheckChannel) {
 			info = `\nNo channel configured, use \`${prefix}market announcements channel\` to define the channel for the announcements`;
 		}
-		await message.channel.send(`Market announcements are enabled${info}`);
+		await message.channel.send(`System state check announcements are enabled${info}`);
 	},
 };
