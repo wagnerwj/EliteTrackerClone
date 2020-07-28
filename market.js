@@ -259,7 +259,15 @@ async function bgsTick(time) {
 			for (const commodity in marketAnnouncementsCache[source][marketID]) {
 				for (const guildID in marketAnnouncementsCache[source][marketID][commodity]) {
 					if (marketAnnouncementsCache[source][marketID][commodity][guildID].inserted < lastKnownBGSTick) {
-						await marketAnnouncementsCache[source][marketID][commodity][guildID].message.delete();
+						try {
+							await marketAnnouncementsCache[source][marketID][commodity][guildID].message.delete();
+						}
+						catch (e) {
+							if (!e.message.includes('Unknown Message')) {
+								continue;
+							}
+						}
+
 						delete marketAnnouncementsCache[source][marketID][commodity][guildID];
 
 						await AnnouncementMessage.destroy({ where: {
