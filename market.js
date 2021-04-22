@@ -21,6 +21,7 @@ async function disableMarketAnnouncements(guildID) {
 }
 
 async function init(client) {
+	console.log('market init start');
 	discordClient = client;
 
 	const announcementMessages = await AnnouncementMessage.findAll();
@@ -66,6 +67,7 @@ async function init(client) {
 			} });
 		}
 	}
+	console.log('market init end');
 }
 
 async function check(event) {

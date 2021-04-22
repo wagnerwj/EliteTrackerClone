@@ -13,7 +13,7 @@ function start() {
 }
 
 async function getTick() {
-	const response = await got('https://elitebgs.app/api/ebgs/v4/ticks', { responseType: 'json' });
+	const response = await got('https://elitebgs.app/api/ebgs/v5/ticks', { responseType: 'json' });
 	return response.body[0];
 }
 
@@ -24,7 +24,9 @@ async function runBGS() {
 
 module.exports = {
 	init: async () => {
+		console.log('bgs init start');
 		await runBGS();
+		console.log('bgs init end');
 		start();
 	},
 	getTick: async () => {
