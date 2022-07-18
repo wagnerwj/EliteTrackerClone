@@ -1,5 +1,4 @@
 const Guild = require('./database/guild');
-const FleetCarrier = require('./database/fleetcarrier');
 const MarketAnnouncementsMessage = require('./database/market-announcement-message');
 const MarketAnnouncementsTrigger = require('./database/market-announcement-trigger');
 const Overlap = require('./database/overlap');
@@ -12,7 +11,6 @@ const eddn = require('./eddn');
 
 async function start() {
 	await Guild.sync();
-	await FleetCarrier.sync();
 	await MarketAnnouncementsMessage.sync();
 	await MarketAnnouncementsTrigger.sync();
 	await OverlapAdmin.sync();
